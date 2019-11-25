@@ -44,7 +44,7 @@ $sms = new StdClass;
 $database->host = 'localhost';
 $database->port = '3306';
 $database->user = 'root';
-$database->password = '';
+$database->password = 'iatb.zio#jr.15';
 $database->name = 'striverboard';
 $database->tablePrefix = 'striverboard_';
 

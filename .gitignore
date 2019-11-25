@@ -99,4 +99,6 @@ data/uploads/*
 data/log/*
 !data/uploads/index.htm
 !data/log/index.htm
+
+### Ignore config.php
 config.php
