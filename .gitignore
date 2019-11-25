@@ -409,5 +409,7 @@ flycheck_*.el
 /network-security.data
 
 # data dir
-/data/uploads/
-/data/log
+/data/uploads/*
+/data/log/*
+!/data/uploads/index.htm
+!/data/log/index.htm
