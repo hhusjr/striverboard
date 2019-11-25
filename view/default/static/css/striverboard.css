@@ -1,0 +1,125 @@
+body {
+    background: #fff;
+}
+
+.jumbotron {
+    background-image: url('../imgs/bg.jpg');
+    background-size: cover;
+    background-position: bottom;
+    box-shadow: 0;
+    padding: 0;
+    border-radius: 0;
+}
+
+.jumbotron .title {
+    color: #fff;
+    text-shadow: 3px 2px 3px #ca0606;
+    overflow: hidden;
+}
+
+.jumbotron .content {
+    padding-bottom: 20px;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 80px;
+}
+
+@media (max-width: 767px) {
+    .jumbotron .content {
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 80px;
+    }
+}
+
+.grid-item {
+    padding: 10px;
+}
+
+.btn-orange {
+    background: linear-gradient(left, #f19e03 40%, #f16a03);
+    background: -ms-linear-gradient(left, #f19e03 40%, #f16a03);
+    background: -webkit-linear-gradient(left, #f19e03 40%, #f16a03);
+    background: -moz-linear-gradient(left, #f19e03 40%, #f16a03);
+    color: #fff;
+}
+
+.action-icon {
+    color: #fff;
+    font-size: 24px;
+}
+
+.bottom-widgets {
+    padding: 10px;
+}
+
+#striverboard-mission {
+    font-size: 20px;
+    text-indent: 2em;
+    text-shadow: 3px 2px 3px #ca0606;
+    color: #af0707;
+}
+
+#new-moment-info {
+    padding: 20px;
+}
+
+#keyword-list {
+    height: 300px;
+}
+
+#keyword-cloud {
+    background: #fff;
+    background: radial-gradient(#ffffffd0 40%, #ffffff00);
+    background: -ms-radial-gradient(#ffffffd0 40%, #ffffff00);
+    background: -webkit-radial-gradient(#ffffffd0 40%, #ffffff00);
+    background: -moz-radial-gradient(#ffffffd0 40%, #ffffff00);
+    width: 240px;
+    height: 240px;
+    padding: 20px;
+    border-radius: 200px;
+    box-shadow: 0 0 50px #ffffff;
+}
+
+.moment-container {
+    overflow: visible !important;
+}
+
+.moment-container .moment-content {
+    height: 130px;
+    width: 100%;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    resize: none;
+    border-top: solid 1px #af0707;
+    border-left: solid 1px #af0707;
+    border-right: solid 1px #af0707;
+    border-bottom: 0;
+}
+
+.moment-container .moment-footer {
+    background: #ffecec !important;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-left: solid 1px #af0707;
+    border-right: solid 1px #af0707;
+    border-bottom: solid 1px #af0707;
+}
+
+.moments {
+    background: url('../imgs/striverboard_jumbotron_bg.jpg');
+}
+
+.moment-important {
+    box-shadow: 0 0 8px #c20606;
+}
+
+.breadcrumb {
+    border: solid 1px #f56161;
+    background: #f5616151;
+}
+
+.breadcrumb .breadcrumb-item {
+    color: white;
+    text-shadow: 2px 2px #f56161;
+}

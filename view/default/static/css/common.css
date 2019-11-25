@@ -1,0 +1,52 @@
+body {
+    background-color: #ba1929;
+}
+
+.top-nav-collapse {
+    background-color: #cc0000 !important;
+}
+
+.navbar:not(.top-nav-collapse) {
+    background: #cc00009e !important;
+}
+
+.bottom-widgets {
+    padding: 10px;
+}
+
+.bottom-widget {
+    float: right;
+    padding: 5px 10px;
+    background: #cccccc87;
+    border-radius: 6px;
+    margin: 0 3px;
+    color: #5958584b;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.bottom-widget:hover {
+    background: #5958584b;
+    color: #ffffff;
+}
+
+.logo {
+    width: 54px;
+    height: 36px;
+    overflow: hidden;
+}
+
+.logo img {
+    width: 54px;
+    height: 36px;
+    transform: translateY(-40px);
+    filter: drop-shadow(#fff 0 36px);
+}
+
+.cke_chrome {
+    border: 1px solid #cc0000 !important;
+}
+
+.cke_bottom {
+    background: #cc0000 !important;
+}
