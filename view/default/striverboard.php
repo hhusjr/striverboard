@@ -120,7 +120,9 @@ if ($a->timelineView) {
     </div>
     <div class="moments py-2">
         <div class="container">
-            <div class="jazz-timeline" id="timeline-view">
+            <div id="skroller-body">
+                <div class="jazz-timeline" id="timeline-view">
+                </div>
             </div>
             <div class="grid" id="grid-view">
                 <div class="grid-sizer col-lg-4 col-md-6" id="pre-moments"></div>
