@@ -102,3 +102,4 @@ data/log/*
 
 ### Ignore config.php
 config.php
+view/default/static/libs/ckfinder/config.php
