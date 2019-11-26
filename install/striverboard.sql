@@ -90,7 +90,7 @@ CREATE TABLE `striverboard_greats` (
 
 LOCK TABLES `striverboard_greats` WRITE;
 /*!40000 ALTER TABLE `striverboard_greats` DISABLE KEYS */;
-INSERT INTO `striverboard_greats` VALUES (1,'一分钟的中国','奋斗造福中国','https://player.youku.com/embed/XNDAxNDQ5OTk0NA==','view/default/static/imgs/video_thumbnails/v1.jpg'),(2,'王继才夫妇的故事','守岛30年','https://player.youku.com/embed/XMzgzMTI0Mjc1Mg==','view/default/static/imgs/video_thumbnails/v2.jpg'),(3,'卢仁峰与他的“牙咬焊帽”','大国工匠的炼成','https://player.youku.com/embed/XMzg0MDk4NjA5Mg==','view/default/static/imgs/video_thumbnails/v3.jpg'),(4,'阿里的奋斗故事','创新创业中的奋斗','https://player.youku.com/embed/XMTYyMDQzMzg0NA==','view/default/static/imgs/video_thumbnails/v4.jpg'),(5,'“最美奋斗者”郑守仁','用生命守护水利工程','https://player.youku.com/embed/XNDM4MTcwNzkxMg==','view/default/static/imgs/video_thumbnails/v5.jpg'),(6,'19国庆大阅兵之幕后','钢铁是怎样炼成的','https://player.youku.com/embed/XNDM3NDU4NzgxNg==','view/default/static/imgs/video_thumbnails/v6.jpg'),(7,'丹顶鹤守护者','用生命守护丹顶鹤43年','https://player.youku.com/embed/XMzkzMTI1NDE4MA==','view/default/static/imgs/video_thumbnails/v7.jpg'),(8,'华为的成长历程','奋斗铸就科技强国','http://player.youku.com/embed/XNDQzNDQ0NDc0OA==','view/default/static/imgs/video_thumbnails/v8.jpg');
+INSERT INTO `striverboard_greats` VALUES (1,'一分钟的中国','奋斗造福中国','https://player.bilibili.com/player.html?aid=38108921&cid=66990307&page=1','view/default/static/imgs/video_thumbnails/v1.jpg'),(2,'王继才夫妇的故事','守岛30年','https://player.bilibili.com/player.html?aid=44019393&cid=77102879&page=1','view/default/static/imgs/video_thumbnails/v2.jpg'),(3,'卢仁峰与他的“牙咬焊帽”','大国工匠的炼成','https://player.bilibili.com/player.html?aid=45054957&cid=78905968&page=1','view/default/static/imgs/video_thumbnails/v3.jpg'),(4,'阿里的奋斗故事','创新创业中的奋斗','https://player.bilibili.com/player.html?aid=70071632&cid=121403860&page=1','view/default/static/imgs/video_thumbnails/v4.jpg'),(5,'“最美奋斗者”郑守仁','用生命守护水利工程','https://player.bilibili.com/player.html?aid=4185100&cid=6762817&page=1','view/default/static/imgs/video_thumbnails/v5.jpg'),(6,'19国庆大阅兵之幕后','钢铁是怎样炼成的','https://player.bilibili.com/player.html?aid=69766810&cid=120900383&page=1','view/default/static/imgs/video_thumbnails/v6.jpg'),(7,'丹顶鹤守护者','用生命守护丹顶鹤43年','https://player.bilibili.com/player.html?aid=23826641&cid=39843915&page=1','view/default/static/imgs/video_thumbnails/v7.jpg'),(8,'华为奋斗短片','Dream It Possible','https://player.bilibili.com/player.html?aid=6499012&cid=10570777&page=1','view/default/static/imgs/video_thumbnails/v8.jpg');
 /*!40000 ALTER TABLE `striverboard_greats` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -323,4 +323,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-11-26 19:54:57
+-- Dump completed on 2019-11-26 21:17:35
