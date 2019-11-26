@@ -146,4 +146,10 @@ class StriverboardController extends CommonController
 
         $this->json($results);
     }
+
+    // space
+    public function onSpace()
+    {
+        $this->show('space');
+    }
 }

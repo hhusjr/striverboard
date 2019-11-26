@@ -69,7 +69,7 @@ function loadMap() {
                 if (count > max) max = count;
             });
             var heatmapOverlay = new BMapLib.HeatmapOverlay({
-                radius: 25,
+                radius: 80,
                 visible: true
             });
             map.addOverlay(heatmapOverlay);
