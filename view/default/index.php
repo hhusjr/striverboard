@@ -69,20 +69,22 @@ $params->css = ['css/index.css'];
                     $pageSize = 1;
                     printf('<div id="people" data-total="%d" data-size="%d" data-page="1"><div class="paged-decks">', $pagedDeckCount, $pageSize);
                     for ($i = 0; $i < $pagedDeckCount; $i++) {
-                        $offset = $i * $pageSize;
-                        $endPoint = $offset + $pageSize * 6;
+                        $offset = $i * $pageSize * 6;
+                        $endPoint = min($offset + $pageSize * 6, $total);
                         echo '<div class="row paged-deck" data-id="' . $i . '">';
                         for ($j = $offset; $j < $endPoint; $j++) {
                             ?>
-            <div class="col-md-4 col-lg-2 col-sm-6">
+            <div class="col-md-4 col-lg-2 col-sm-6 d-flex justify-content-center">
                 <div class="ball">
                     <div class="ball-img">
-                        <div class="view overlay zoom rounded-circle">
-                            <img class="img-fluid z-depth-1 rounded-circle show-video"
-                                src="<?php echo($a->S)('imgs/videos.jpg'); ?>"
-                                alt="videos" style="cursor: pointer;"
-                                data-video-url="<?php echo $items[$j]->videoUrl; ?>">
-                            <div class="mask flex-center rgba-red-strong">
+                        <div class="view overlay zoom rounded-circle show-video" style="cursor: pointer;" data-toggle="modal"
+                            data-target="#watch-video"
+                            data-video-url="<?php echo $items[$j]->videoUrl; ?>"
+                            data-title="<?php echo $items[$j]->name; ?>">
+                            <img class="img-fluid z-depth-1 rounded-circle"
+                                src="<?php echo $items[$j]->thumbnail; ?>"
+                                alt="videos">
+                            <div class="mask flex-center rgba-red-strong rounded-circle">
                                 <p class="white-text">观看视频</p>
                             </div>
                         </div>
@@ -98,16 +100,34 @@ $params->css = ['css/index.css'];
                     }
                     ?>
     </div>
-</div>
-<div class="d-flex justify-content-center pager">
-    <div class="page-controller">
-        <button type="button" class="btn btn-sm btn-red prev"><span class="oi oi-caret-left"></span></button>
-        <button type="button" class="btn btn-sm btn-red next"><span class="oi oi-caret-right"></span></button>
+    <div class="d-flex justify-content-center pager">
+        <div class="page-controller">
+            <button type="button" class="btn btn-sm btn-red prev"><span class="oi oi-caret-left"></span></button>
+            <button type="button" class="btn btn-sm btn-red next"><span class="oi oi-caret-right"></span></button>
+        </div>
     </div>
 </div>
+
 </div>
 </div>
 </div>
+
+<div class="modal fade" id="watch-video" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-notify modal-danger" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="heading lead" id="watch-video-title">视频标题</p>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="white-text">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body mb-0 p-0" id="watch-video-body">
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     var indexParams = {
         urls: {

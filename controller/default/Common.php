@@ -22,12 +22,17 @@ if (!defined('BASE_PATH')) {
 }
 
 class CommonController extends ControllerComponent
-{
-    public function buildUri($controller, $action, $params = null)
+{   
+    public function siteUri($suffixPath)
     {
-        return R::M('Option')->get('site.uri') . '/' . R::adapter('Router')->buildUri($controller, $action, $params);
+        return R::M('Option')->get('site.uri') . '/' . $suffixPath;
     }
     
+    public function buildUri($controller, $action, $params = null)
+    {
+        return $this->siteUri(R::adapter('Router')->buildUri($controller, $action, $params));
+    }
+
     public function __construct()
     {
         $this->setTheme('default');

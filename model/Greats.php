@@ -32,13 +32,14 @@ class GreatsModel extends BaseModel
     // get all greats
     public function getAll()
     {
-        $greats =  $this->select(['name', 'intro', 'video_url'])->fetchAll();
+        $greats =  $this->select(['name', 'intro', 'video_url', 'thumbnail'])->limit(18)->fetchAll();
         $results = [];
         foreach ($greats as $great) {
             $result = new stdClass;
             $result->name = $great['name'];
             $result->intro = $great['intro'];
             $result->videoUrl = $great['video_url'];
+            $result->thumbnail = $great['thumbnail'];
             $results[] = $result;
         }
         return $results;

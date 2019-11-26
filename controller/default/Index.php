@@ -32,7 +32,16 @@ class IndexController extends CommonController
         $assigns->slogan = $optionModel->get('site.slogan');
         $assigns->hotMissionWords = $momentsModel->hotMissionWords();
         $assigns->momentCountGroupByField = $momentsModel->getMomentCountGroupByField();
-        $assigns->greats = R::M('Greats')->getAll();
+        $assigns->greats = [];
+        $greats = R::M('Greats')->getAll();
+        foreach ($greats as $great) {
+            $info = new stdClass;
+            $info->name = $great->name;
+            $info->intro = $great->intro;
+            $info->videoUrl = $great->videoUrl;
+            $info->thumbnail = $this->siteUri($great->thumbnail);
+            $assigns->greats[] = $info;
+        }
         $this->show('index', $assigns);
     }
 }
