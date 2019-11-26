@@ -29,7 +29,7 @@ CREATE TABLE `striverboard_comments` (
   `post_time` int(10) unsigned NOT NULL,
   PRIMARY KEY (`cid`),
   KEY `mid_index` (`mid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -53,7 +53,7 @@ CREATE TABLE `striverboard_fields` (
   `name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`fid`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -81,7 +81,7 @@ CREATE TABLE `striverboard_greats` (
   `thumbnail` varchar(255) NOT NULL,
   PRIMARY KEY (`gid`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -90,7 +90,7 @@ CREATE TABLE `striverboard_greats` (
 
 LOCK TABLES `striverboard_greats` WRITE;
 /*!40000 ALTER TABLE `striverboard_greats` DISABLE KEYS */;
-INSERT INTO `striverboard_greats` VALUES (1,'一分钟的中国','奋斗造福中国','http://player.youku.com/embed/XNDAxNDQ5OTk0NA==','view/default/static/imgs/video_thumbnails/v1.jpg'),(2,'王继才夫妇的故事','守岛30年','http://player.youku.com/embed/XMzgzMTI0Mjc1Mg==','view/default/static/imgs/video_thumbnails/v2.jpg'),(3,'卢仁峰与他的“牙咬焊帽”','大国工匠的炼成','http://player.youku.com/embed/XMzg0MDk4NjA5Mg==','view/default/static/imgs/video_thumbnails/v3.jpg'),(4,'阿里的奋斗故事','创新创业中的奋斗','http://player.youku.com/embed/XMTYyMDQzMzg0NA==','view/default/static/imgs/video_thumbnails/v4.jpg'),(5,'“最美奋斗者”郑守仁','用生命守护水利工程','http://player.youku.com/embed/XNDM4MTcwNzkxMg==','view/default/static/imgs/video_thumbnails/v5.jpg'),(6,'19国庆大阅兵之幕后','钢铁是怎样炼成的','http://player.youku.com/embed/XNDM3NDU4NzgxNg==','view/default/static/imgs/video_thumbnails/v6.jpg'),(7,'丹顶鹤守护者','用生命守护丹顶鹤43年','http://player.youku.com/embed/XMzkzMTI1NDE4MA==','view/default/static/imgs/video_thumbnails/v7.jpg'),(8,'华为的成长历程','奋斗铸就科技强国','http://player.youku.com/embed/XNDQzNDQ0NDc0OA==','/view/default/static/imgs/video_thumbnails/v8.jpg');
+INSERT INTO `striverboard_greats` VALUES (1,'一分钟的中国','奋斗造福中国','https://player.youku.com/embed/XNDAxNDQ5OTk0NA==','view/default/static/imgs/video_thumbnails/v1.jpg'),(2,'王继才夫妇的故事','守岛30年','https://player.youku.com/embed/XMzgzMTI0Mjc1Mg==','view/default/static/imgs/video_thumbnails/v2.jpg'),(3,'卢仁峰与他的“牙咬焊帽”','大国工匠的炼成','https://player.youku.com/embed/XMzg0MDk4NjA5Mg==','view/default/static/imgs/video_thumbnails/v3.jpg'),(4,'阿里的奋斗故事','创新创业中的奋斗','https://player.youku.com/embed/XMTYyMDQzMzg0NA==','view/default/static/imgs/video_thumbnails/v4.jpg'),(5,'“最美奋斗者”郑守仁','用生命守护水利工程','https://player.youku.com/embed/XNDM4MTcwNzkxMg==','view/default/static/imgs/video_thumbnails/v5.jpg'),(6,'19国庆大阅兵之幕后','钢铁是怎样炼成的','https://player.youku.com/embed/XNDM3NDU4NzgxNg==','view/default/static/imgs/video_thumbnails/v6.jpg'),(7,'丹顶鹤守护者','用生命守护丹顶鹤43年','https://player.youku.com/embed/XMzkzMTI1NDE4MA==','view/default/static/imgs/video_thumbnails/v7.jpg'),(8,'华为的成长历程','奋斗铸就科技强国','http://player.youku.com/embed/XNDQzNDQ0NDc0OA==','view/default/static/imgs/video_thumbnails/v8.jpg');
 /*!40000 ALTER TABLE `striverboard_greats` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -106,7 +106,7 @@ CREATE TABLE `striverboard_mission_words` (
   `times` int(10) unsigned NOT NULL,
   `idf` double unsigned NOT NULL,
   PRIMARY KEY (`word`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -131,7 +131,7 @@ CREATE TABLE `striverboard_mission_words_index` (
   `word` varchar(24) NOT NULL,
   `tf_idf` double NOT NULL,
   KEY `uid_index` (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -164,7 +164,7 @@ CREATE TABLE `striverboard_moments` (
   `fid` int(10) unsigned NOT NULL,
   PRIMARY KEY (`mid`),
   KEY `index_uid` (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -173,7 +173,7 @@ CREATE TABLE `striverboard_moments` (
 
 LOCK TABLES `striverboard_moments` WRITE;
 /*!40000 ALTER TABLE `striverboard_moments` DISABLE KEYS */;
-INSERT INTO `striverboard_moments` VALUES (1,'内容内容内容内容ABC',118.78422291083,31.919147594682,1574602023,1,'public',1,0,3),(2,'我参加了一次志愿活动。为国家做出了自己的一点贡献。。。。。。。。。',116.2,39.56,1574603659,1,'public',1,0,16),(3,'这次志愿活动中我的收获非常大，让我对国家有了更深刻的认识和体会，我坚信自己会继续成长，为祖国做出自己的贡献。',118.78422226517,31.919147396143,1574603702,1,'public',1,0,3);
+INSERT INTO `striverboard_moments` VALUES (1,'内容内容内容内容ABC',118.78422291083,31.919147594682,1574602023,1,'public',1,0,3),(2,'我参加了一次志愿活动。为国家做出了自己的一点贡献。。。。。。。。。',116.2,39.56,1574603659,1,'public',1,0,16),(3,'这次志愿活动中我的收获非常大，让我对国家有了更深刻的认识和体会，我坚信自己会继续成长，为祖国做出自己的贡献。',118.78422226517,31.919147396143,1574603702,1,'public',1,0,3),(4,'dgffg',118.78286830292,31.916205177202,1574751289,1,'public',1,0,3),(5,'dsfdsfdfsd',118.78275602088,31.917174476881,1574751328,1,'public',1,0,3),(6,'dfdfgdfg',118.78275602088,31.917174476881,1574751370,1,'public',1,0,3),(7,'gggg',118.78190646518,31.916443951724,1574751409,1,'public',1,0,3),(8,'safafsaf',118.78218301936,31.916689496017,1574751430,1,'public',1,0,3),(9,'bbb',118.78218301936,31.916689496017,1574751528,1,'public',1,0,3),(10,'thrtrh',118.78222762376,31.917742269664,1574751567,1,'public',1,0,3),(11,'bbbb',118.78220212674,31.916682859511,1574751708,1,'public',1,0,3),(12,'ddd',118.7820379393,31.917319084352,1574751777,1,'public',1,0,3),(13,'testtest',118.78195021764,31.918021425475,1574751837,1,'public',1,0,3),(14,'test',118.78300421256,31.916167599866,1574751874,1,'public',1,0,3),(15,'fsdfsd',118.78195274252,31.918043653087,1574752040,1,'public',1,0,3),(16,'sdgdssdg',118.781976814,31.916948271863,1574752063,1,'public',1,0,3),(17,'fassafsafsafsasasafasf',118.78326041474,31.91663284897,1574752181,1,'public',1,0,3),(18,'dsfdsfdsfdfs',118.78339377502,31.916594312251,1574752237,1,'public',1,0,3),(19,'dsfdfsdsfd',118.782027737,31.917405689325,1574752270,1,'public',1,0,3);
 /*!40000 ALTER TABLE `striverboard_moments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -189,7 +189,7 @@ CREATE TABLE `striverboard_moments_photos` (
   `mid` int(10) unsigned NOT NULL,
   `url` text NOT NULL,
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -198,7 +198,7 @@ CREATE TABLE `striverboard_moments_photos` (
 
 LOCK TABLES `striverboard_moments_photos` WRITE;
 /*!40000 ALTER TABLE `striverboard_moments_photos` DISABLE KEYS */;
-INSERT INTO `striverboard_moments_photos` VALUES (1,1,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-10-31%20%E4%B8%8B%E5%8D%888_02_47.png'),(2,1,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-10-31%20%E4%B8%8B%E5%8D%888_13_26.png'),(3,1,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-11-14%20%E4%B8%8B%E5%8D%881_51_34%201.png');
+INSERT INTO `striverboard_moments_photos` VALUES (1,1,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-10-31%20%E4%B8%8B%E5%8D%888_02_47.png'),(2,1,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-10-31%20%E4%B8%8B%E5%8D%888_13_26.png'),(3,1,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-11-14%20%E4%B8%8B%E5%8D%881_51_34%201.png'),(4,4,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-10-31%20%E4%B8%8B%E5%8D%888_13_26.png'),(5,4,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-11-14%20%E4%B8%8B%E5%8D%881_51_34%201.png'),(6,5,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-10-31%20%E4%B8%8B%E5%8D%888_13_26.png'),(7,5,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-11-14%20%E4%B8%8B%E5%8D%881_51_34%201.png'),(8,6,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-11-07%20%E4%B8%8B%E5%8D%888_22_21.png'),(9,7,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-11-07%20%E4%B8%8B%E5%8D%888_22_21.png'),(10,8,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-11-07%20%E4%B8%8B%E5%8D%888_22_21.png'),(11,9,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-11-10%20%E4%B8%8A%E5%8D%8811_40_04.png'),(12,11,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-11-19%20%E4%B8%8B%E5%8D%881_20_55.png'),(13,12,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/8b13632762d0f7031ae03f570bfa513d2797c5ef.jpg'),(14,13,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/8b13632762d0f7031ae03f570bfa513d2797c5ef.jpg'),(15,14,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/timg-1.jpg'),(16,19,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-11-19%20%E4%B8%8B%E5%8D%882_59_37(1).png');
 /*!40000 ALTER TABLE `striverboard_moments_photos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -214,7 +214,7 @@ CREATE TABLE `striverboard_moments_words` (
   `times` int(10) unsigned NOT NULL,
   `idf` double unsigned NOT NULL,
   PRIMARY KEY (`word`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -223,7 +223,7 @@ CREATE TABLE `striverboard_moments_words` (
 
 LOCK TABLES `striverboard_moments_words` WRITE;
 /*!40000 ALTER TABLE `striverboard_moments_words` DISABLE KEYS */;
-INSERT INTO `striverboard_moments_words` VALUES ('。。。。。。。。。',1,11.9547675029),('ABC',1,11.9547675029),('一次',1,4.66466953325),('一点',1,4.86350089901),('体会',1,7.8093677699),('做出',2,6.15740795115),('内容',1,5.13428337493),('参加',1,5.0710122193),('国家',2,4.00044539216),('坚信',1,8.61241062128),('志愿',2,9.04864738806),('成长',1,6.10092433369),('收获',1,7.35102690974),('活动',2,4.71207177215),('深刻',1,6.75864107727),('祖国',1,7.45020722983),('继续',1,4.26742525829),('自己',2,3.52303883354),('认识',1,5.67946755805),('贡献',2,6.04203699635),('这次',1,5.48043598664),('非常',1,4.90328300634);
+INSERT INTO `striverboard_moments_words` VALUES ('。。。。。。。。。',1,11.9547675029),('ABC',1,11.9547675029),('bbb',1,11.9547675029),('bbbb',1,11.9547675029),('ddd',1,11.9547675029),('dfdfgdfg',1,11.9547675029),('dgffg',1,11.9547675029),('dsfdfsdsfd',1,11.9547675029),('dsfdsfdfsd',1,11.9547675029),('fsdfsd',1,11.9547675029),('gggg',1,11.9547675029),('safafsaf',1,11.9547675029),('sdgdssdg',1,11.9547675029),('test',1,11.9547675029),('testtest',1,11.9547675029),('thrtrh',1,11.9547675029),('一次',1,4.66466953325),('一点',1,4.86350089901),('体会',1,7.8093677699),('做出',2,6.15740795115),('内容',1,5.13428337493),('参加',1,5.0710122193),('国家',2,4.00044539216),('坚信',1,8.61241062128),('志愿',2,9.04864738806),('成长',1,6.10092433369),('收获',1,7.35102690974),('活动',2,4.71207177215),('深刻',1,6.75864107727),('祖国',1,7.45020722983),('继续',1,4.26742525829),('自己',2,3.52303883354),('认识',1,5.67946755805),('贡献',2,6.04203699635),('这次',1,5.48043598664),('非常',1,4.90328300634);
 /*!40000 ALTER TABLE `striverboard_moments_words` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -242,7 +242,7 @@ CREATE TABLE `striverboard_msgverification_codes` (
   `time` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`cid`),
   UNIQUE KEY `phone_action_index` (`phone`,`action`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -266,7 +266,7 @@ CREATE TABLE `striverboard_options` (
   `name` varchar(28) NOT NULL,
   `value` text NOT NULL,
   PRIMARY KEY (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -301,7 +301,7 @@ CREATE TABLE `striverboard_users` (
   PRIMARY KEY (`uid`),
   UNIQUE KEY `phone_UNIQUE` (`phone`),
   KEY `idx_striverboard_users_realname` (`real_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -323,4 +323,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-11-26 13:01:14
+-- Dump completed on 2019-11-26 19:54:57
