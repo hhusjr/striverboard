@@ -29,7 +29,7 @@ CREATE TABLE `striverboard_comments` (
   `post_time` int(10) unsigned NOT NULL,
   PRIMARY KEY (`cid`),
   KEY `mid_index` (`mid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -53,7 +53,7 @@ CREATE TABLE `striverboard_fields` (
   `name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`fid`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -78,10 +78,10 @@ CREATE TABLE `striverboard_greats` (
   `name` varchar(42) NOT NULL,
   `intro` varchar(42) NOT NULL,
   `video_url` varchar(255) NOT NULL,
-  `image_url` varchar(255) NOT NULL,
+  `thumbnail` varchar(255) NOT NULL,
   PRIMARY KEY (`gid`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -90,7 +90,7 @@ CREATE TABLE `striverboard_greats` (
 
 LOCK TABLES `striverboard_greats` WRITE;
 /*!40000 ALTER TABLE `striverboard_greats` DISABLE KEYS */;
-INSERT INTO `striverboard_greats` VALUES (1,'一分钟的中国','奋斗造福中国','http://player.youku.com/embed/XNDAxNDQ5OTk0NA==',''),(2,'王继才夫妇的故事','守岛30年','http://player.youku.com/embed/XMzgzMTI0Mjc1Mg==',''),(3,'卢仁峰与他的“牙咬焊帽”','大国工匠的炼成','http://player.youku.com/embed/XMzg0MDk4NjA5Mg==',''),(4,'阿里的奋斗故事','创新创业中的奋斗','http://player.youku.com/embed/XMTYyMDQzMzg0NA==',''),(5,'“最美奋斗者”郑守仁','用生命守护水利工程','http://player.youku.com/embed/XNDM4MTcwNzkxMg==',''),(6,'19国庆大阅兵之幕后','钢铁是怎样炼成的','http://player.youku.com/embed/XNDM3NDU4NzgxNg==',''),(7,'丹顶鹤守护者','用生命守护丹顶鹤43年','http://player.youku.com/embed/XMzkzMTI1NDE4MA==',''),(8,'华为的成长历程','奋斗铸就科技强国','http://player.youku.com/embed/XNDQzNDQ0NDc0OA==','');
+INSERT INTO `striverboard_greats` VALUES (1,'一分钟的中国','奋斗造福中国','http://player.youku.com/embed/XNDAxNDQ5OTk0NA==','view/default/static/imgs/video_thumbnails/v1.jpg'),(2,'王继才夫妇的故事','守岛30年','http://player.youku.com/embed/XMzgzMTI0Mjc1Mg==','view/default/static/imgs/video_thumbnails/v2.jpg'),(3,'卢仁峰与他的“牙咬焊帽”','大国工匠的炼成','http://player.youku.com/embed/XMzg0MDk4NjA5Mg==','view/default/static/imgs/video_thumbnails/v3.jpg'),(4,'阿里的奋斗故事','创新创业中的奋斗','http://player.youku.com/embed/XMTYyMDQzMzg0NA==','view/default/static/imgs/video_thumbnails/v4.jpg'),(5,'“最美奋斗者”郑守仁','用生命守护水利工程','http://player.youku.com/embed/XNDM4MTcwNzkxMg==','view/default/static/imgs/video_thumbnails/v5.jpg'),(6,'19国庆大阅兵之幕后','钢铁是怎样炼成的','http://player.youku.com/embed/XNDM3NDU4NzgxNg==','view/default/static/imgs/video_thumbnails/v6.jpg'),(7,'丹顶鹤守护者','用生命守护丹顶鹤43年','http://player.youku.com/embed/XMzkzMTI1NDE4MA==','view/default/static/imgs/video_thumbnails/v7.jpg'),(8,'华为的成长历程','奋斗铸就科技强国','http://player.youku.com/embed/XNDQzNDQ0NDc0OA==','/view/default/static/imgs/video_thumbnails/v8.jpg');
 /*!40000 ALTER TABLE `striverboard_greats` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -106,7 +106,7 @@ CREATE TABLE `striverboard_mission_words` (
   `times` int(10) unsigned NOT NULL,
   `idf` double unsigned NOT NULL,
   PRIMARY KEY (`word`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -131,7 +131,7 @@ CREATE TABLE `striverboard_mission_words_index` (
   `word` varchar(24) NOT NULL,
   `tf_idf` double NOT NULL,
   KEY `uid_index` (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -164,7 +164,7 @@ CREATE TABLE `striverboard_moments` (
   `fid` int(10) unsigned NOT NULL,
   PRIMARY KEY (`mid`),
   KEY `index_uid` (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -189,7 +189,7 @@ CREATE TABLE `striverboard_moments_photos` (
   `mid` int(10) unsigned NOT NULL,
   `url` text NOT NULL,
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -214,7 +214,7 @@ CREATE TABLE `striverboard_moments_words` (
   `times` int(10) unsigned NOT NULL,
   `idf` double unsigned NOT NULL,
   PRIMARY KEY (`word`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -242,7 +242,7 @@ CREATE TABLE `striverboard_msgverification_codes` (
   `time` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`cid`),
   UNIQUE KEY `phone_action_index` (`phone`,`action`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -266,7 +266,7 @@ CREATE TABLE `striverboard_options` (
   `name` varchar(28) NOT NULL,
   `value` text NOT NULL,
   PRIMARY KEY (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -301,7 +301,7 @@ CREATE TABLE `striverboard_users` (
   PRIMARY KEY (`uid`),
   UNIQUE KEY `phone_UNIQUE` (`phone`),
   KEY `idx_striverboard_users_realname` (`real_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -323,4 +323,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-11-25 17:33:57
+-- Dump completed on 2019-11-26 13:01:14
