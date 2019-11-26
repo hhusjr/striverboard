@@ -147,7 +147,7 @@ $params->css = ['css/index.css'];
 $params = new stdClass;
 $params->js = [
     'js/index.js',
-    ['http://api.map.baidu.com/api?v=3.0&ak=ckwII60VFiwURdLuKCuvBioZCeph7tL4'],
-    ['http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js']
+    ['https://api.map.baidu.com/api?v=3.0&ak=ckwII60VFiwURdLuKCuvBioZCeph7tL4'],
+    ['https://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js']
 ];
 ($a->show)('include/footer', $params);
