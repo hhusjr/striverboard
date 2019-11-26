@@ -13,6 +13,7 @@
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
 ini_set('display_errors', 0);
 session_start();
+date_default_timezone_set('Asia/Shanghai');
 
 // Development
 // error_reporting(E_ALL);

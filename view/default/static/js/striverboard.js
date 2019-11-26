@@ -295,9 +295,14 @@ $s(document).ready(function() {
                         $s('#pre-moments').after(card(attrs));
                         $grid.masonry('reloadItems');
                         $grid.masonry('layout');
+                        $grid.imagesLoaded().progress(function() {
+                            $grid.masonry();
+                        });
+                        $s('html, body').animate({ scrollTop: $s('#pre-moments').offset().top - 100 });
                     } else {
-                        $s('#timeline-view').prepend(card(attrs));
+                        $s('#pre-timeline').after(card(attrs));
                         sk.refresh();
+                        $s('html, body').animate({ scrollTop: $s('#pre-timeline').offset().top - 100 });
                     }
                     $s('#moment-content').val('');
                     imgs = [];

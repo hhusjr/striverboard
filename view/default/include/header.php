@@ -55,7 +55,7 @@ if (!defined('BASE_PATH')) {
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark light-darken fixed-top scrolling-navbar">
             <div class="container">
-                <a class="navbar-brand logo" href="#"><img
+                <a class="navbar-brand logo" href="<?php ($a->U)('Index', 'Index'); ?>"><img
                         src="<?php ($a->S)('imgs/logo.png'); ?>"
                         alt="<?php echo $a->sitename; ?>"></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header-navbar"

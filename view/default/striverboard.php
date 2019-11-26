@@ -122,6 +122,7 @@ if ($a->timelineView) {
         <div class="container">
             <div id="skroller-body">
                 <div class="jazz-timeline" id="timeline-view">
+                    <div id="pre-timeline"></div>
                 </div>
             </div>
             <div class="grid" id="grid-view">
