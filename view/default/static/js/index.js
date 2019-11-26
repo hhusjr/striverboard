@@ -145,4 +145,8 @@ $s(document).ready(function() {
         $s('#watch-video-body').empty();
         $s('#watch-video-body').html('<div class="embed-responsive embed-responsive-16by9 z-depth-1-half"><iframe class="embed-responsive-item" src="' + me.attr('data-video-url') + '" allowfullscreen></iframe></div>');
     });
+
+    $s('#watch-video').on('hidden.bs.modal', function() {
+        $s('#watch-video-body').empty();
+    });
 });
