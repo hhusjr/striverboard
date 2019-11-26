@@ -10,6 +10,7 @@ function formatDay(time) {
 
 function card(attrs) {
     momentsCount++;
+    var limit = 100;
     if (attrs.description.length > limit) attrs.description = attrs.description.substr(0, limit) + '...';
 
     var slide = $s('<div class="carousel slide moment-slides" data-interval="0" data-ride="carousel" id="moment' + momentsCount + '-slider"></div>');
@@ -27,7 +28,6 @@ function card(attrs) {
 
     if (imgs.length) card.append(slide);
 
-    var limit = 50;
     var body = $s('<div class="card-body"></div>');
     body.append('<p class="card-text black-text"><span class="badge badge-pill badge-' + (attrs.achieved ? 'success">已完成' : 'danger">未完成') + '</span> ' + attrs.description + '</p>');
     body.append('<ul class="list-unstyled list-inline font-small m-0"><li class="list-inline-item pr-2 grey-text"><i class="oi oi-calendar pr-1"></i> ' + formatDay(attrs.time) + '</li><li class="list-inline-item pr-2 grey-text"><i class="oi oi-person pr-1"></i> ' + attrs.realName + '</li></ul>');
