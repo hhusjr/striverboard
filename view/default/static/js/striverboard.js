@@ -2,11 +2,9 @@ var page = 1;
 var finished = false;
 var momentsCount = 0;
 var timelineView = striverboardParams.timelineView;
-
-function formatDay(time) {
-    var time = new Date(time * 1000);
-    return (time.getMonth() + 1) + '月' + time.getDate() + '日' + time.getHours() + '时' + time.getMinutes() + '分';
-}
+var lastRequestTime = 0;
+var loadOk = true;
+var $grid;
 
 function card(attrs) {
     momentsCount++;
@@ -49,9 +47,31 @@ function card(attrs) {
     return element;
 }
 
-function loadMoments(onSuccess) {
+function onMomentsLoaded() {
+    if (!timelineView) {
+        $s('#loading-moments').fadeOut(function() {
+            $grid.masonry('reloadItems');
+            $grid.masonry('layout');
+        });
+    } else {
+        if (loadSk) {
+            sk.refresh();
+        }
+    }
+}
+
+function loadMoments() {
     if (finished) return;
+    var currentTime = new Date().getTime();
+    if (!loadOk || currentTime - lastRequestTime < 500) return;
+    lastRequestTime = currentTime;
+    loadOk = false;
     if (!timelineView) $s('#loading-moments').fadeIn();
+
+    $s('#continue-load').attr('disabled', 'disabled');
+    $s('#continue-load .spinner-border').fadeIn();
+    $s('#continue-load').text('加载中...');
+
     var data = {
         page: page,
         uid: striverboardParams.showUid,
@@ -59,39 +79,46 @@ function loadMoments(onSuccess) {
         achieved: striverboardParams.achieved,
         fid: striverboardParams.field
     };
+
     $s.ajax({
         url: striverboardParams.urls.ajaxMoments,
         method: 'POST',
         data: data,
         dataType: 'json',
         success: function(moments) {
+            loadOk = true;
+            $s('#continue-load .spinner-border').fadeOut();
             if (!moments.length) {
                 finished = true;
+                $s('#continue-load').text('到底啦！');
+                $s('#continue-load').attr('disabled', 'disabled');
                 toastr.success('奋斗点滴全部加载完了哦～');
                 if (!timelineView) $s('#loading-moments').fadeOut();
-                onSuccess();
+                onMomentsLoaded();
                 return;
             }
+            $s('#continue-load').text('继续加载');
             moments.forEach(function(moment) {
                 if (!timelineView) $s('#loading-moments').before(card(moment));
                 else $s('#timeline-view').append(card(moment));
             });
-            if (!timelineView) $s('#loading-moments').fadeOut(function() {
-                onSuccess();
-            });
-            else onSuccess();
+            $s('#continue-load').removeAttr('disabled');
+            onMomentsLoaded();
         }
     });
     page++;
 }
 
-var sk;
+var sk, loadSk = false;
 
 $s(document).ready(function() {
     // hide a view
     if (timelineView) {
         $s('#grid-view').hide();
         sk = skrollr.init({ forceHeight: false });
+        if (sk.isMobile()) {
+            sk.destroy();
+        } else loadSk = true;
     } else {
         $s('#timeline-view').hide();
         // when slide, relayout
@@ -102,7 +129,7 @@ $s(document).ready(function() {
     }
 
     // init Masonry
-    var $grid = $s('.grid').masonry({
+    $grid = $s('.grid').masonry({
         itemSelector: '.grid-item',
         percentPosition: true,
         columnWidth: '.grid-sizer'
@@ -114,26 +141,16 @@ $s(document).ready(function() {
     });
 
     // load moments and scrolling to show more
-    loadMoments(function() {
-        if (timelineView) {
-            sk.refresh();
-            return;
-        }
-        $grid.masonry('reloadItems');
-        $grid.masonry('layout');
-    });
+    loadMoments();
     $s(window).scroll(function() {
         if (finished) return;
         if ($s(document).height() - $s(this).height() - $s(this).scrollTop() < 1) {
-            loadMoments(function() {
-                if (timelineView) {
-                    sk.refresh();
-                    return;
-                }
-                $grid.masonry('reloadItems');
-                $grid.masonry('layout');
-            });
+            loadMoments();
         }
+    });
+    $s('#continue-load').click(function() {
+        if (finished) return;
+        loadMoments();
     });
 
     // load user mission words

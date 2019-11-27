@@ -65,8 +65,8 @@ function loadMap() {
         dataType: 'json',
         success: function(points) {
             var max = 0;
-            points.forEach(function(count) {
-                if (count > max) max = count;
+            points.forEach(function(point) {
+                if (point.count > max) max = point.count;
             });
             var heatmapOverlay = new BMapLib.HeatmapOverlay({
                 radius: 80,
@@ -86,13 +86,17 @@ function loadMap() {
 
 function loadChart() {
     var ctxR = document.getElementById('words-chart').getContext('2d');
+    var values = [];
+    indexParams.hotWordsValues.forEach(function(value) {
+        values.push(value.toFixed(5));
+    });
     var myRadarChart = new Chart(ctxR, {
         type: 'radar',
         data: {
             labels: indexParams.hotWordsLabels,
             datasets: [{
-                label: '奋斗热词排行',
-                data: indexParams.hotWordsValues,
+                label: '奋斗热词热度',
+                data: values,
                 backgroundColor: [
                     'rgba(105, 0, 132, .2)',
                 ],

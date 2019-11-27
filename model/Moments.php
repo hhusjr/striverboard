@@ -174,48 +174,108 @@ class MomentsModel extends BaseModel
         ];
     }
 
-    // get all moment locations and it's mid
-    public function getLocations($conditions = [], $userLocation = null)
+    // get all nearby moments (in 1 month)
+    public function getNearestMoments($userLocation)
     {
         $conditions['ABS(location_lng-360) >'] = 1e-5;
         $conditions['ABS(location_lat-360) >'] = 1e-5;
-        $conditions['time >='] = time() - 365 * 24 * 3600;
+        $conditions['time >='] = time() - 30 * 24 * 3600;
+        $conditions['visibility'] = 'public';
+
         $data = $this->select(['mid', 'location_lng', 'location_lat'])->condition($conditions)->fetchAll();
-        if ($userLocation) {
-            $userLng = intval($userLocation->lng);
-            $userLat = intval($userLocation->lat);
-            $results = [];
-            foreach ($data as $row) {
-                [$mid, $lng, $lat] = [$row['mid'], $row['location_lng'], $row['location_lat']];
-                $result = new stdClass;
-                $result->mid = intval($mid);
-                $result->lng = floatval($lng);
-                $result->lat = floatval($lat);
-                $result->distance = $this->_distance([$userLng, $userLat], [$lng, $lat]);
-                $results[] = $result;
-            }
-            usort($results, function ($x, $y) {
-                return $x->distance <=> $y->distance;
-            });
-            return $results;
+
+        $userLng = floatval($userLocation->lng);
+        $userLat = floatval($userLocation->lat);
+
+        $results = [];
+        $distances = [];
+        $pos = [];
+
+        foreach ($data as $row) {
+            [$mid, $lng, $lat] = [$row['mid'], $row['location_lng'], $row['location_lat']];
+            $result = new stdClass;
+            $result->mid = intval($mid);
+            $result->lng = floatval($lng);
+            $result->lat = floatval($lat);
+            $result->distance = $this->_distance([$userLng, $userLat], [$lng, $lat]);
+            $results[] = $result;
+            $distances[$result->mid] = $result->distance;
+        }
+        
+        usort($results, function ($x, $y) {
+            return $x->distance <=> $y->distance;
+        });
+
+        $total = count($results);
+        for ($i = 0; $i < $total; $i++) {
+            $pos[$results[$i]->mid] = $i;
+        }
+        
+        $results = array_slice($results, 0, 10);
+        
+        $mids = array_column($results, 'mid');
+        $fields = [
+            'mid',
+            'description',
+            'time',
+            'uid',
+            'achieved',
+            'significant',
+            'fid'
+        ];
+        $moments = $this->select($fields)->condition(['mid IN' => $mids])->fetchAll();
+
+        $results = [];
+        foreach ($moments as $moment) {
+            $result = new stdClass;
+            $result->mid = intval($moment['mid']);
+            $result->description = $moment['description'];
+            $result->time = intval($moment['time']);
+            $result->uid = intval($moment['uid']);
+            $result->achieved = (bool) $moment['achieved'];
+            $result->significant = (bool) $moment['significant'];
+            $result->distance = $distances[$result->mid];
+            $result->realName = R::M('User')->getRealName($result->uid);
+            $result->imgs = array_column($this->getPhotos($result->mid), 'url');
+            $result->fid = intval($moment['fid']);
+            $result->field = R::M('Field')->getNameById($result->fid);
+            $results[$pos[$result->mid]] = $result;
         }
 
-        // do the reduce work
+        $sorted = [];
+        $total = count($results);
+        for ($i = 0; $i < $total; $i++) {
+            $sorted[] = $results[$i];
+        }
+
+        return $sorted;
+    }
+
+    // get all locations for statistics data (in 1 year)
+    public function getLocations()
+    {
+        $conditions['time >='] = time() - 365 * 24 * 3600;
+        $conditions['ABS(location_lng-360) >'] = 1e-5;
+        $conditions['ABS(location_lat-360) >'] = 1e-5;
+        $location = $this->select(['location_lng', 'location_lat'])->condition($conditions)->result();
+        
         $map = [];
-        foreach ($data as $row) {
-            [$lng, $lat] = [$row['location_lng'], $row['location_lat']];
-            $hash = md5(sprintf('%.3f', $lng) . sprintf('%.3f', $lat));
+        while ($result = $location->fetch()) {
+            [$lng, $lat] = [sprintf('%.3f', $result['location_lng']), sprintf('%.3f', $result['location_lat'])];
+            $hash = md5($lng . '_' . $lat);
             if (!isset($map[$hash])) {
                 $map[$hash] = new stdClass;
-                $map[$hash]->times = 0;
+                $map[$hash]->times = 1;
             }
-            $map[$hash]->lng = round($lng, 3);
-            $map[$hash]->lat = round($lat, 3);
+            $map[$hash]->lng = $lng;
+            $map[$hash]->lat = $lat;
             $map[$hash]->times++;
         }
         
-        // reset the index, from MD5 to 0~n
-        $map = array_merge($map, []);
+        // trick: reset the index, from MD5 to 0~n
+        usort($map, function($a, $b) {
+            return $a->times <=> $b->times;
+        });
 
         return $map;
     }
@@ -254,7 +314,7 @@ class MomentsModel extends BaseModel
     }
 
     // get top 8 moments words, using TF-IDF
-    public function hotMissionWords()
+    public function hotMomentsWords()
     {
         $words = $this->select(['word', 'times', 'idf'], 'moments_words')->fetchAll();
         $sum = 0;
@@ -287,8 +347,6 @@ class MomentsModel extends BaseModel
         $fields = [
             'mid',
             'description',
-            'location_lng',
-            'location_lat',
             'time',
             'uid',
             'visibility',
@@ -327,41 +385,6 @@ class MomentsModel extends BaseModel
         $page = intval($showAttributes->page);
         $pageSize = intval($showAttributes->pageSize);
         $offset = ($page - 1) * $pageSize;
-
-        if ($showAttributes->sortByDistance && $showAttributes->location) {
-            $locations = $this->getLocations($conditions, $showAttributes->location);
-
-            $total = count($locations);
-
-            $mids = [];
-            for ($i = $offset; $i <= min($offset + $pageSize, $total); $i++) {
-                $mids[] = $locations[$i]->mid;
-            }
-
-            $details = $this->select($fields)->condition(array_merge(['mid IN', $mids], $conditions))->fetchAll();
-            $midDetailMap = [];
-            foreach ($details as $detail) {
-                $midDetailMap[$detail['mid']] = $detail;
-            }
-
-            $results = [];
-            foreach ($locations as $item) {
-                $result = new stdClass;
-                $result->distance = $item->distance;
-                $detail = $midDetailMap[$item->mid];
-                $result->description = $detail['description'];
-                $result->time = intval($detail['time']);
-                $result->uid = intval($detail['uid']);
-                $result->visibility = $detail['visibility'] == 'public' ? 'public' : 'private';
-                $result->significant = (bool) $detail['significant'];
-                $result->achieved = (bool) $detail['achieved'];
-                $result->imgs = $getPhotosList($item->mid);
-                $result->mid = intval($item->mid);
-                $results[] = $result;
-            }
-           
-            return $results;
-        }
 
         $details = $this
                     ->select($fields)

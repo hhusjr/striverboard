@@ -30,7 +30,7 @@ class IndexController extends CommonController
         $momentsModel = R::M('Moments');
         $assigns = new StdClass;
         $assigns->slogan = $optionModel->get('site.slogan');
-        $assigns->hotMissionWords = $momentsModel->hotMissionWords();
+        $assigns->hotMomentsWords = $momentsModel->hotMomentsWords();
         $assigns->momentCountGroupByField = $momentsModel->getMomentCountGroupByField();
         $assigns->greats = [];
         $greats = R::M('Greats')->getAll();

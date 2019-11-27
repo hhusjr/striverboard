@@ -138,10 +138,10 @@ $params->css = ['css/index.css'];
             ajaxMomentsLocations: '<?php ($a->U)('Statistics', 'ajax_moments_locations'); ?>',
         },
         hotWordsLabels: JSON.parse(
-            '<?php echo json_encode(array_keys($a->hotMissionWords)); ?>'
+            '<?php echo json_encode(array_keys($a->hotMomentsWords)); ?>'
         ),
         hotWordsValues: JSON.parse(
-            '<?php echo json_encode(array_values($a->hotMissionWords)); ?>'
+            '<?php echo json_encode(array_values($a->hotMomentsWords)); ?>'
         ),
         momentCountGroupByField: JSON.parse(
             '<?php echo json_encode($a->momentCountGroupByField); ?>')

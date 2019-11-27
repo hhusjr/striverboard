@@ -1,0 +1,22 @@
+.space {
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
+
+.space-1 {
+    background-image: url(../imgs/space_bg_1.jpg) !important;
+    background-position: right !important;
+}
+
+.space-2 {
+    background-image: url(../imgs/space_bg_2.jpg) !important;
+    background-position: center !important;
+}
+
+.red-shadow {
+    text-shadow: 2px 2px #ff0000;
+}
+
+.white-shadow {
+    text-shadow: 2px 2px #fff;
+}

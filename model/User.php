@@ -260,8 +260,8 @@ class UserModel extends BaseModel
                     ->condition(['uid' => $uid2])
                     ->fetchAll();
         $words2 = [];
-        foreach ($words2 as $word) {
-            $words2[$word['word']] = $words['tf_idf'];
+        foreach ($words as $word) {
+            $words2[$word['word']] = $word['tf_idf'];
             $wordsUnion[] = $word['word'];
         }
 
@@ -289,33 +289,36 @@ class UserModel extends BaseModel
         if (!$info) {
             return false;
         }
+
         [$fid, $institution] = [$info['fid'], $info['institution']];
+                
+        $users = $this->select('uid')->condition([
+            'OR' => [
+                'fid' => $fid,
+                'institution' => $institution
+            ],
+            'uid <>' => $uid
+        ])->result();
         
-        $sameFieldUsersData = $this->select('uid')->condition(['fid' => $fid])->result();
-        $sameInstitutionUsersData = $this->select('uid')->condition(['institution' => $institution])->result();
+        $results = [];
 
-        $sameFieldUsers = [];
-        for (; $uid1 = $sameFieldUsersData->fetchColumn();) {
-            $sameFieldUser = new stdClass;
-            $sameFieldUser->uid = $uid1;
-            $sameFieldUser->similarity = $this->getMissionSimilarity($uid, $uid1);
-            $sameFieldUsers[] = $sameFieldUser;
+        for (; $uid1 = $users->fetchColumn();) {
+            $user = new stdClass;
+            $user->uid = $uid1;
+            $user->similarity = $this->getMissionSimilarity($uid, $uid1);
+            $results[] = $user;
         }
-        usort($sameFieldUsers, function ($a, $b) {
-            return $a->similarity <=> $b->similarity;
-        });
 
-        $sameInstitutionUsers = [];
-        for (; $uid1 = $sameInstitutionUsersData->fetchColumn();) {
-            $sameInstitutionUser = new stdClass;
-            $sameInstitutionUser->uid = $uid1;
-            $sameInstitutionUser->similarity = $this->getMissionSimilarity($uid, $uid1);
-            $sameInstitutionUsers[] = $sameInstitutionUser;
+        usort($results, function ($a, $b) {
+            return !($a->similarity <=> $b->similarity);
+        });
+        
+        $results = array_slice($results, 0, 12);
+        
+        foreach ($results as $key => $result) {
+            $results[$key]->info = $this->getUserInfo($result->uid);
         }
-        usort($sameInstitutionUsers, function ($a, $b) {
-            return $a->similarity <=> $b->similarity;
-        });
 
-        return [$sameFieldUsers, $sameInstitutionUsers];
+        return $results;
     }
 }

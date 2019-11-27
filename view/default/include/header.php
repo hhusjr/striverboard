@@ -72,10 +72,16 @@ if (!defined('BASE_PATH')) {
                             <a class="nav-link"
                                 href="<?php echo($a->U)('Striverboard', 'Index'); ?>">奋斗墙</a>
                         </li>
+                        <?php
+                        if ($a->user) {
+                        ?>
                         <li class="nav-item">
                             <a class="nav-link"
                                 href="<?php echo($a->U)('Striverboard', 'Space'); ?>">奋斗圈</a>
                         </li>
+                        <?php
+                        }
+                        ?>
                         <li class="nav-item">
                             <a class="nav-link"
                                 href="<?php echo($a->U)('Greats', 'Index'); ?>">伟人的奋斗</a>

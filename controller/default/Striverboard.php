@@ -119,10 +119,8 @@ class StriverboardController extends CommonController
         $attrs->onlySignificant = $onlySignificant;
         $attrs->timeRange = null;
         $attrs->achieved = $achieved == -1 ? null : $achieved;
-        $attrs->sortByDistance = false;
-        $attrs->location = null;
         $attrs->page = F::post('page');
-        $attrs->pageSize = 20;
+        $attrs->pageSize = 16;
         $attrs->fid = $fid;
 
         $userModel = R::M('User');
@@ -150,6 +148,60 @@ class StriverboardController extends CommonController
     // space
     public function onSpace()
     {
-        $this->show('space');
+        $this->needLogin();
+
+        // recommended users
+        $userModel = R::M('User');
+        $recommendedUsers = $userModel->getRecommendedUsers($this->loginUserId());
+        $displayRecUsers = [];
+        foreach ($recommendedUsers as $user) {
+            $info = $user->info;
+            $result = new stdClass;
+            $result->uid = $info->uid;
+            $result->similarity = $user->similarity;
+            $result->fid = $info->fid;
+            $result->field = $info->field;
+            $result->realName = $info->realName;
+            $result->mission = $info->mission;
+            $result->institution = $info->institution;
+            $displayRecUsers[] = $result;
+        }
+
+        $assigns = new stdClass;
+        $assigns->recommendUsers = $displayRecUsers;
+
+        $this->show('space', $assigns);
+    }
+
+    // get nearest moments
+    public function onAjaxGetNearestMoments()
+    {
+        $this->needAjax();
+        $this->needPost();
+        $this->needLogin();
+
+        $userLocation = new stdClass;
+        $userLocation->lng = F::post('lng');
+        $userLocation->lat = F::post('lat');
+
+        $momentsModel = R::M('Moments');
+        $nearestMoments = $momentsModel->getNearestMoments($userLocation);
+        
+        $results = [];
+        foreach ($nearestMoments as $moment) {
+            $result['mid'] = $moment->mid;
+            $result['description'] = $moment->description;
+            $result['uid'] = $moment->uid;
+            $result['time'] = $moment->time;
+            $result['achieved'] = $moment->achieved;
+            $result['significant'] = $moment->significant;
+            $result['distance'] = $moment->distance;
+            $result['realName'] = $moment->realName;
+            $result['imgs'] = $moment->imgs;
+            $result['field'] = $moment->field;
+            $results[] = $result;
+        }
+
+        $this->json($results);
     }
 }

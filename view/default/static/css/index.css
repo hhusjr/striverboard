@@ -2,22 +2,6 @@
     display: none;
 }
 
-.block {
-    padding: 50px 0;
-}
-
-.block h1 {
-    color: #cc0000;
-}
-
-.blocks>.block:nth-child(odd) {
-    background: #fff;
-}
-
-.blocks>.block:nth-child(even) {
-    background: #fae8e8;
-}
-
 #heat-map-container {
     width: 100%;
     height: 600px;
