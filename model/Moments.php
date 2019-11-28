@@ -101,7 +101,7 @@ class MomentsModel extends BaseModel
             }
         }
 
-        return true;
+        return intval($id);
     }
 
     // (un)mark a moment as significant
@@ -113,6 +113,12 @@ class MomentsModel extends BaseModel
                 ->modify(['significant' => $significant], 'moments_photos')
                 ->condition(['mid' => $mid])
                 ->limit(1);
+    }
+
+    // get the owner of a moment
+    public function getOwner($mid)
+    {
+        return $this->translate(intval($mid), 'mid', 'uid');
     }
 
     // delete a moment
@@ -143,10 +149,13 @@ class MomentsModel extends BaseModel
     }
 
     // get the visibility of a moment (if $uid can visit the moment $mid)
-    public function visitable($uid, $mid)
+    public function visible($uid, $mid)
     {
-        $isAdmin = R::M('User')->isAdmin($uid);
-        return $isAdmin ? true : $this->exists(['mid' => $mid, 'visibility' => 'public']);
+        $conditions = ['mid' => $mid];
+        if (!R::M('User')->isAdmin($uid)) {
+            $conditions['visibility'] = 'public';
+        }
+        return $this->exists($conditions);
     }
 
     // is the time range valid
@@ -273,7 +282,7 @@ class MomentsModel extends BaseModel
         }
         
         // trick: reset the index, from MD5 to 0~n
-        usort($map, function($a, $b) {
+        usort($map, function ($a, $b) {
             return $a->times <=> $b->times;
         });
 
@@ -390,7 +399,7 @@ class MomentsModel extends BaseModel
                     ->select($fields)
                     ->condition($conditions)
                     ->order(['time DESC', 'uid ASC', 'mid DESC'])
-                    ->limit($offset, $pageSize)
+                    ->limit(abs($offset), abs($pageSize))
                     ->fetchAll();
 
         $results = [];
@@ -403,10 +412,45 @@ class MomentsModel extends BaseModel
             $result->significant = (bool) $detail['significant'];
             $result->imgs = $getPhotosList($detail['mid']);
             $result->mid = intval($detail['mid']);
+            $result->realName = R::M('User')->getRealName($result->uid);
             $result->achieved = (bool) $detail['achieved'];
             $results[] = $result;
         }
                    
         return $results;
+    }
+
+    // get a moment
+    public function getMoment($mid)
+    {
+        $mid = intval($mid);
+
+        $fields = [
+            'description',
+            'time',
+            'uid',
+            'visibility',
+            'significant',
+            'mid',
+            'achieved'
+        ];
+
+        $moment = $this->select($fields)->condition(['mid' => $mid])->limit(1)->fetch();
+        if (!$moment) {
+            return false;
+        }
+
+        $result = new stdClass;
+        $result->description = $moment['description'];
+        $result->time = intval($moment['time']);
+        $result->uid = intval($moment['uid']);
+        $result->realName = R::M('User')->getRealName($result->uid);
+        $result->visibility = $moment['visibility'] == 'public' ? 'public' : 'private';
+        $result->significant = (bool) $moment['significant'];
+        $result->imgs = array_column($this->getPhotos($mid), 'url');
+        $result->mid = $mid;
+        $result->achieved = (bool) $moment['achieved'];
+
+        return $result;
     }
 }

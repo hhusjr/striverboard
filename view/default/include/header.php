@@ -89,26 +89,13 @@ if (!defined('BASE_PATH')) {
                     </ul>
 
                     <ul class="navbar-nav ml-auto nav-flex-icons">
-                        <li class="nav-item">
-                            <form class="form-inline">
-                                <div class="md-form my-0">
-                                    <input class="form-control mr-sm-2" type="text" placeholder="聚合搜索"
-                                        aria-label="聚合搜索">
-                                </div>
-                            </form>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link waves-effect waves-light">
-                                <i class="oi oi-vertical-align-bottom"></i>
-                            </a>
-                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="user-action" role="button" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 <i class="oi oi-person"></i>
-                                <?php echo ($a->user) ? $a->user->realName : ''; ?>
+                                <?php echo ($a->user) ? $a->user->realName . ' <span class="badge badge-pill badge-warning unread-message-count">' . $assigns->unreadMessageCount . '</span>' : ''; ?>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-right dropdown-default">
+                            <div class="dropdown-menu">
                                 <?php
                                 if (!$a->user) {
                                     ?>
@@ -124,7 +111,8 @@ if (!defined('BASE_PATH')) {
                                 <a class="dropdown-item"
                                     href="<?php ($a->U)('User', 'Logout'); ?>">
                                     <i class="oi oi-ban"></i> 注销登陆</a>
-                                <a class="dropdown-item"
+                                <a class="dropdown-item" role="button" data-target="#msgbox-modal" data-toggle="modal"><i class="oi oi-document"></i> 信箱<?php echo ' <span class="badge badge-pill badge-warning unread-message-count">' . $assigns->unreadMessageCount . '</span>'; ?></a>
+                                <a class="dropdown-item disabled"
                                     href="<?php ($a->U)('User', 'Modify'); ?>">
                                     <i class="oi oi-pencil"></i> 编辑资料</a>
                                 <?php

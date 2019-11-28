@@ -94,11 +94,11 @@ class StriverboardController extends CommonController
             $this->json(['success' => false, 'message' => (isset($errors[$validation]) ? $errors[$validation] : $validation)]);
         }
 
-        $status = R::M('Moments')->postMoment($data, $imgs);
-        if ($status === true) {
-            $this->json(['success' => true]);
+        $newMid = R::M('Moments')->postMoment($data, $imgs);
+        if (is_int($newMid)) {
+            $this->json(['success' => true, 'mid' => $newMid]);
         } else {
-            $this->json(['success' => false, 'message' => $status]);
+            $this->json(['success' => false, 'message' => $newMid]);
         }
     }
 
@@ -124,6 +124,7 @@ class StriverboardController extends CommonController
         $attrs->fid = $fid;
 
         $userModel = R::M('User');
+        $likesModel = R::M('Likes');
 
         $moments = R::M('Moments')->getMoments($uid, $attrs);
         $results = [];
@@ -132,13 +133,16 @@ class StriverboardController extends CommonController
             $result = [];
             $result['description'] = $moment->description;
             $result['time'] = $moment->time;
-            $result['realName'] = $userModel->getRealName($moment->uid);
+            $result['realName'] = $moment->realName;
             $result['visibility'] = ($moment->visibility == 'public' ? 'public' : 'private');
             $result['significant'] = $moment->significant;
             $result['uid'] = $moment->uid;
             $result['imgs'] = $moment->imgs;
             $result['mid'] = $moment->mid;
             $result['achieved'] = $moment->achieved;
+            $result['likes'] = $likesModel->countLikes($moment->mid);
+            $result['likable'] = $likesModel->likable($moment->mid, $uid);
+            $result['liked'] = $likesModel->liked($moment->mid, $uid);
             $results[] = $result;
         }
 
@@ -203,5 +207,21 @@ class StriverboardController extends CommonController
         }
 
         $this->json($results);
+    }
+
+    // set like
+    public function onAjaxLike()
+    {
+        $this->needAjax();
+        $this->needPost();
+        
+        $uid = $this->needLogin();
+        $mid = F::post('mid');
+
+        $likesModel = R::M('Likes');
+        if (!$likesModel->likable($mid, $uid)) {
+            $this->json(['success' => false]);
+        }
+        $this->json(['success' => (bool) $likesModel->like($mid, $uid)]);
     }
 }

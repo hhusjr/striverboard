@@ -48,7 +48,8 @@ if (!defined('BASE_PATH')) {
                         </div>
                         <div class="md-form">
                             <i class="oi oi-key prefix grey-text"></i>
-                            <input type="number" min="111111" max="999999" class="form-control" value="" id="login-verify-code">
+                            <input type="number" min="111111" max="999999" class="form-control" value=""
+                                id="login-verify-code">
                             <label for="login-verify-code">收到的验证码</label>
                             <div class="invalid-feedback">验证码不正确。</div>
                         </div>
@@ -67,12 +68,50 @@ if (!defined('BASE_PATH')) {
         </div>
     </div>
 </div>
+<div class="modal fade animated right" id="msgbox-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-info modal-lg modal-full-height modal-right" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="modal-title white-text w-100 font-weight-bold py-1"><i class="oi oi-document"></i>
+                    信箱</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="white-text">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="spinner-border" id="load-message">
+                    <div class="sr-only">Loading...</div>
+                </div>
+                <div id="messages-wrapper" data-page="1">
+                    <p>暂未发现消息哦...</p>
+                </div>
+                <div class="d-flex justify-content-center" id="msgbox-pager">
+                    <div class="msgbox-page-controller">
+                        <button type="button" class="btn btn-sm btn-blue prev"><span
+                                class="oi oi-caret-left"></span></button>
+                        <button type="button" class="btn btn-sm btn-blue next"><span
+                                class="oi oi-caret-right"></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     var loginParams = {
         verifyCodeDelayTime: <?php echo $a->verifyCodeDelay; ?> ,
         urls: {
             ajaxSendVerifyCode: '<?php ($a->U)('User', 'AjaxSendVerifyCode'); ?>',
-            ajaxLogin: '<?php echo ($a->U)('User', 'AjaxLogin'); ?>'
+            ajaxLogin: '<?php echo($a->U)('User', 'AjaxLogin'); ?>'
+        }
+    };
+
+    var messageParams = {
+        urls: {
+            ajaxMessages: '<?php echo ($a->U)('Message', 'AjaxMessages'); ?>',
+            ajaxSetMessageRead: '<?php echo ($a->U)('Message', 'AjaxSetMessageRead'); ?>',
+            thumbsUpImg: '<?php echo ($a->S)('imgs/thumbs_up.jpg'); ?>'
         }
     };
 </script>
@@ -83,6 +122,7 @@ if (!defined('BASE_PATH')) {
         'libs/mdb/js/mdb.min.js',
         'libs/toastr/toastr.min.js',
         'libs/bootbox/bootbox.all.min.js',
+        'js/formatter.js',
         'js/main.js'
     ];
     $loadJs = isset($a->js) ? array_merge($loadJs, $a->js) : $loadJs;

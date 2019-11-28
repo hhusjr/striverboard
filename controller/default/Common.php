@@ -72,6 +72,7 @@ class CommonController extends ControllerComponent
         $assigns->user = $this->getUserInfo();
         if ($assigns->user) {
             $assigns->user->mission = htmlspecialchars($assigns->user->mission);
+            $assigns->unreadMessageCount = R::M('Message')->countUnreadMessages($assigns->user->uid);
         }
         $assigns->U = function ($controller, $action, $params = null, $return = false) {
             $result = R::C('Common')->buildUri($controller, $action, $params);

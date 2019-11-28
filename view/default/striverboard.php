@@ -234,7 +234,7 @@ if ($a->timelineView) {
                     <div class="modal-footer justify-content-center">
                         <button type="submit" class="btn btn-danger" id="show-mode-submit"><span
                                 class="oi oi-check"></span>
-                            现在发布</button>
+                            确定</button>
                     </div>
                 </form>
             </div>
@@ -246,7 +246,9 @@ if ($a->timelineView) {
         urls: {
             imgMission: '<?php ($a->S)('imgs/president_mission.jpg'); ?>',
             ajaxPostMoment: '<?php ($a->U)('Striverboard', 'AjaxPostMoment'); ?>',
-            ajaxMoments: '<?php ($a->U)('Striverboard', 'AjaxMoments'); ?>'
+            ajaxMoments: '<?php ($a->U)('Striverboard', 'AjaxMoments'); ?>',
+            ajaxLike: '<?php echo ($a->U)('Striverboard', 'AjaxLike'); ?>',
+            momentDetail: '<?php echo ($a->U)('Striverboard', 'MomentDetail'); ?>?mid='
         },
         missionWords: JSON.parse(
             '<?php echo json_encode($a->missionWords); ?>'),
@@ -269,6 +271,5 @@ $params->js = [
 if ($a->timelineView) {
     $params->js[] = 'libs/jazz-timeline/js/skrollr.min.js';
 }
-$params->js[] = 'js/formatter.js';
 $params->js[] = 'js/striverboard.js';
 ($a->show)('include/footer', $params);

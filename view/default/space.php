@@ -87,7 +87,6 @@ $params->css = ['css/main.css', 'css/space.css'];
 <?php
     $params = new stdClass;
     $params->js = [
-        'js/formatter.js',
         'js/space.js'
     ];
     ($a->show)('include/footer', $params);

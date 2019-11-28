@@ -15,7 +15,7 @@ function card(attrs) {
     var inner = $s('<div class="carousel-inner"></div>');
     var imgs = attrs.imgs;
     imgs.forEach(function(img) {
-        inner.append('<div class="carousel-item"><img class="d-block w-100" src="' + img + '" alt="' + attrs.description + '"></div>');
+        inner.append('<div class="carousel-item"><img class="d-block w-100" src="' + img + '" alt="奋斗点滴配图"></div>');
     });
     inner.children(':first').addClass('active');
     slide.append(inner);
@@ -27,8 +27,9 @@ function card(attrs) {
     if (imgs.length) card.append(slide);
 
     var body = $s('<div class="card-body"></div>');
-    body.append('<p class="card-text black-text"><span class="badge badge-pill badge-' + (attrs.achieved ? 'success">已完成' : 'danger">未完成') + '</span> ' + attrs.description + '</p>');
-    body.append('<ul class="list-unstyled list-inline font-small m-0"><li class="list-inline-item pr-2 grey-text"><i class="oi oi-calendar pr-1"></i> ' + formatDay(attrs.time) + '</li><li class="list-inline-item pr-2 grey-text"><i class="oi oi-person pr-1"></i> ' + attrs.realName + '</li></ul>');
+    var likeElement = '<a role="button" class="add-like" data-like="' + (attrs.liked ? 1 : 0) + '" data-mid="' + attrs.mid + '"><i class="heart-like oi oi-heart pr-1' + (attrs.liked ? ' red-text' : '') + '"></i> <span class="like-count">' + attrs.likes + '</span></a>';
+    body.append('<p class="card-text black-text"><span class="badge badge-pill badge-' + (attrs.achieved ? 'success">已完成' : 'danger">未完成') + '</span> ' + attrs.description + ' <a href="' + striverboardParams.urls.momentDetail + attrs.mid + '" class="view-detail"><i class="oi oi-eye"></i></a></p>');
+    body.append('<ul class="list-unstyled list-inline font-small m-0"><li class="list-inline-item pr-2 grey-text"><i class="oi oi-calendar pr-1"></i> ' + formatDay(attrs.time) + '</li><li class="list-inline-item pr-2 grey-text"><i class="oi oi-person pr-1"></i> ' + attrs.realName + '</li><li class="list-inline-item pr-2 grey-text">' + likeElement + '</li></ul>');
     card.append(body);
 
     if (timelineView) {
@@ -43,6 +44,35 @@ function card(attrs) {
 
     var element = $s('<div class="grid-item col-lg-4 col-md-6"></div>');
     element.append(card);
+
+    element.find('.add-like').click(function() {
+        var me = $s(this);
+
+        if (parseInt(me.attr('data-like'))) return;
+        me.attr('data-like', 1);
+
+        var mid = me.attr('data-mid');
+        $s.ajax({
+            url: striverboardParams.urls.ajaxLike,
+            data: {
+                mid: mid
+            },
+            dataType: 'json',
+            method: 'POST',
+            success: function(response) {
+                if (!response.success) {
+                    toastr.error('该奋斗点滴无法点赞。可能由于它是私有的奋斗点滴，或者你已经点过赞。');
+                    return;
+                }
+                me.children('.heart-like').addClass('red-text');
+                var countElement = me.children('.like-count');
+                countElement.text(parseInt(countElement.text()) + 1);
+            },
+            error: function() {
+                toastr.error('无法点赞，未知错误。');
+            }
+        });
+    });
 
     return element;
 }
@@ -256,7 +286,7 @@ $s(document).ready(function() {
 
     // choose if its public
     $s('#moment-visibility-option .dropdown-item').click(function() {
-        $s('#moment-visbility-option .dropdown-item').removeClass('active');
+        $s('#moment-visibility-option .dropdown-item').removeClass('active');
         $s(this).addClass('active');
         $s('#moment-visibility-text').text($s(this).text());
 
@@ -306,7 +336,10 @@ $s(document).ready(function() {
                         description: data.description,
                         field: data.field,
                         time: (new Date()).getTime() / 1000,
-                        realName: striverboardParams.realName
+                        realName: striverboardParams.realName,
+                        liked: false,
+                        likes: 0,
+                        mid: response.mid
                     };
                     if (!timelineView) {
                         $s('#pre-moments').after(card(attrs));
