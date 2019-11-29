@@ -320,7 +320,7 @@ class UserModel extends BaseModel
         }
 
         usort($results, function ($a, $b) {
-            return !($a->similarity <=> $b->similarity);
+            return -($a->similarity <=> $b->similarity);
         });
         
         $results = array_slice($results, 0, 12);
