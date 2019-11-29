@@ -137,8 +137,8 @@ if ($a->timelineView) {
                     </div>
                 </div>
                 <button id="continue-load" class="btn btn-orange btn-block my-3">
-                    <div class="spinner-border spinner-border-sm" role="status"></div>
-                    加载中...
+                    <span class="spinner-border spinner-border-sm" role="status"></span>
+                    <span class="loading-text">加载中...</span>
                 </button>
             </div>
         </div>
@@ -257,7 +257,8 @@ if ($a->timelineView) {
         showUid: '<?php echo $a->uid; ?>',
         significant: '<?php echo $a->significant; ?>',
         achieved: '<?php echo $a->achieved === false ? -1 : $a->achieved; ?>',
-        field: '<?php echo $a->field; ?>'
+        field: '<?php echo $a->field; ?>',
+        loggedIn: <?php echo $a->user ? 'true' : 'false'; ?>
     };
 </script>
 <?php

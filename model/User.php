@@ -277,28 +277,38 @@ class UserModel extends BaseModel
         }
 
         if (!$d1 || !$d2) {
-            return INF;
+            return 0;
         }
         return $dot / sqrt($d1) / sqrt($d2);
     }
 
-    // get recommended users for a user
-    public function getRecommendedUsers($uid)
+    // search users
+    public function searchUsers($uid, $keyword = null)
     {
-        $info = $this->select(['fid', 'institution'])->condition(['uid' => $uid])->fetch();
+        $conditions = ['uid' => $uid];
+        $keyword = trim($keyword);
+
+        $info = $this->select(['fid', 'institution'])->condition($conditions)->fetch();
         if (!$info) {
             return false;
         }
 
-        [$fid, $institution] = [$info['fid'], $info['institution']];
+        if (!$keyword) {
+            [$fid, $institution] = [$info['fid'], $info['institution']];
                 
-        $users = $this->select('uid')->condition([
+            $users = $this->select('uid')->condition([
             'OR' => [
                 'fid' => $fid,
                 'institution' => $institution
             ],
             'uid <>' => $uid
         ])->result();
+        } else {
+            $users = $this->select('uid')->condition([
+                    'phone' => $keyword,
+                    'real_name LIKE' => '%' . $keyword . '%'
+            ], 'OR')->result();
+        }
         
         $results = [];
 

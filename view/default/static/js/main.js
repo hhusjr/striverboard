@@ -27,7 +27,7 @@ function loadMessages(page, onSuccess = function(success) {}) {
                 var toolbar = '<div class="d-flex"><div class="mr-auto"><p class="text-grey"><small><i class="oi oi-calendar"></i> ' + formatDay(message.time) + '</small></p></div><div>' + readConfirm + '</div></div>';
                 var containerElement = $s('<div class="media d-block d-md-flex m-1"></div>');
                 var imageElement = $s('<img class="d-flex mx-auto media-image z-depth-1 mb-3 mb-md-0" src="" style="width: 120px;" alt="">');
-                var bodyElement = $s('<div class="media-body text-center text-md-left ml-md-3 ml-0">' + toolbar + '<p class="mt-0 font-weight-bold">' + label + '<span class="message-title"></span></p><p class="message-description"></p></div>');
+                var bodyElement = $s('<div class="media-body ml-md-3 ml-0">' + toolbar + '<p class="mt-0 font-weight-bold">' + label + '<span class="message-title"></span></p><p class="message-description"></p></div>');
                 var titleElement = bodyElement.find('.message-title');
                 var descriptionElement = bodyElement.find('.message-description');
                 if (message.extra.moment) {
@@ -36,24 +36,25 @@ function loadMessages(page, onSuccess = function(success) {}) {
                     var description = message.extra.moment.description;
                     var limit = 30;
                     if (description.length > limit) description = description.substr(0, limit) + '...';
+                    var momentDetail = ' <a href="' + messageParams.urls.momentDetail + message.extra.moment.mid + '" target="_blank" class="view-detail"><i class="oi oi-eye"></i></a>';
                 }
                 switch (message.msgType) {
                     case 'newFollower':
                         imageElement.attr('src', messageParams.urls.thumbsUpImg);
                         imageElement.attr('alt', '新的关注者');
-                        titleElement.text('新关注者');
+                        titleElement.html('新关注者');
                         descriptionElement.html('“' + message.extra.realName + '”开始关注你的奋斗点滴了哟～');
                         break;
                     case 'newLike':
                         imageElement.attr('src', img);
                         imageElement.attr('alt', '点赞提醒');
-                        titleElement.text('点赞提醒');
+                        titleElement.html('点赞提醒' + momentDetail);
                         descriptionElement.html('<p>' + message.extra.realName + '给你点了个赞以表示对你奋斗的认可。请保持不忘初心，牢记使命，坚持奋斗！</p><blockquote><small>' + description + '</small></blockquote>');
                         break;
                     case 'newMoment':
                         imageElement.attr('src', img);
                         imageElement.attr('alt', '新的奋斗点滴');
-                        titleElement.text('新奋斗点滴提醒');
+                        titleElement.html('新奋斗点滴提醒');
                         descriptionElement.html('<p>你关注的' + message.extra.realName + '发布了新的奋斗点滴：</p><blockquote><small>' + description + '</small></blockquote>');
                         break;
                 }

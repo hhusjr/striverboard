@@ -55,7 +55,8 @@ if (!defined('BASE_PATH')) {
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark light-darken fixed-top scrolling-navbar">
             <div class="container">
-                <a class="navbar-brand logo" href="<?php ($a->U)('Index', 'Index'); ?>"><img
+                <a class="navbar-brand logo"
+                    href="<?php ($a->U)('Index', 'Index'); ?>"><img
                         src="<?php ($a->S)('imgs/logo.png'); ?>"
                         alt="<?php echo $a->sitename; ?>"></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header-navbar"
@@ -74,7 +75,7 @@ if (!defined('BASE_PATH')) {
                         </li>
                         <?php
                         if ($a->user) {
-                        ?>
+                            ?>
                         <li class="nav-item">
                             <a class="nav-link"
                                 href="<?php echo($a->U)('Striverboard', 'Space'); ?>">奋斗圈</a>
@@ -84,7 +85,7 @@ if (!defined('BASE_PATH')) {
                         ?>
                         <li class="nav-item">
                             <a class="nav-link"
-                                href="<?php echo($a->U)('Greats', 'Index'); ?>">伟人的奋斗</a>
+                                href="<?php echo($a->U)('Greats', 'Index'); ?>">伟大的奋斗点滴</a>
                         </li>
                     </ul>
 
@@ -111,7 +112,8 @@ if (!defined('BASE_PATH')) {
                                 <a class="dropdown-item"
                                     href="<?php ($a->U)('User', 'Logout'); ?>">
                                     <i class="oi oi-ban"></i> 注销登陆</a>
-                                <a class="dropdown-item" role="button" data-target="#msgbox-modal" data-toggle="modal"><i class="oi oi-document"></i> 信箱<?php echo ' <span class="badge badge-pill badge-warning unread-message-count">' . $assigns->unreadMessageCount . '</span>'; ?></a>
+                                <a class="dropdown-item" role="button" data-target="#msgbox-modal"
+                                    data-toggle="modal"><i class="oi oi-document"></i> 信箱<?php echo ' <span class="badge badge-pill badge-warning unread-message-count">' . $assigns->unreadMessageCount . '</span>'; ?></a>
                                 <a class="dropdown-item disabled"
                                     href="<?php ($a->U)('User', 'Modify'); ?>">
                                     <i class="oi oi-pencil"></i> 编辑资料</a>
@@ -125,3 +127,4 @@ if (!defined('BASE_PATH')) {
             </div>
         </nav>
     </header>
+    <div class="striverboard-common-wrapper">

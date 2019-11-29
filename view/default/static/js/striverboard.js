@@ -27,8 +27,12 @@ function card(attrs) {
     if (imgs.length) card.append(slide);
 
     var body = $s('<div class="card-body"></div>');
-    var likeElement = '<a role="button" class="add-like" data-like="' + (attrs.liked ? 1 : 0) + '" data-mid="' + attrs.mid + '"><i class="heart-like oi oi-heart pr-1' + (attrs.liked ? ' red-text' : '') + '"></i> <span class="like-count">' + attrs.likes + '</span></a>';
-    body.append('<p class="card-text black-text"><span class="badge badge-pill badge-' + (attrs.achieved ? 'success">已完成' : 'danger">未完成') + '</span> ' + attrs.description + ' <a href="' + striverboardParams.urls.momentDetail + attrs.mid + '" class="view-detail"><i class="oi oi-eye"></i></a></p>');
+    if (striverboardParams.loggedIn) {
+        var likeElement = '<a role="button" class="add-like" data-like="' + (attrs.liked ? 1 : 0) + '" data-mid="' + attrs.mid + '"><i class="thumb-up-like oi oi-thumb-up pr-1' + (attrs.liked ? ' red-text' : '') + '"></i> <span class="like-count">' + attrs.likes + '</span></a>';
+    } else {
+        var likeElement = '';
+    }
+    body.append('<p class="card-text black-text"><span class="badge badge-pill badge-' + (attrs.achieved ? 'success">已完成' : 'danger">未完成') + '</span> ' + attrs.description + (striverboardParams.loggedIn ? ' <a href="' + striverboardParams.urls.momentDetail + attrs.mid + '" target="_blank" class="view-detail"><i class="oi oi-eye"></i></a>' : '') + '</p>');
     body.append('<ul class="list-unstyled list-inline font-small m-0"><li class="list-inline-item pr-2 grey-text"><i class="oi oi-calendar pr-1"></i> ' + formatDay(attrs.time) + '</li><li class="list-inline-item pr-2 grey-text"><i class="oi oi-person pr-1"></i> ' + attrs.realName + '</li><li class="list-inline-item pr-2 grey-text">' + likeElement + '</li></ul>');
     card.append(body);
 
@@ -64,7 +68,7 @@ function card(attrs) {
                     toastr.error('该奋斗点滴无法点赞。可能由于它是私有的奋斗点滴，或者你已经点过赞。');
                     return;
                 }
-                me.children('.heart-like').addClass('red-text');
+                me.children('.thumb-up-like').addClass('red-text');
                 var countElement = me.children('.like-count');
                 countElement.text(parseInt(countElement.text()) + 1);
             },
@@ -100,7 +104,7 @@ function loadMoments() {
 
     $s('#continue-load').attr('disabled', 'disabled');
     $s('#continue-load .spinner-border').fadeIn();
-    $s('#continue-load').text('加载中...');
+    $s('#continue-load .loading-text').text('加载中...');
 
     var data = {
         page: page,
@@ -120,14 +124,14 @@ function loadMoments() {
             $s('#continue-load .spinner-border').fadeOut();
             if (!moments.length) {
                 finished = true;
-                $s('#continue-load').text('到底啦！');
+                $s('#continue-load .loading-text').text('到底啦！');
                 $s('#continue-load').attr('disabled', 'disabled');
                 toastr.success('奋斗点滴全部加载完了哦～');
                 if (!timelineView) $s('#loading-moments').fadeOut();
                 onMomentsLoaded();
                 return;
             }
-            $s('#continue-load').text('继续加载');
+            $s('#continue-load .loading-text').text('继续加载');
             moments.forEach(function(moment) {
                 if (!timelineView) $s('#loading-moments').before(card(moment));
                 else $s('#timeline-view').append(card(moment));

@@ -149,31 +149,42 @@ class StriverboardController extends CommonController
         $this->json($results);
     }
 
-    // space
-    public function onSpace()
+    // on ajax search users
+    public function onSearchUsers()
     {
-        $this->needLogin();
+        $this->needAjax();
+        $this->needPost();
+        $uid = $this->needLogin();
 
-        // recommended users
+        $keyword = F::post('keyword');
         $userModel = R::M('User');
-        $recommendedUsers = $userModel->getRecommendedUsers($this->loginUserId());
+
+        // if the keyword is empty, show recommended users
+        $recommendedUsers = $userModel->searchUsers($uid, $keyword);
         $displayRecUsers = [];
         foreach ($recommendedUsers as $user) {
             $info = $user->info;
-            $result = new stdClass;
-            $result->uid = $info->uid;
-            $result->similarity = $user->similarity;
-            $result->fid = $info->fid;
-            $result->field = $info->field;
-            $result->realName = $info->realName;
-            $result->mission = $info->mission;
-            $result->institution = $info->institution;
+            $result = [];
+            $result['uid'] = $info->uid;
+            $result['similarity'] = $user->similarity;
+            $result['fid'] = $info->fid;
+            $result['field'] = $info->field;
+            $result['realName'] = $info->realName;
+            $result['mission'] = $info->mission;
+            $result['institution'] = $info->institution;
             $displayRecUsers[] = $result;
         }
+        $this->json($displayRecUsers);
+    }
+
+    // space
+    public function onSpace()
+    {
+        $uid = $this->needLogin();
 
         $assigns = new stdClass;
-        $assigns->recommendUsers = $displayRecUsers;
-
+        $assigns->uid = $uid;
+        
         $this->show('space', $assigns);
     }
 
@@ -223,5 +234,36 @@ class StriverboardController extends CommonController
             $this->json(['success' => false]);
         }
         $this->json(['success' => (bool) $likesModel->like($mid, $uid)]);
+    }
+
+    // show moment detail
+    public function onMomentDetail()
+    {
+        $uid = $this->needLogin();
+        $mid = F::get('mid');
+
+        $momentsModel = R::M('Moments');
+        $likesModel = R::M('Likes');
+
+        if (!$momentsModel->visible($mid, $uid)) {
+            $this->showError();
+        }
+        $moment = $momentsModel->getMoment($mid);
+
+        $assigns = new stdClass;
+        $assigns->description = $moment->description;
+        $assigns->uid = $moment->uid;
+        $assigns->realName = $moment->realName;
+        $assigns->time = $moment->time;
+        $assigns->achieved = $moment->achieved;
+        $assigns->significant = $moment->significant;
+        $assigns->imgs = $moment->imgs;
+        $assigns->field = $moment->field;
+        $assigns->mid = $moment->mid;
+        $assigns->likes = $likesModel->countLikes($moment->mid);
+        $assigns->likable = $likesModel->likable($moment->mid, $uid);
+        $assigns->liked = $likesModel->liked($moment->mid, $uid);
+
+        $this->show('moment_detail', $assigns);
     }
 }

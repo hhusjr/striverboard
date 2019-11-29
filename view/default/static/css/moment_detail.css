@@ -1,0 +1,17 @@
+.striverboard-common-wrapper {
+    background-image: url('../imgs/bg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.moment-detail-container {
+    background: #fff;
+    border-radius: 20px;
+    margin-bottom: 30px;
+    box-shadow: 2px 2px #a00808;
+    border: solid 1px #a008081a;
+}
+
+.moment-description {
+    text-indent: 2em;
+}

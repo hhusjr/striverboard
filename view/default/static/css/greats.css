@@ -1,6 +1,10 @@
-.striverboard-common-wrapper {
+.bg {
     background-image: url('../imgs/bg.jpg');
     background-repeat: no-repeat;
     background-size: cover;
-    padding-top: 100px;
+}
+
+.greats {
+    background: #fff;
+    background: #ffffffe7;
 }

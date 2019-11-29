@@ -6,6 +6,7 @@ if (!defined('BASE_PATH')) {
 <footer class="page-footer font-small red">
     <div class="footer-copyright text-center py-3">Hello World组</div>
 </footer>
+</div>
 <div class="fixed-bottom bottom-widgets clearfix">
     <div class="bottom-widget">
         <span class="oi oi-arrow-thick-top" id="go-top"></span>
@@ -111,7 +112,8 @@ if (!defined('BASE_PATH')) {
         urls: {
             ajaxMessages: '<?php echo ($a->U)('Message', 'AjaxMessages'); ?>',
             ajaxSetMessageRead: '<?php echo ($a->U)('Message', 'AjaxSetMessageRead'); ?>',
-            thumbsUpImg: '<?php echo ($a->S)('imgs/thumbs_up.jpg'); ?>'
+            thumbsUpImg: '<?php echo ($a->S)('imgs/thumbs_up.jpg'); ?>',
+            momentDetail: '<?php echo ($a->U)('Striverboard', 'MomentDetail'); ?>?mid='
         }
     };
 </script>

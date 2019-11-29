@@ -191,7 +191,7 @@ class MomentsModel extends BaseModel
         $conditions['time >='] = time() - 30 * 24 * 3600;
         $conditions['visibility'] = 'public';
 
-        $data = $this->select(['mid', 'location_lng', 'location_lat'])->condition($conditions)->fetchAll();
+        $data = $this->select(['mid', 'location_lng', 'location_lat', 'time'])->condition($conditions)->fetchAll();
 
         $userLng = floatval($userLocation->lng);
         $userLat = floatval($userLocation->lat);
@@ -201,18 +201,27 @@ class MomentsModel extends BaseModel
         $pos = [];
 
         foreach ($data as $row) {
-            [$mid, $lng, $lat] = [$row['mid'], $row['location_lng'], $row['location_lat']];
+            [$mid, $lng, $lat, $time] = [$row['mid'], $row['location_lng'], $row['location_lat'], $row['time']];
             $result = new stdClass;
             $result->mid = intval($mid);
             $result->lng = floatval($lng);
             $result->lat = floatval($lat);
+            $result->time = intval($time);
             $result->distance = $this->_distance([$userLng, $userLat], [$lng, $lat]);
             $results[] = $result;
             $distances[$result->mid] = $result->distance;
         }
         
         usort($results, function ($x, $y) {
-            return $x->distance <=> $y->distance;
+            $d1 = floor($x->distance);
+            $d2 = floor($y->distance);
+            if ($d1 < $d2) {
+                return -1;
+            }
+            if ($d1 > $d2) {
+                return 1;
+            }
+            return -($x->time <=> $y->time);
         });
 
         $total = count($results);
@@ -427,6 +436,7 @@ class MomentsModel extends BaseModel
 
         $fields = [
             'description',
+            'fid',
             'time',
             'uid',
             'visibility',
@@ -450,6 +460,8 @@ class MomentsModel extends BaseModel
         $result->imgs = array_column($this->getPhotos($mid), 'url');
         $result->mid = $mid;
         $result->achieved = (bool) $moment['achieved'];
+        $result->fid = intval($moment['fid']);
+        $result->field = R::M('Field')->getNameById($result->fid);
 
         return $result;
     }
