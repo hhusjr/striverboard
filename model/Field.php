@@ -14,7 +14,7 @@
  * * limitations under the License.                                          * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
- * The Message Verify Model
+ * The Field Model
  * @author JunRu Shen
  */
 if (!defined('BASE_PATH')) {

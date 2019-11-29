@@ -77,8 +77,8 @@ $params->css = ['css/index.css'];
             <div class="col-md-4 col-lg-2 col-sm-6 d-flex justify-content-center">
                 <div class="ball">
                     <div class="ball-img">
-                        <div class="view overlay zoom rounded-circle show-video" style="cursor: pointer;" data-toggle="modal"
-                            data-target="#watch-video"
+                        <div class="view overlay zoom rounded-circle show-video" style="cursor: pointer;"
+                            data-toggle="modal" data-target="#watch-video"
                             data-video-url="<?php echo $items[$j]->videoUrl; ?>"
                             data-title="<?php echo $items[$j]->name; ?>">
                             <img class="img-fluid z-depth-1 rounded-circle"
@@ -124,6 +124,10 @@ $params->css = ['css/index.css'];
 
             <div class="modal-body mb-0 p-0" id="watch-video-body">
             </div>
+
+            <div class="modal-footer mb-0 p-0">
+                <a href="#" class="btn btn-lg btn-block btn-red" target="_blank" id="watch-video-bottom">无法播放？直接打开！</a>
+            </div>
         </div>
     </div>
 </div>
@@ -134,10 +138,10 @@ $params->css = ['css/index.css'];
             ajaxMomentsLocations: '<?php ($a->U)('Statistics', 'ajax_moments_locations'); ?>',
         },
         hotWordsLabels: JSON.parse(
-            '<?php echo json_encode(array_keys($a->hotMissionWords)); ?>'
+            '<?php echo json_encode(array_keys($a->hotMomentsWords)); ?>'
         ),
         hotWordsValues: JSON.parse(
-            '<?php echo json_encode(array_values($a->hotMissionWords)); ?>'
+            '<?php echo json_encode(array_values($a->hotMomentsWords)); ?>'
         ),
         momentCountGroupByField: JSON.parse(
             '<?php echo json_encode($a->momentCountGroupByField); ?>')

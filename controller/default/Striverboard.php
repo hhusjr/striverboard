@@ -94,11 +94,11 @@ class StriverboardController extends CommonController
             $this->json(['success' => false, 'message' => (isset($errors[$validation]) ? $errors[$validation] : $validation)]);
         }
 
-        $status = R::M('Moments')->postMoment($data, $imgs);
-        if ($status === true) {
-            $this->json(['success' => true]);
+        $newMid = R::M('Moments')->postMoment($data, $imgs);
+        if (is_int($newMid)) {
+            $this->json(['success' => true, 'mid' => $newMid]);
         } else {
-            $this->json(['success' => false, 'message' => $status]);
+            $this->json(['success' => false, 'message' => $newMid]);
         }
     }
 
@@ -119,13 +119,12 @@ class StriverboardController extends CommonController
         $attrs->onlySignificant = $onlySignificant;
         $attrs->timeRange = null;
         $attrs->achieved = $achieved == -1 ? null : $achieved;
-        $attrs->sortByDistance = false;
-        $attrs->location = null;
         $attrs->page = F::post('page');
-        $attrs->pageSize = 20;
+        $attrs->pageSize = 16;
         $attrs->fid = $fid;
 
         $userModel = R::M('User');
+        $likesModel = R::M('Likes');
 
         $moments = R::M('Moments')->getMoments($uid, $attrs);
         $results = [];
@@ -134,16 +133,137 @@ class StriverboardController extends CommonController
             $result = [];
             $result['description'] = $moment->description;
             $result['time'] = $moment->time;
-            $result['realName'] = $userModel->getRealName($moment->uid);
+            $result['realName'] = $moment->realName;
             $result['visibility'] = ($moment->visibility == 'public' ? 'public' : 'private');
             $result['significant'] = $moment->significant;
             $result['uid'] = $moment->uid;
             $result['imgs'] = $moment->imgs;
             $result['mid'] = $moment->mid;
             $result['achieved'] = $moment->achieved;
+            $result['likes'] = $likesModel->countLikes($moment->mid);
+            $result['likable'] = $likesModel->likable($moment->mid, $uid);
+            $result['liked'] = $likesModel->liked($moment->mid, $uid);
             $results[] = $result;
         }
 
         $this->json($results);
+    }
+
+    // on ajax search users
+    public function onSearchUsers()
+    {
+        $this->needAjax();
+        $this->needPost();
+        $uid = $this->needLogin();
+
+        $keyword = F::post('keyword');
+        $userModel = R::M('User');
+
+        // if the keyword is empty, show recommended users
+        $recommendedUsers = $userModel->searchUsers($uid, $keyword);
+        $displayRecUsers = [];
+        foreach ($recommendedUsers as $user) {
+            $info = $user->info;
+            $result = [];
+            $result['uid'] = $info->uid;
+            $result['similarity'] = $user->similarity;
+            $result['fid'] = $info->fid;
+            $result['field'] = $info->field;
+            $result['realName'] = $info->realName;
+            $result['mission'] = $info->mission;
+            $result['institution'] = $info->institution;
+            $displayRecUsers[] = $result;
+        }
+        $this->json($displayRecUsers);
+    }
+
+    // space
+    public function onSpace()
+    {
+        $uid = $this->needLogin();
+
+        $assigns = new stdClass;
+        $assigns->uid = $uid;
+        
+        $this->show('space', $assigns);
+    }
+
+    // get nearest moments
+    public function onAjaxGetNearestMoments()
+    {
+        $this->needAjax();
+        $this->needPost();
+        $this->needLogin();
+
+        $userLocation = new stdClass;
+        $userLocation->lng = F::post('lng');
+        $userLocation->lat = F::post('lat');
+
+        $momentsModel = R::M('Moments');
+        $nearestMoments = $momentsModel->getNearestMoments($userLocation);
+        
+        $results = [];
+        foreach ($nearestMoments as $moment) {
+            $result['mid'] = $moment->mid;
+            $result['description'] = $moment->description;
+            $result['uid'] = $moment->uid;
+            $result['time'] = $moment->time;
+            $result['achieved'] = $moment->achieved;
+            $result['significant'] = $moment->significant;
+            $result['distance'] = $moment->distance;
+            $result['realName'] = $moment->realName;
+            $result['imgs'] = $moment->imgs;
+            $result['field'] = $moment->field;
+            $results[] = $result;
+        }
+
+        $this->json($results);
+    }
+
+    // set like
+    public function onAjaxLike()
+    {
+        $this->needAjax();
+        $this->needPost();
+        
+        $uid = $this->needLogin();
+        $mid = F::post('mid');
+
+        $likesModel = R::M('Likes');
+        if (!$likesModel->likable($mid, $uid)) {
+            $this->json(['success' => false]);
+        }
+        $this->json(['success' => (bool) $likesModel->like($mid, $uid)]);
+    }
+
+    // show moment detail
+    public function onMomentDetail()
+    {
+        $uid = $this->needLogin();
+        $mid = F::get('mid');
+
+        $momentsModel = R::M('Moments');
+        $likesModel = R::M('Likes');
+
+        if (!$momentsModel->visible($mid, $uid)) {
+            $this->showError();
+        }
+        $moment = $momentsModel->getMoment($mid);
+
+        $assigns = new stdClass;
+        $assigns->description = $moment->description;
+        $assigns->uid = $moment->uid;
+        $assigns->realName = $moment->realName;
+        $assigns->time = $moment->time;
+        $assigns->achieved = $moment->achieved;
+        $assigns->significant = $moment->significant;
+        $assigns->imgs = $moment->imgs;
+        $assigns->field = $moment->field;
+        $assigns->mid = $moment->mid;
+        $assigns->likes = $likesModel->countLikes($moment->mid);
+        $assigns->likable = $likesModel->likable($moment->mid, $uid);
+        $assigns->liked = $likesModel->liked($moment->mid, $uid);
+
+        $this->show('moment_detail', $assigns);
     }
 }

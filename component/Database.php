@@ -176,7 +176,7 @@ class DatabaseComponent
         $this->_sql .= $this->_connect('ORDER BY', implode(', ', $order));
         return $this;
     }
-    //join (note: you should add table name in left/right column)
+    //join (note: you should add table name in left/right/inner column)
     public function join($type, $table, $leftColumn, $rightColumn)
     {
         if (!in_array($type, ['left', 'right', 'inner'])) {

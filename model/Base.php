@@ -56,14 +56,14 @@ abstract class BaseModel extends ModelComponent
     public function count($table = null)
     {
         return parent::getDb()
-                    ->select('count(*)', $table ? $table : $this->_table)
+                    ->select('COUNT(*)', $table ? $table : $this->_table)
                     ->query()->fetchColumn();
     }
 
     //count data ('where' allowed)
     public function countWhere($table = null)
     {
-        $this->_statement = parent::getDb()->select('count(*)', $table ? $table : $this->_table);
+        $this->_statement = parent::getDb()->select('COUNT(*)', $table ? $table : $this->_table);
         return $this;
     }
 
@@ -129,6 +129,13 @@ abstract class BaseModel extends ModelComponent
     public function modify($changes, $table = null, $quote = true)
     {
         $this->_statement = parent::getDb()->update($table ? $table : $this->_table, $changes, $quote);
+        return $this;
+    }
+
+    //join
+    public function join($type, $table, $leftColumn, $rightColumn)
+    {
+        $this->_statement->join($type, $table, $leftColumn, $rightColumn);
         return $this;
     }
 

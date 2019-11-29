@@ -260,8 +260,8 @@ class UserModel extends BaseModel
                     ->condition(['uid' => $uid2])
                     ->fetchAll();
         $words2 = [];
-        foreach ($words2 as $word) {
-            $words2[$word['word']] = $words['tf_idf'];
+        foreach ($words as $word) {
+            $words2[$word['word']] = $word['tf_idf'];
             $wordsUnion[] = $word['word'];
         }
 
@@ -277,45 +277,58 @@ class UserModel extends BaseModel
         }
 
         if (!$d1 || !$d2) {
-            return INF;
+            return 0;
         }
         return $dot / sqrt($d1) / sqrt($d2);
     }
 
-    // get recommended users for a user
-    public function getRecommendedUsers($uid)
+    // search users
+    public function searchUsers($uid, $keyword = null)
     {
-        $info = $this->select(['fid', 'institution'])->condition(['uid' => $uid])->fetch();
+        $conditions = ['uid' => $uid];
+        $keyword = trim($keyword);
+
+        $info = $this->select(['fid', 'institution'])->condition($conditions)->fetch();
         if (!$info) {
             return false;
         }
-        [$fid, $institution] = [$info['fid'], $info['institution']];
+
+        if (!$keyword) {
+            [$fid, $institution] = [$info['fid'], $info['institution']];
+                
+            $users = $this->select('uid')->condition([
+            'OR' => [
+                'fid' => $fid,
+                'institution' => $institution
+            ],
+            'uid <>' => $uid
+        ])->result();
+        } else {
+            $users = $this->select('uid')->condition([
+                    'phone' => $keyword,
+                    'real_name LIKE' => '%' . $keyword . '%'
+            ], 'OR')->result();
+        }
         
-        $sameFieldUsersData = $this->select('uid')->condition(['fid' => $fid])->result();
-        $sameInstitutionUsersData = $this->select('uid')->condition(['institution' => $institution])->result();
+        $results = [];
 
-        $sameFieldUsers = [];
-        for (; $uid1 = $sameFieldUsersData->fetchColumn();) {
-            $sameFieldUser = new stdClass;
-            $sameFieldUser->uid = $uid1;
-            $sameFieldUser->similarity = $this->getMissionSimilarity($uid, $uid1);
-            $sameFieldUsers[] = $sameFieldUser;
+        for (; $uid1 = $users->fetchColumn();) {
+            $user = new stdClass;
+            $user->uid = $uid1;
+            $user->similarity = $this->getMissionSimilarity($uid, $uid1);
+            $results[] = $user;
         }
-        usort($sameFieldUsers, function ($a, $b) {
-            return $a->similarity <=> $b->similarity;
-        });
 
-        $sameInstitutionUsers = [];
-        for (; $uid1 = $sameInstitutionUsersData->fetchColumn();) {
-            $sameInstitutionUser = new stdClass;
-            $sameInstitutionUser->uid = $uid1;
-            $sameInstitutionUser->similarity = $this->getMissionSimilarity($uid, $uid1);
-            $sameInstitutionUsers[] = $sameInstitutionUser;
+        usort($results, function ($a, $b) {
+            return !($a->similarity <=> $b->similarity);
+        });
+        
+        $results = array_slice($results, 0, 12);
+        
+        foreach ($results as $key => $result) {
+            $results[$key]->info = $this->getUserInfo($result->uid);
         }
-        usort($sameInstitutionUsers, function ($a, $b) {
-            return $a->similarity <=> $b->similarity;
-        });
 
-        return [$sameFieldUsers, $sameInstitutionUsers];
+        return $results;
     }
 }

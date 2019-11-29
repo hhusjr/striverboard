@@ -2,21 +2,20 @@ var page = 1;
 var finished = false;
 var momentsCount = 0;
 var timelineView = striverboardParams.timelineView;
-
-function formatDay(time) {
-    var time = new Date(time * 1000);
-    return (time.getMonth() + 1) + '月' + time.getDate() + '日' + time.getHours() + '时' + time.getMinutes() + '分';
-}
+var lastRequestTime = 0;
+var loadOk = true;
+var $grid;
 
 function card(attrs) {
     momentsCount++;
+    var limit = 100;
     if (attrs.description.length > limit) attrs.description = attrs.description.substr(0, limit) + '...';
 
     var slide = $s('<div class="carousel slide moment-slides" data-interval="0" data-ride="carousel" id="moment' + momentsCount + '-slider"></div>');
     var inner = $s('<div class="carousel-inner"></div>');
     var imgs = attrs.imgs;
     imgs.forEach(function(img) {
-        inner.append('<div class="carousel-item"><img class="d-block w-100" src="' + img + '" alt="' + attrs.description + '"></div>');
+        inner.append('<div class="carousel-item"><img class="d-block w-100" src="' + img + '" alt="奋斗点滴配图"></div>');
     });
     inner.children(':first').addClass('active');
     slide.append(inner);
@@ -27,10 +26,14 @@ function card(attrs) {
 
     if (imgs.length) card.append(slide);
 
-    var limit = 50;
     var body = $s('<div class="card-body"></div>');
-    body.append('<p class="card-text black-text"><span class="badge badge-pill badge-' + (attrs.achieved ? 'success">已完成' : 'danger">未完成') + '</span> ' + attrs.description + '</p>');
-    body.append('<ul class="list-unstyled list-inline font-small m-0"><li class="list-inline-item pr-2 grey-text"><i class="oi oi-calendar pr-1"></i> ' + formatDay(attrs.time) + '</li><li class="list-inline-item pr-2 grey-text"><i class="oi oi-person pr-1"></i> ' + attrs.realName + '</li></ul>');
+    if (striverboardParams.loggedIn) {
+        var likeElement = '<a role="button" class="add-like" data-like="' + (attrs.liked ? 1 : 0) + '" data-mid="' + attrs.mid + '"><i class="thumb-up-like oi oi-thumb-up pr-1' + (attrs.liked ? ' red-text' : '') + '"></i> <span class="like-count">' + attrs.likes + '</span></a>';
+    } else {
+        var likeElement = '';
+    }
+    body.append('<p class="card-text black-text"><span class="badge badge-pill badge-' + (attrs.achieved ? 'success">已完成' : 'danger">未完成') + '</span> ' + attrs.description + (striverboardParams.loggedIn ? ' <a href="' + striverboardParams.urls.momentDetail + attrs.mid + '" target="_blank" class="view-detail"><i class="oi oi-eye"></i></a>' : '') + '</p>');
+    body.append('<ul class="list-unstyled list-inline font-small m-0"><li class="list-inline-item pr-2 grey-text"><i class="oi oi-calendar pr-1"></i> ' + formatDay(attrs.time) + '</li><li class="list-inline-item pr-2 grey-text"><i class="oi oi-person pr-1"></i> ' + attrs.realName + '</li><li class="list-inline-item pr-2 grey-text">' + likeElement + '</li></ul>');
     card.append(body);
 
     if (timelineView) {
@@ -46,12 +49,63 @@ function card(attrs) {
     var element = $s('<div class="grid-item col-lg-4 col-md-6"></div>');
     element.append(card);
 
+    element.find('.add-like').click(function() {
+        var me = $s(this);
+
+        if (parseInt(me.attr('data-like'))) return;
+        me.attr('data-like', 1);
+
+        var mid = me.attr('data-mid');
+        $s.ajax({
+            url: striverboardParams.urls.ajaxLike,
+            data: {
+                mid: mid
+            },
+            dataType: 'json',
+            method: 'POST',
+            success: function(response) {
+                if (!response.success) {
+                    toastr.error('该奋斗点滴无法点赞。可能由于它是私有的奋斗点滴，或者你已经点过赞。');
+                    return;
+                }
+                me.children('.thumb-up-like').addClass('red-text');
+                var countElement = me.children('.like-count');
+                countElement.text(parseInt(countElement.text()) + 1);
+            },
+            error: function() {
+                toastr.error('无法点赞，未知错误。');
+            }
+        });
+    });
+
     return element;
 }
 
-function loadMoments(onSuccess) {
+function onMomentsLoaded() {
+    if (!timelineView) {
+        $s('#loading-moments').fadeOut(function() {
+            $grid.masonry('reloadItems');
+            $grid.masonry('layout');
+        });
+    } else {
+        if (loadSk) {
+            sk.refresh();
+        }
+    }
+}
+
+function loadMoments() {
     if (finished) return;
+    var currentTime = new Date().getTime();
+    if (!loadOk || currentTime - lastRequestTime < 500) return;
+    lastRequestTime = currentTime;
+    loadOk = false;
     if (!timelineView) $s('#loading-moments').fadeIn();
+
+    $s('#continue-load').attr('disabled', 'disabled');
+    $s('#continue-load .spinner-border').fadeIn();
+    $s('#continue-load .loading-text').text('加载中...');
+
     var data = {
         page: page,
         uid: striverboardParams.showUid,
@@ -59,39 +113,46 @@ function loadMoments(onSuccess) {
         achieved: striverboardParams.achieved,
         fid: striverboardParams.field
     };
+
     $s.ajax({
         url: striverboardParams.urls.ajaxMoments,
         method: 'POST',
         data: data,
         dataType: 'json',
         success: function(moments) {
+            loadOk = true;
+            $s('#continue-load .spinner-border').fadeOut();
             if (!moments.length) {
                 finished = true;
+                $s('#continue-load .loading-text').text('到底啦！');
+                $s('#continue-load').attr('disabled', 'disabled');
                 toastr.success('奋斗点滴全部加载完了哦～');
                 if (!timelineView) $s('#loading-moments').fadeOut();
-                onSuccess();
+                onMomentsLoaded();
                 return;
             }
+            $s('#continue-load .loading-text').text('继续加载');
             moments.forEach(function(moment) {
                 if (!timelineView) $s('#loading-moments').before(card(moment));
                 else $s('#timeline-view').append(card(moment));
             });
-            if (!timelineView) $s('#loading-moments').fadeOut(function() {
-                onSuccess();
-            });
-            else onSuccess();
+            $s('#continue-load').removeAttr('disabled');
+            onMomentsLoaded();
         }
     });
     page++;
 }
 
-var sk;
+var sk, loadSk = false;
 
 $s(document).ready(function() {
     // hide a view
     if (timelineView) {
         $s('#grid-view').hide();
         sk = skrollr.init({ forceHeight: false });
+        if (sk.isMobile()) {
+            sk.destroy();
+        } else loadSk = true;
     } else {
         $s('#timeline-view').hide();
         // when slide, relayout
@@ -102,7 +163,7 @@ $s(document).ready(function() {
     }
 
     // init Masonry
-    var $grid = $s('.grid').masonry({
+    $grid = $s('.grid').masonry({
         itemSelector: '.grid-item',
         percentPosition: true,
         columnWidth: '.grid-sizer'
@@ -114,26 +175,16 @@ $s(document).ready(function() {
     });
 
     // load moments and scrolling to show more
-    loadMoments(function() {
-        if (timelineView) {
-            sk.refresh();
-            return;
-        }
-        $grid.masonry('reloadItems');
-        $grid.masonry('layout');
-    });
+    loadMoments();
     $s(window).scroll(function() {
         if (finished) return;
         if ($s(document).height() - $s(this).height() - $s(this).scrollTop() < 1) {
-            loadMoments(function() {
-                if (timelineView) {
-                    sk.refresh();
-                    return;
-                }
-                $grid.masonry('reloadItems');
-                $grid.masonry('layout');
-            });
+            loadMoments();
         }
+    });
+    $s('#continue-load').click(function() {
+        if (finished) return;
+        loadMoments();
     });
 
     // load user mission words
@@ -239,7 +290,7 @@ $s(document).ready(function() {
 
     // choose if its public
     $s('#moment-visibility-option .dropdown-item').click(function() {
-        $s('#moment-visbility-option .dropdown-item').removeClass('active');
+        $s('#moment-visibility-option .dropdown-item').removeClass('active');
         $s(this).addClass('active');
         $s('#moment-visibility-text').text($s(this).text());
 
@@ -289,7 +340,10 @@ $s(document).ready(function() {
                         description: data.description,
                         field: data.field,
                         time: (new Date()).getTime() / 1000,
-                        realName: striverboardParams.realName
+                        realName: striverboardParams.realName,
+                        liked: false,
+                        likes: 0,
+                        mid: response.mid
                     };
                     if (!timelineView) {
                         $s('#pre-moments').after(card(attrs));

@@ -2,6 +2,22 @@ body {
     background-color: #ba1929;
 }
 
+.block {
+    padding: 50px 0;
+}
+
+.block h1 {
+    color: #cc0000;
+}
+
+.blocks>.block:nth-child(odd) {
+    background: #fff;
+}
+
+.blocks>.block:nth-child(even) {
+    background: #fae8e8;
+}
+
 .top-nav-collapse {
     background-color: #cc0000 !important;
 }
@@ -49,4 +65,8 @@ body {
 
 .cke_bottom {
     background: #cc0000 !important;
+}
+
+.striverboard-common-wrapper {
+    background-color: #ba1929;
 }

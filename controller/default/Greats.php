@@ -14,34 +14,37 @@
  * * limitations under the License.                                          * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
- * The Index controller
+ * The Greats controller
  * @author JunRu Shen
  */
 if (!defined('BASE_PATH')) {
     die('Access Denied.');
 }
 
-class IndexController extends CommonController
+class GreatsController extends CommonController
 {
     // Index action (default action)
     public function onIndex()
     {
-        $optionModel = R::M('Option');
-        $momentsModel = R::M('Moments');
-        $assigns = new StdClass;
-        $assigns->slogan = $optionModel->get('site.slogan');
-        $assigns->hotMomentsWords = $momentsModel->hotMomentsWords();
-        $assigns->momentCountGroupByField = $momentsModel->getMomentCountGroupByField();
-        $assigns->greats = [];
-        $greats = R::M('Greats')->getAll(1, 18);
+        $page = max(1, intval(F::get('page')));
+        $pageSize = 8;
+        $pageCount = ceil(R::M('Greats')->countGreats() / $pageSize);
+        $greats = R::M('Greats')->getAll($page, $pageSize);
+        
+        $results = [];
         foreach ($greats as $great) {
-            $info = new stdClass;
-            $info->name = $great->name;
-            $info->intro = $great->intro;
-            $info->videoUrl = $great->videoUrl;
-            $info->thumbnail = $this->siteUri($great->thumbnail);
-            $assigns->greats[] = $info;
+            $result = new stdClass;
+            $result->thumbnail = $this->siteUri($great->thumbnail);
+            $result->videoUrl = $great->videoUrl;
+            $result->name = $great->name;
+            $result->description = $great->description;
+            $results[] = $result;
         }
-        $this->show('index', $assigns);
+
+        $assigns = new stdClass;
+        $assigns->greats = $results;
+        $assigns->pageCount = $pageCount;
+        $assigns->page = $page;
+        $this->show('greats', $assigns);
     }
 }

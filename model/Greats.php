@@ -29,10 +29,20 @@ class GreatsModel extends BaseModel
         parent::__construct('greats');
     }
     
-    // get all greats
-    public function getAll()
+    // count greats
+    public function countGreats()
     {
-        $greats =  $this->select(['name', 'intro', 'video_url', 'thumbnail'])->limit(18)->fetchAll();
+        return $this->count();
+    }
+
+    // get all greats
+    public function getAll($page, $pageSize)
+    {
+        $page = intval($page);
+        $pageSize = intval($pageSize);
+        $offset = max(0, ($page - 1) * $pageSize);
+        $length = max(0, $pageSize);
+        $greats =  $this->select(['name', 'intro', 'video_url', 'thumbnail', 'description'])->limit($offset, $length)->fetchAll();
         $results = [];
         foreach ($greats as $great) {
             $result = new stdClass;
@@ -40,6 +50,7 @@ class GreatsModel extends BaseModel
             $result->intro = $great['intro'];
             $result->videoUrl = $great['video_url'];
             $result->thumbnail = $great['thumbnail'];
+            $result->description = $great['description'];
             $results[] = $result;
         }
         return $results;

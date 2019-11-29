@@ -65,7 +65,8 @@ class DatabaseException extends Exception
             $this->_entry->user,
             $this->_entry->host,
             $this->_entry->port,
-            $this->_entry->password,
+            //$this->_entry->password,
+            '***',
             $this->_entry->name
         );
     }
