@@ -21,7 +21,7 @@ if (!defined('BASE_PATH')) {
     die('Access Denied.');
 }
 
-class AlibabaCloudApiConfig
+class AliyunApiConfig
 {
     // global config
     public static $accessKeyId = 'LTAI4Fp89csFNNDEWX9maHxp';

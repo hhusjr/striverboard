@@ -14,36 +14,17 @@
  * * limitations under the License.                                          * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
- * The word processing adapter
+ * The Word Proce
  * @author JunRu Shen
  */
 if (!defined('BASE_PATH')) {
     die('Access Denied.');
 }
 
-import('adapter/default/config/WordProcessingApi');
-
-import('adapter/interface/IWordProcess');
-class WordProcessAdapter implements IWordProcessAdapter
+class WordProcessingApiConfig
 {
-    // get top 20 keywords in a document
-    public static function getKeywords($document)
-    {
-        $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-        socket_connect($socket, WordProcessingApiConfig::$host, WordProcessingApiConfig::$port);
-        socket_write($socket, json_encode([
-            'accessSecret' => WordProcessingApiConfig::$accessSecret,
-            'document' => $document
-        ]));
-        $msg = socket_read($socket, 65536);
-        if (!$msg) {
-            return false;
-        }
-        $data = json_decode($msg, true);
-        if (!isset($data['success']) || !$data['success']) {
-            return false;
-        }
-        socket_close($socket);
-        return $data['keywords'];
-    }
+    // global config
+    public static $accessSecret = 'Qks9@#kd.x.a0f9939kdfmmaa..al@##L';
+    public static $host = '39.99.152.163';
+    public static $port = 9503;
 }

@@ -22,7 +22,7 @@ if (!defined('BASE_PATH')) {
 }
 
 import('adapter/default/aliyun/vendor/autoload');
-import('adapter/default/config/aliyun');
+import('adapter/default/config/AliyunApi');
 
 use AlibabaCloud\Client\AlibabaCloud;
 use AlibabaCloud\Client\Exception\ClientException;
@@ -34,7 +34,7 @@ class SmsAdapter implements ISmsAdapter
     // send text message
     private static function _sendText($phone, $signName, $templateCode, $templateParams)
     {
-        AlibabaCloud::accessKeyClient(AlibabaCloudApiConfig::$accessKeyId, AlibabaCloudApiConfig::$accessSecret)
+        AlibabaCloud::accessKeyClient(AliyunApiConfig::$accessKeyId, AliyunApiConfig::$accessSecret)
                         ->regionId('cn-hangzhou')
                         ->asDefaultClient();
         try {
@@ -69,8 +69,8 @@ class SmsAdapter implements ISmsAdapter
     // send the verify code
     public static function sendVerifyCode($phone, $code)
     {
-        return self::_sendText($phone, AlibabaCloudApiConfig::$smsSignName, AlibabaCloudApiConfig::$smsVerifyCodeTemplate, array(
-            AlibabaCloudApiConfig::$smsVerifyCodeFlag => $code
+        return self::_sendText($phone, AliyunApiConfig::$smsSignName, AliyunApiConfig::$smsVerifyCodeTemplate, array(
+            AliyunApiConfig::$smsVerifyCodeFlag => $code
         ));
     }
 }
