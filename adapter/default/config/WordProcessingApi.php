@@ -14,7 +14,7 @@
  * * limitations under the License.                                          * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
- * The Word Proce
+ * The Word Processing API Config
  * @author JunRu Shen
  */
 if (!defined('BASE_PATH')) {

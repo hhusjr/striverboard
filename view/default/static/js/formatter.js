@@ -8,3 +8,7 @@ function formatDistance(km) {
     if (km < 0.1) return '100米内';
     return Math.floor(km * 1000) + '米左右';
 }
+
+function htmlspecialchars(value) {
+    return $s('<div />').text(value).html();
+}

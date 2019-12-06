@@ -32,7 +32,7 @@ $params->css = [
             </div>
         </div>
 
-        <div class="moment-description mb-3"><?php echo $a->description; ?>
+        <div class="moment-description mb-3"><?php echo htmlspecialchars($a->description); ?>
         </div>
         <div class="d-flex">
             <ul class="list-unstyled list-inline font-small m-0 mr-auto">

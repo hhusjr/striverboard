@@ -56,7 +56,7 @@ $params->css = [
                                 <div class="media-body ml-md-3 ml-0">
                                     <h5 class="mt-0 font-weight-bold red-text"><i class="oi oi-star"></i> <?php echo $great->name; ?>
                                     </h5>
-                                    <p class="mb-1"><?php echo $great->description; ?>
+                                    <p class="mb-1"><?php echo htmlspecialchars($great->description); ?>
                                     </p>
                                     <p class="m-0 d-flex justify-content-end">
                                         <button href="#" class="btn btn-danger btn-sm show-video"

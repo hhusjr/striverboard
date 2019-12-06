@@ -19,7 +19,7 @@ function createMoment(attrs) {
 function createUserCard(attrs) {
     var headerEle = $s('<h4 class="card-title d-flex"><i class="oi oi-heart mr-auto red-text" style="cursor: pointer;"></i>' + attrs.realName + '<a href="' + spaceParams.urls.userStriverboard + attrs.uid + '" class="ml-auto"><i class="oi oi-eye"></i></a></h4>');
     var locationEle = $s('<ul class="list-unstyled list-inline font-small m-0"><li class="list-inline-item pr-2 grey-text"><i class="oi oi-home pr-1"> ' + attrs.institution + '</i></li></ul>');
-    var missionEle = $s('<p class="card-text">' + attrs.mission + '</p>');
+    var missionEle = $s('<p class="card-text">' + htmlspecialchars(attrs.mission) + '</p>');
     var infoEle = $s('<ul class="list-unstyled list-inline font-small m-0"><li class="list-inline-item pr-2 grey-text"><i class="oi oi-audio pr-1"></i>' + (Math.floor(attrs.similarity * 1000) / 10) + '%</li><li class="list-inline-item pr-2 grey-text"><i class="oi oi-target pr-1"></i>' + attrs.field + '</li></ul>');
     var body = $s('<div class="card-body"></div>');
     body

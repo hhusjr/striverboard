@@ -12,7 +12,7 @@ if (!defined('BASE_PATH')) {
         <span class="oi oi-arrow-thick-top" id="go-top"></span>
     </div>
 </div>
-<div class="modal fade animated" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade animated" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" data-url="">
     <div class="modal-dialog modal-notify modal-danger" role="document">
         <div class="modal-content">
             <div class="modal-header text-center">
