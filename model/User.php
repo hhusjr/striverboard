@@ -203,7 +203,7 @@ class UserModel extends BaseModel
     {
         $update = $this->modify([
             'real_name' => $userInfo->realName,
-            'password' => passwordEncrypt($userInfo->password, $uid),
+            'password' => $this->passwordEncrypt($userInfo->password, $uid),
             'phone' => intval($userInfo->phone),
             'fid' => intval($userInfo->fid),
             'institution' => $userInfo->institution,

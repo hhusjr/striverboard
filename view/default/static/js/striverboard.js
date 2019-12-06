@@ -32,7 +32,7 @@ function card(attrs) {
     } else {
         var likeElement = '';
     }
-    body.append('<p class="card-text black-text"><span class="badge badge-pill badge-' + (attrs.achieved ? 'success">已完成' : 'danger">未完成') + '</span> ' + attrs.description + (striverboardParams.loggedIn ? ' <a href="' + striverboardParams.urls.momentDetail + attrs.mid + '" target="_blank" class="view-detail"><i class="oi oi-eye"></i></a>' : '') + '</p>');
+    body.append('<p class="card-text black-text"><span class="badge badge-pill badge-' + (attrs.achieved ? 'success">已完成' : 'danger">未完成') + '</span> ' + htmlspecialchars(attrs.description) + (striverboardParams.loggedIn ? ' <a href="' + striverboardParams.urls.momentDetail + attrs.mid + '" target="_blank" class="view-detail"><i class="oi oi-eye"></i></a>' : '') + '</p>');
     body.append('<ul class="list-unstyled list-inline font-small m-0"><li class="list-inline-item pr-2 grey-text"><i class="oi oi-calendar pr-1"></i> ' + formatDay(attrs.time) + '</li><li class="list-inline-item pr-2 grey-text"><i class="oi oi-person pr-1"></i> ' + attrs.realName + '</li><li class="list-inline-item pr-2 grey-text">' + likeElement + '</li></ul>');
     card.append(body);
 
@@ -255,7 +255,7 @@ $s(document).ready(function() {
         bootbox.dialog({
             size: 'large',
             title: '不忘初心，牢记使命',
-            message: '<p><img src="' + striverboardParams.urls.imgMission + '" class="w-100" alt="中国共产党人的使命"></p><p><strong class="red-text">' + striverboardParams.realName + '，别忘了你的初心和使命是：</strong></p><blockquote style="text-indent: 2em;">' + $s(this).attr('data-content') + '</blockquote>',
+            message: '<p><img src="' + striverboardParams.urls.imgMission + '" class="w-100" alt="中国共产党人的使命"></p><p><strong class="red-text">' + striverboardParams.realName + '，别忘了你的初心和使命是：</strong></p><blockquote style="text-indent: 2em;">' + htmlspecialchars($s(this).attr('data-content')) + '</blockquote>',
             buttons: {
                 ok: {
                     label: '我记住了！',
@@ -370,7 +370,7 @@ $s(document).ready(function() {
                             toastr.error('选中的照片过多。请将照片总数控制在' + striverboardParams.photoNumberLimit + '以内～');
                             break;
                         case 'description':
-                            toastr.error('点滴内容不可为空。');
+                            toastr.error('点滴内容的字数应该在3～800内。');
                             break;
                         default:
                             toastr.error('发表失败，未知错误。');

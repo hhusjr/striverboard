@@ -186,10 +186,17 @@ $s(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 if (response.success) {
-                    toastr.success('恭喜你，登陆成功！即将自动刷新网页...');
+                    bootbox.dialog({
+                        message: '恭喜你，登陆成功！即将自动刷新网页...'
+                    });
                     $s('#login-modal').modal('hide');
                     window.setTimeout(function() {
-                        window.location.reload();
+                        var url = $s('#login-form').attr('data-url');
+                        if (url) {
+                            window.location = url;
+                        } else {
+                            window.location.reload();
+                        }
                     }, 2000);
                 } else {
                     toastr.error('请检查手机号和密码/验证码是否填写正确。');

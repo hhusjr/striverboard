@@ -43,7 +43,7 @@ class MomentsModel extends BaseModel
 
         $rules = [
             'pictureNumber' => count($imgUrls) <= intval(R::M('Option')->get('striverboard.photoLimit')),
-            'description' => !empty($momentInfo->description),
+            'description' => V::all($momentInfo->description, 3, 800),
             'field' => R::M('Field')->fieldExists($momentInfo->field)
         ];
         foreach ($rules as $field => $rule) {

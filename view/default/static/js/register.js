@@ -65,6 +65,7 @@ $s(document).ready(function() {
             success: function(response) {
                 if (response.success) {
                     toastr.success('注册成功啦！请登陆哟～');
+                    $s('#login-form').attr('data-url', registerParams.urls.index);
                     $s('#login-modal').modal('show');
                 } else {
                     switch (response.error) {

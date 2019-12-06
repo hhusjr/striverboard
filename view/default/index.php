@@ -90,7 +90,7 @@ $params->css = ['css/index.css'];
                         </div>
                     </div>
                     <p class="ball-text"><?php echo $items[$j]->name; ?><br><a
-                            class="badge badge-danger"><?php echo $items[$j]->intro; ?></a></p>
+                            class="badge badge-danger"><?php echo htmlspecialchars($items[$j]->intro); ?></a></p>
                 </div>
             </div>
             <?php
