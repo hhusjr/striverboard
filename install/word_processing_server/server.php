@@ -12,6 +12,8 @@ define('SERVER_PORT', 9503);
 define('SERVER_ACCESS_SECRET', 'Qks9@#kd.x.a0f9939kdfmmaa..al@##L');
 define('MAX_LOG_SIZE', 1024 * 1024 * 32); //the maximum error log file size (default: 32MB)
 
+//ini_set('memory_limit', '1024M'); //memory limit 1GB
+
 //write something to the log file
 function addLog($info)
 {
@@ -50,6 +52,7 @@ import('libs/jieba/class/JiebaAnalyse');
 use Fukuball\Jieba\Jieba;
 use Fukuball\Jieba\Finalseg;
 use Fukuball\Jieba\JiebaAnalyse;
+
 Jieba::init();
 Finalseg::init();
 JiebaAnalyse::init();
@@ -59,22 +62,20 @@ echo 'Initialized Jieba Components. TIME: ' . date('Y-m-d H:i:s') . PHP_EOL;
 echo 'I am listening...' . PHP_EOL;
 
 // create swoole server
-$server = new swoole_server(SERVER_HOST, SERVER_PORT);
-$server->on('connect', function($server, $fd) {
-    addLog('Connection open ' . $fd);
-});
-$server->on('receive', function($server, $fd, $reactorId, $data) {
-    $data = json_decode($data, true);
-    if (!isset($data['accessSecret']) || !isset($data['document']) || !$data['document']) {
+$server = new Swoole\Http\Server(SERVER_HOST, SERVER_PORT);
+$server->on('request', function ($request, $response) {
+    $response->header('Content-Type', 'application/json');
+    $data = $request->post;
+    if (!isset($data['access_secret']) || !isset($data['document']) || !$data['document']) {
         $result = ['success' => false, 'message' => 'Invalid params.'];
-        $server->send($fd, json_encode($result));
-        $server->close($fd);
+        $response->status(400);
+        $response->end(json_encode($result));
         return;
     }
-    if ($data['accessSecret'] != SERVER_ACCESS_SECRET) {
+    if ($data['access_secret'] != SERVER_ACCESS_SECRET) {
         $result = ['success' => false, 'message' => 'Secret key error.'];
-        $server->send($fd, json_encode($result));
-        $server->close($fd);
+        $response->status(403);
+        $response->end(json_encode($result));
         return;
     }
     $document = $data['document'];
@@ -86,11 +87,8 @@ $server->on('receive', function($server, $fd, $reactorId, $data) {
     }
     addLog('Result: ' . implode(', ', $results));
     $result = ['success' => true, 'keywords' => $keywords];
-    $server->send($fd, json_encode($result));
-    $server->close($fd);
-});
-$server->on('close', function($server, $fd) {
-    addLog('Connection closed ' . $fd);
+    $response->status(200);
+    $response->end(json_encode($result));
 });
 
 // start the server

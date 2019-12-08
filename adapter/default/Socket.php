@@ -14,28 +14,36 @@
  * * limitations under the License.                                          * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
- * The word processing adapter
+ * Socket adapter
  * @author JunRu Shen
  */
 if (!defined('BASE_PATH')) {
     die('Access Denied.');
 }
 
-import('adapter/default/config/WordProcessingApi');
+import('adapter/default/unirest/src/Unirest');
 
-import('adapter/interface/IWordProcess');
-class WordProcessAdapter implements IWordProcessAdapter
+import('adapter/interface/ISocket');
+class SocketAdapter implements ISocketAdapter
 {
-    // get top 20 keywords in a document
-    public static function getKeywords($document)
+    // send HTTP get request, and get JSON response
+    public static function http($host, $port, $params, $timeout = 10, $method = 'post')
     {
-        $data = SocketAdapter::http(WordProcessingApiConfig::$host, WordProcessingApiConfig::$port, array(
-            'access_secret' => WordProcessingApiConfig::$accessSecret,
-            'document' => $document
-        ), WordProcessingApiConfig::$timeout);
-        if (!isset($data['success']) || !$data['success']) {
+        if (!in_array($method, ['post', 'get'])) {
             return false;
         }
-        return $data['keywords'];
+        Unirest\Request::timeout($timeout);
+        $url = $host . ':' . $port;
+        $res = call_user_func(['Unirest\Request', $method], $url, array('Accept' => 'application/json'), $params);
+        $data = json_decode($res->raw_body, true);
+        if (!$data || !isset($data['success']) || !$data['success']) {
+            return false;
+        }
+        return $data;
+    }
+
+    // send WebSocket request, and get JSON response
+    public static function ws($host, $port, $data)
+    {
     }
 }

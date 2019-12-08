@@ -14,28 +14,18 @@
  * * limitations under the License.                                          * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
- * The word processing adapter
+ * Socket adapter interface
  * @author JunRu Shen
  */
 if (!defined('BASE_PATH')) {
     die('Access Denied.');
 }
 
-import('adapter/default/config/WordProcessingApi');
-
-import('adapter/interface/IWordProcess');
-class WordProcessAdapter implements IWordProcessAdapter
+interface ISocketAdapter
 {
-    // get top 20 keywords in a document
-    public static function getKeywords($document)
-    {
-        $data = SocketAdapter::http(WordProcessingApiConfig::$host, WordProcessingApiConfig::$port, array(
-            'access_secret' => WordProcessingApiConfig::$accessSecret,
-            'document' => $document
-        ), WordProcessingApiConfig::$timeout);
-        if (!isset($data['success']) || !$data['success']) {
-            return false;
-        }
-        return $data['keywords'];
-    }
+    // send HTTP request, and get JSON response
+    public static function http($host, $port, $params, $timeout, $method);
+
+    // send WebSocket request, and get JSON response
+    public static function ws($host, $port, $data);
 }
