@@ -14,40 +14,42 @@
  * * limitations under the License.                                          * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
- * The Index controller
+ * FileIO Exception
  * @author JunRu Shen
  */
 if (!defined('BASE_PATH')) {
     die('Access Denied.');
 }
 
-class IndexController extends CommonController
+// Error codes
+define('FILEIO_ERROR_FILE_NOT_FOUND', 500);
+define('FILEIO_ERROR_FILE_WRITE_FAIL', 501);
+define('FILEIO_ERROR_FILE_DELETE_FAIL', 502);
+define('FILEIO_ERROR_DIR_OPEN_FAIL', 503);
+define('FILEIO_ERROR_DIR_CREATE_FAIL', 504);
+define('FILEIO_ERROR_DIR_DELETE_FAIL', 505);
+
+class FileIOException extends Exception
 {
-    // Index action (default action)
-    public function onIndex()
+    // The path of the file which invokes the error
+    private $_path;
+
+    // construct function, set the error message, code and the filepath
+    public function __construct($message, $code, $path)
     {
-        $optionModel = R::M('Option');
-        $momentsModel = R::M('Moments');
-        $assigns = new StdClass;
-        $assigns->slogan = $optionModel->get('site.slogan');
-        $assigns->hotMomentsWords = $momentsModel->hotMomentsWords();
-        $assigns->momentCountGroupByField = $momentsModel->getMomentCountGroupByField();
-        $assigns->greats = [];
-        $greats = R::M('Greats')->getAll(1, 18);
-        foreach ($greats as $great) {
-            $info = new stdClass;
-            $info->name = $great->name;
-            $info->intro = $great->intro;
-            $info->videoUrl = $great->videoUrl;
-            $info->thumbnail = $this->siteUri($great->thumbnail);
-            $assigns->greats[] = $info;
-        }
-        $this->show('index', $assigns);
+        parent::__construct($message, $code);
+        $this->_path = $path;
     }
 
-    public function onTest()
+    // get the file path
+    public function getPath()
     {
-        $hookModel = new HookModel;
-        $hookModel->hook('newUser');
+        return $this->_path;
+    }
+
+    // getExtra
+    public function getExtra()
+    {
+        return $this->_path;
     }
 }

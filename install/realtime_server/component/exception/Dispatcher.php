@@ -14,40 +14,50 @@
  * * limitations under the License.                                          * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
- * The Index controller
+ * The exception of Dispatcher component
  * @author JunRu Shen
  */
 if (!defined('BASE_PATH')) {
     die('Access Denied.');
 }
 
-class IndexController extends CommonController
+// Error codes
+define('DISPATCHER_ERROR_OBJECT', 500);
+define('DISPATCHER_ERROR_FILE', 501);
+
+class DispatcherException extends Exception
 {
-    // Index action (default action)
-    public function onIndex()
+    // where does the error happened
+    private $_router;
+    private $_controller;
+    private $_action;
+
+    // construction
+    public function __construct($message, $code, $router, $controller, $action)
     {
-        $optionModel = R::M('Option');
-        $momentsModel = R::M('Moments');
-        $assigns = new StdClass;
-        $assigns->slogan = $optionModel->get('site.slogan');
-        $assigns->hotMomentsWords = $momentsModel->hotMomentsWords();
-        $assigns->momentCountGroupByField = $momentsModel->getMomentCountGroupByField();
-        $assigns->greats = [];
-        $greats = R::M('Greats')->getAll(1, 18);
-        foreach ($greats as $great) {
-            $info = new stdClass;
-            $info->name = $great->name;
-            $info->intro = $great->intro;
-            $info->videoUrl = $great->videoUrl;
-            $info->thumbnail = $this->siteUri($great->thumbnail);
-            $assigns->greats[] = $info;
-        }
-        $this->show('index', $assigns);
+        parent::__construct($message, $code);
+        $this->_router = $router;
+        $this->_controller = $controller;
+        $this->_action = $action;
     }
 
-    public function onTest()
+    // getter
+    public function getRouter()
     {
-        $hookModel = new HookModel;
-        $hookModel->hook('newUser');
+        return $this->_router;
+    }
+    public function getController()
+    {
+        return $this->_controller;
+    }
+    public function getAction()
+    {
+        return $this->_action;
+    }
+
+    // getExtra
+    public function getExtra()
+    {
+        return $this->_router . '/' . $this->_controller . '/' . $this->_action;
     }
 }

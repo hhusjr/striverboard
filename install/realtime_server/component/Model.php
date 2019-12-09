@@ -14,40 +14,27 @@
  * * limitations under the License.                                          * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
- * The Index controller
+ * The model component
  * @author JunRu Shen
  */
 if (!defined('BASE_PATH')) {
     die('Access Denied.');
 }
 
-class IndexController extends CommonController
+abstract class ModelComponent
 {
-    // Index action (default action)
-    public function onIndex()
+    //database resource
+    private $_db;
+    
+    //set db when construction
+    public function __construct()
     {
-        $optionModel = R::M('Option');
-        $momentsModel = R::M('Moments');
-        $assigns = new StdClass;
-        $assigns->slogan = $optionModel->get('site.slogan');
-        $assigns->hotMomentsWords = $momentsModel->hotMomentsWords();
-        $assigns->momentCountGroupByField = $momentsModel->getMomentCountGroupByField();
-        $assigns->greats = [];
-        $greats = R::M('Greats')->getAll(1, 18);
-        foreach ($greats as $great) {
-            $info = new stdClass;
-            $info->name = $great->name;
-            $info->intro = $great->intro;
-            $info->videoUrl = $great->videoUrl;
-            $info->thumbnail = $this->siteUri($great->thumbnail);
-            $assigns->greats[] = $info;
-        }
-        $this->show('index', $assigns);
+        $this->_db = new DatabaseComponent(R::config('database'));
     }
-
-    public function onTest()
+    
+    //get db component
+    public function getDb()
     {
-        $hookModel = new HookModel;
-        $hookModel->hook('newUser');
+        return $this->_db;
     }
 }

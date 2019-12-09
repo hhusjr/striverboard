@@ -14,40 +14,18 @@
  * * limitations under the License.                                          * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
- * The Index controller
+ * The User controller
  * @author JunRu Shen
  */
 if (!defined('BASE_PATH')) {
     die('Access Denied.');
 }
 
-class IndexController extends CommonController
+class UserController extends CommonController
 {
-    // Index action (default action)
-    public function onIndex()
+    public function onNew()
     {
-        $optionModel = R::M('Option');
-        $momentsModel = R::M('Moments');
-        $assigns = new StdClass;
-        $assigns->slogan = $optionModel->get('site.slogan');
-        $assigns->hotMomentsWords = $momentsModel->hotMomentsWords();
-        $assigns->momentCountGroupByField = $momentsModel->getMomentCountGroupByField();
-        $assigns->greats = [];
-        $greats = R::M('Greats')->getAll(1, 18);
-        foreach ($greats as $great) {
-            $info = new stdClass;
-            $info->name = $great->name;
-            $info->intro = $great->intro;
-            $info->videoUrl = $great->videoUrl;
-            $info->thumbnail = $this->siteUri($great->thumbnail);
-            $assigns->greats[] = $info;
-        }
-        $this->show('index', $assigns);
-    }
-
-    public function onTest()
-    {
-        $hookModel = new HookModel;
-        $hookModel->hook('newUser');
+        $this->hookMsg('newUser');
+        F::send(['message' => 'Reinitialized statistics about users.'], true);
     }
 }

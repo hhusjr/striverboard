@@ -14,40 +14,47 @@
  * * limitations under the License.                                          * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
- * The Index controller
+ * The exception of AutoLoader component
  * @author JunRu Shen
  */
 if (!defined('BASE_PATH')) {
     die('Access Denied.');
 }
 
-class IndexController extends CommonController
+// Error codes
+define('AUTOLOADER_ERROR_FILE_NOT_FOUND', 500);
+
+class AutoLoaderException extends Exception
 {
-    // Index action (default action)
-    public function onIndex()
+    // object name
+    private $_objName;
+
+    // path
+    private $_path;
+
+    // construct
+    public function __construct($message, $code, $objName, $path)
     {
-        $optionModel = R::M('Option');
-        $momentsModel = R::M('Moments');
-        $assigns = new StdClass;
-        $assigns->slogan = $optionModel->get('site.slogan');
-        $assigns->hotMomentsWords = $momentsModel->hotMomentsWords();
-        $assigns->momentCountGroupByField = $momentsModel->getMomentCountGroupByField();
-        $assigns->greats = [];
-        $greats = R::M('Greats')->getAll(1, 18);
-        foreach ($greats as $great) {
-            $info = new stdClass;
-            $info->name = $great->name;
-            $info->intro = $great->intro;
-            $info->videoUrl = $great->videoUrl;
-            $info->thumbnail = $this->siteUri($great->thumbnail);
-            $assigns->greats[] = $info;
-        }
-        $this->show('index', $assigns);
+        parent::__construct($message, $code);
+        $this->_objName = $objName;
+        $this->_path = $path;
     }
 
-    public function onTest()
+    // get the object
+    public function getObjName()
     {
-        $hookModel = new HookModel;
-        $hookModel->hook('newUser');
+        return $this->_objName;
+    }
+
+    // get the path
+    public function getPath()
+    {
+        return $this->_path;
+    }
+
+    // get extra
+    public function getExtra()
+    {
+        return '[path: ' . $this->_path . '] [calling: ' . $this->_objName . ']';
     }
 }

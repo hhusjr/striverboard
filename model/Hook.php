@@ -14,40 +14,36 @@
  * * limitations under the License.                                          * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
- * The Index controller
+ * The Hook Model
  * @author JunRu Shen
  */
 if (!defined('BASE_PATH')) {
     die('Access Denied.');
 }
 
-class IndexController extends CommonController
+class HookModel
 {
-    // Index action (default action)
-    public function onIndex()
+    // valid hooks
+    private $_validHooks = [
+        'newUser' => ['User', 'New'],
+        'newMoment' => ['Moment', 'New']
+    ];
+    
+    // add new hook
+    public function hook($hook)
     {
-        $optionModel = R::M('Option');
-        $momentsModel = R::M('Moments');
-        $assigns = new StdClass;
-        $assigns->slogan = $optionModel->get('site.slogan');
-        $assigns->hotMomentsWords = $momentsModel->hotMomentsWords();
-        $assigns->momentCountGroupByField = $momentsModel->getMomentCountGroupByField();
-        $assigns->greats = [];
-        $greats = R::M('Greats')->getAll(1, 18);
-        foreach ($greats as $great) {
-            $info = new stdClass;
-            $info->name = $great->name;
-            $info->intro = $great->intro;
-            $info->videoUrl = $great->videoUrl;
-            $info->thumbnail = $this->siteUri($great->thumbnail);
-            $assigns->greats[] = $info;
+        $config = R::config('hook');
+        if (!$config->realTimeStatistics) {
+            return false;
         }
-        $this->show('index', $assigns);
-    }
-
-    public function onTest()
-    {
-        $hookModel = new HookModel;
-        $hookModel->hook('newUser');
+        if (!isset($this->_validHooks[$hook])) {
+            return false;
+        }
+        [$controller, $action] = $this->_validHooks[$hook];
+        SocketAdapter::ws($config->host, $config->port, [
+            'accessSecret' => $config->accessSecret,
+            'c' => $controller,
+            'a' => $action
+        ]);
     }
 }

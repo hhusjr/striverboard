@@ -22,6 +22,7 @@ if (!defined('BASE_PATH')) {
 }
 
 import('adapter/default/unirest/src/Unirest');
+import('adapter/default/websocket/vendor/autoload');
 
 import('adapter/interface/ISocket');
 class SocketAdapter implements ISocketAdapter
@@ -43,7 +44,16 @@ class SocketAdapter implements ISocketAdapter
     }
 
     // send WebSocket request, and get JSON response
-    public static function ws($host, $port, $data)
+    public static function ws($host, $port, $params, $timeout = 10)
     {
+        $cli = new WebSocket\Client($host . ':' . $port);
+        $cli->setTimeout($timeout);
+        $cli->send(json_encode($params));
+        $data = $cli->receive();
+        $data = json_decode($data, true);
+        if (!$data || !isset($data['success']) || !$data['success']) {
+            return false;
+        }
+        return $data;
     }
 }

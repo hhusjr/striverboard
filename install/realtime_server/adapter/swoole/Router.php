@@ -14,40 +14,33 @@
  * * limitations under the License.                                          * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
- * The Index controller
+ * The URL Router adapter
  * @author JunRu Shen
  */
 if (!defined('BASE_PATH')) {
     die('Access Denied.');
 }
 
-class IndexController extends CommonController
+import('adapter/interface/IRouter');
+class RouterAdapter extends DispatcherComponent implements IRouterAdapter
 {
-    // Index action (default action)
-    public function onIndex()
+    // Run the dispatch service
+    public function dispatch()
     {
-        $optionModel = R::M('Option');
-        $momentsModel = R::M('Moments');
-        $assigns = new StdClass;
-        $assigns->slogan = $optionModel->get('site.slogan');
-        $assigns->hotMomentsWords = $momentsModel->hotMomentsWords();
-        $assigns->momentCountGroupByField = $momentsModel->getMomentCountGroupByField();
-        $assigns->greats = [];
-        $greats = R::M('Greats')->getAll(1, 18);
-        foreach ($greats as $great) {
-            $info = new stdClass;
-            $info->name = $great->name;
-            $info->intro = $great->intro;
-            $info->videoUrl = $great->videoUrl;
-            $info->thumbnail = $this->siteUri($great->thumbnail);
-            $assigns->greats[] = $info;
+        $accessSecret = F::get('accessSecret');
+        if ($accessSecret != R::config('server')->accessSecret) {
+            F::send(['error' => 'Access Denied.'], false);
         }
-        $this->show('index', $assigns);
-    }
-
-    public function onTest()
-    {
-        $hookModel = new HookModel;
-        $hookModel->hook('newUser');
+        $router = F::get('__router');
+        $controller = F::get('c');
+        $action = F::get('a');
+        $routerConfig = R::config('router');
+        parent::set(
+            $router ? $router : $routerConfig->defaultType,
+            $controller ? $controller : $routerConfig->defaultController,
+            $action ? $action : $routerConfig->defaultAction,
+            array('Error', 'Index')
+        );
+        parent::dispatch();
     }
 }
