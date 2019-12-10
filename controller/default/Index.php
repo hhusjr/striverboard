@@ -44,10 +44,4 @@ class IndexController extends CommonController
         }
         $this->show('index', $assigns);
     }
-
-    public function onTest()
-    {
-        $hookModel = new HookModel;
-        $hookModel->hook('newUser');
-    }
 }

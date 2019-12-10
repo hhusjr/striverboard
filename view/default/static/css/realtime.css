@@ -1,0 +1,17 @@
+.anchorBL {
+    display: none;
+}
+
+#heat-map-container {
+    width: 100%;
+    height: 600px;
+}
+
+#user-graph-container {
+    padding: 10px;
+}
+
+#user-graph {
+    width: 100%;
+    height: 580px;
+}

@@ -429,6 +429,55 @@ class MomentsModel extends BaseModel
         return $results;
     }
 
+    // get newest moments
+    public function getNewMoments($number = 10)
+    {
+        $me = $this;
+        $getPhotosList = function ($mid) use ($me) {
+            $results = [];
+            $details = $me->getPhotos($mid);
+            foreach ($details as $detail) {
+                $results[] = $detail->url;
+            }
+            return $results;
+        };
+    
+        $fields = [
+                'mid',
+                'description',
+                'time',
+                'uid',
+                'visibility',
+                'achieved',
+                'significant'
+            ];
+        $details = $this
+                        ->select($fields)
+                        ->condition([
+                            'visibility' => 'public'
+                        ])
+                        ->order(['time DESC', 'uid ASC', 'mid DESC'])
+                        ->limit($number)
+                        ->fetchAll();
+    
+        $results = [];
+        foreach ($details as $detail) {
+            $result = new stdClass;
+            $result->description = $detail['description'];
+            $result->time = intval($detail['time']);
+            $result->uid = intval($detail['uid']);
+            $result->visibility = $detail['visibility'] == 'public' ? 'public' : 'private';
+            $result->significant = (bool) $detail['significant'];
+            $result->imgs = $getPhotosList($detail['mid']);
+            $result->mid = intval($detail['mid']);
+            $result->realName = R::M('User')->getRealName($result->uid);
+            $result->achieved = (bool) $detail['achieved'];
+            $results[] = $result;
+        }
+                       
+        return $results;
+    }
+
     // get a moment
     public function getMoment($mid)
     {

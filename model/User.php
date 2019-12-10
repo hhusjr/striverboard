@@ -243,6 +243,20 @@ class UserModel extends BaseModel
     // compare the mission similarity between two users
     public function getMissionSimilarity($uid1, $uid2)
     {
+        $uid1 = intval($uid1);
+        $uid2 = intval($uid2);
+
+        if (!$this->uidExists($uid1) || !$this->uidExists($uid2)) {
+            return false;
+        }
+
+        // get from cache
+        $similarity = $this->select('similarity', 'user_similarity_cache')->condition(['uid1' => $uid1, 'uid2' => $uid2])->fetchColumn();
+        if ($similarity !== false) {
+            return floatval($similarity);
+        }
+
+        // if cache not exists, do calculate
         $wordsUnion = [];
 
         $words = $this
@@ -276,10 +290,21 @@ class UserModel extends BaseModel
             $d2 += $words2[$word] * $words2[$word];
         }
 
-        if (!$d1 || !$d2) {
-            return 0;
-        }
-        return $dot / sqrt($d1) / sqrt($d2);
+        $similarity = ($d1 && $d2) ? ($dot / sqrt($d1) / sqrt($d2)) : 0;
+
+        // write back the cache
+        $this->insert([
+            'uid1' => $uid1,
+            'uid2' => $uid2,
+            'similarity' => $similarity
+        ], 'user_similarity_cache')->execute();
+        $this->insert([
+            'uid1' => $uid2,
+            'uid2' => $uid1,
+            'similarity' => $similarity
+        ], 'user_similarity_cache')->execute();
+
+        return $similarity;
     }
 
     // search users
@@ -330,5 +355,55 @@ class UserModel extends BaseModel
         }
 
         return $results;
+    }
+
+    // get new users
+    public function getNewUsers($number = 3)
+    {
+        $result = $this->select('uid')->order('uid DESC')->limit($number)->result();
+        $users = [];
+        while ($uid = $result->fetchColumn()) {
+            $users[] = $this->getUserInfo($uid);
+        }
+        return $users;
+    }
+
+    // build user graph G=(V,E)
+    // If the similiarity between two users > 0.4, we can say they're connected
+    public function buildUserGraph($lowerbound = 0.4)
+    {
+        $result = $this->select('uid')->order('uid DESC')->result();
+
+        $uids = [];
+        while ($uid = $result->fetchColumn()) {
+            $uids[] = intval($uid);
+        }
+
+        $edges = [];
+        $total = count($uids);
+        for ($i = 0; $i < $total; $i++) {
+            for ($j = $i + 1; $j < $total; $j++) {
+                $uid1 = $uids[$i];
+                $uid2 = $uids[$j];
+                $similarity = $this->getMissionSimilarity($uid1, $uid2);
+                if ($similarity > $lowerbound) {
+                    $edge = new stdClass;
+                    $edge->from = $uid1;
+                    $edge->to = $uid2;
+                    $edge->weight = $similarity;
+                    $edges[] = $edge;
+                }
+            }
+        }
+
+        $vertexes = [];
+        foreach ($uids as $uid) {
+            $vertex = new stdClass;
+            $vertex->node = $uid;
+            $vertex->attributes = $this->getUserInfo($uid);
+            $vertexes[] = $vertex;
+        }
+
+        return [$vertexes, $edges];
     }
 }

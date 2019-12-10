@@ -12,3 +12,16 @@ function formatDistance(km) {
 function htmlspecialchars(value) {
     return $s('<div />').text(value).html();
 }
+
+// implements Java's str.hashCode
+String.prototype.hashCode = function() {
+    var hash = 0;
+    var i, chr;
+    if (this.length === 0) return hash;
+    for (i = 0; i < this.length; i++) {
+        chr = this.charCodeAt(i);
+        hash = ((hash << 5) - hash) + chr;
+        hash |= 0;
+    }
+    return hash;
+};

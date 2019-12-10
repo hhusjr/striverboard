@@ -38,4 +38,59 @@ class StatisticsController extends CommonController
         $this->json($result);
     }
 
+    // get ajax user graph
+    public function onAjaxUserGraph()
+    {
+        $this->needAjax();
+        $this->needPost();
+        /*
+        $newUsersData = $userModel->getNewUsers();
+        $newUsers = [];
+        foreach ($newUsersData as $user) {
+            $newUser = new stdClass;    
+            $newUser['uid'] = $user->uid;
+            $newUser['realName'] = $user->realName;
+            $newUser['mission'] = $user->mission;
+            $newUser['institution'] = $user->institution;
+            $newUser['fid'] = $user->fid;
+            $newUser['field'] = $user->field;
+            $newUser['description'] = $user->description;
+            $newUser['admin'] = $user->admin;
+            $newUser['momentsVisibility'] = $user->momentsVisibility;
+            $newUsers[] = $newUser;
+        }
+        $hotMissionWords = $userModel->hotMissionWords();
+        */
+
+        [$vertexes, $edges] = R::M('User')->buildUserGraph();
+
+        $data = [];
+        foreach ($vertexes as $vertex) {
+            $data[] = [
+                'name' => $vertex->node,
+                'realName' => $vertex->attributes->realName,
+                'field' => $vertex->attributes->field
+            ];
+        }
+
+        $links = [];
+        foreach ($edges as $edge) {
+            $links[] = [
+                'source' => $edge->from,
+                'target' => $edge->to,
+                'value' => $edge->weight
+            ];
+        }
+
+        $this->json([
+            'data' => $data,
+            'links' => $links
+        ]);
+    }
+
+    // get real-time statistics
+    public function onRealtimeStatistics()
+    {
+        $this->show('realtime_statistics');
+    }
 }
