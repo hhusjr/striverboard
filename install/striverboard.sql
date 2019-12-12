@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `striverboard_comments`;
 CREATE TABLE `striverboard_comments` (
   `cid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `mid` int(10) unsigned NOT NULL,
-  `content` text NOT NULL,
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `post_time` int(10) unsigned NOT NULL,
   PRIMARY KEY (`cid`),
   KEY `mid_index` (`mid`)
@@ -50,7 +50,7 @@ DROP TABLE IF EXISTS `striverboard_fields`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `striverboard_fields` (
   `fid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) DEFAULT NULL,
+  `name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`fid`),
   UNIQUE KEY `name_UNIQUE` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -75,11 +75,11 @@ DROP TABLE IF EXISTS `striverboard_greats`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `striverboard_greats` (
   `gid` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(42) NOT NULL,
-  `intro` varchar(42) NOT NULL,
-  `video_url` varchar(255) NOT NULL,
-  `thumbnail` varchar(255) NOT NULL,
-  `description` text NOT NULL,
+  `name` varchar(42) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `intro` varchar(42) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `video_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `thumbnail` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`gid`),
   UNIQUE KEY `name_UNIQUE` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -117,7 +117,7 @@ CREATE TABLE `striverboard_likes` (
 
 LOCK TABLES `striverboard_likes` WRITE;
 /*!40000 ALTER TABLE `striverboard_likes` DISABLE KEYS */;
-INSERT INTO `striverboard_likes` VALUES (1,1),(1,2),(1,12),(1,15),(1,16),(1,17),(1,19),(1,20),(1,21),(1,22),(1,23),(1,25),(1,26),(1,27),(1,28),(1,30),(1,31),(1,33),(1,34),(1,35),(1,37),(5,12),(5,14),(5,19),(5,20),(5,22),(5,23),(5,24),(5,25),(5,26),(5,27),(5,28),(5,30),(5,33);
+INSERT INTO `striverboard_likes` VALUES (12,12),(12,13),(12,16);
 /*!40000 ALTER TABLE `striverboard_likes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -131,12 +131,12 @@ DROP TABLE IF EXISTS `striverboard_messages`;
 CREATE TABLE `striverboard_messages` (
   `msg_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `uid` int(10) unsigned NOT NULL,
-  `msg_type` varchar(45) NOT NULL,
+  `msg_type` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `time` int(10) unsigned NOT NULL,
   `is_read` tinyint(3) unsigned NOT NULL,
-  `msg_params` text NOT NULL,
+  `msg_params` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`msg_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -145,8 +145,33 @@ CREATE TABLE `striverboard_messages` (
 
 LOCK TABLES `striverboard_messages` WRITE;
 /*!40000 ALTER TABLE `striverboard_messages` DISABLE KEYS */;
-INSERT INTO `striverboard_messages` VALUES (1,1,'newFollower',1574864822,1,'{\"uid\":1}'),(2,1,'newLike',1574864899,1,'{\"uid\":2,\"mid\":2}'),(3,1,'newMoment',1574864876,1,'{\"uid\":2,\"mid\":2}'),(4,1,'newFollower',1574864876,1,'{\"uid\":1}'),(5,1,'newLike',1574935737,1,'{\"mid\":28,\"uid\":1}'),(6,1,'newLike',1574936100,1,'{\"mid\":28,\"uid\":5}'),(7,1,'newLike',1574936102,1,'{\"mid\":25,\"uid\":5}'),(8,1,'newLike',1574936103,1,'{\"mid\":24,\"uid\":5}'),(9,1,'newLike',1574936105,1,'{\"mid\":22,\"uid\":5}'),(10,1,'newLike',1574936106,1,'{\"mid\":23,\"uid\":5}'),(11,1,'newLike',1574936107,1,'{\"mid\":20,\"uid\":5}'),(12,1,'newLike',1574936293,1,'{\"mid\":12,\"uid\":5}'),(13,1,'newLike',1574936295,1,'{\"mid\":14,\"uid\":5}'),(14,1,'newLike',1574936297,1,'{\"mid\":19,\"uid\":5}'),(15,1,'newLike',1574937317,1,'{\"mid\":26,\"uid\":5}'),(16,1,'newLike',1574937320,1,'{\"mid\":27,\"uid\":5}'),(17,5,'newLike',1574937368,1,'{\"mid\":33,\"uid\":1}'),(18,5,'newLike',1574937369,1,'{\"mid\":31,\"uid\":1}'),(19,5,'newLike',1574937370,1,'{\"mid\":30,\"uid\":1}');
+INSERT INTO `striverboard_messages` VALUES (1,11,'newLike',1576141688,0,'{\"mid\":16,\"uid\":12}'),(2,11,'newLike',1576141689,0,'{\"mid\":12,\"uid\":12}'),(3,11,'newLike',1576141716,0,'{\"mid\":13,\"uid\":12}');
 /*!40000 ALTER TABLE `striverboard_messages` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `striverboard_mission_keywords`
+--
+
+DROP TABLE IF EXISTS `striverboard_mission_keywords`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `striverboard_mission_keywords` (
+  `uid` int(10) unsigned NOT NULL,
+  `word` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tf_idf` double NOT NULL,
+  KEY `uid_index` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `striverboard_mission_keywords`
+--
+
+LOCK TABLES `striverboard_mission_keywords` WRITE;
+/*!40000 ALTER TABLE `striverboard_mission_keywords` DISABLE KEYS */;
+INSERT INTO `striverboard_mission_keywords` VALUES (1,'数学考试',2.3167796086667),(1,'数学',2.2027801586),(1,'好好学',2.01815303045),(1,'满分',1.7061860009667),(1,'作出贡献',1.56496969091),(2,'作出贡献',4.69490907273),(2,'数学',3.3041702379),(3,'数学',1.65208511895),(3,'好好学',1.5136147728375),(3,'高分',1.3124350337875),(3,'很强',0.9426379729125),(3,'考试',0.9293166159675),(3,'学习',0.72213997711375),(3,'能力',0.61691788477125),(4,'很强',1.885275945825),(4,'数学',1.65208511895),(4,'学习',1.4442799542275),(4,'能力',1.2338357695425),(5,'计算机领域',1.6002581704125),(5,'计算机相关',1.4943459378625),(5,'考好',1.4943459378625),(5,'努力学习',1.3762882367625),(5,'考试',0.9293166159675),(5,'计算机',0.85059805386),(5,'知识',0.80610692693125),(5,'贡献',0.75525462454375),(6,'计算机领域',2.56041307266),(6,'计算机科学',1.951508585116),(6,'作出贡献',1.877963629092),(6,'学习',1.155423963382),(6,'技术',0.943891435714),(7,'高等数学',5.6308101612),(7,'努力',3.01145065935),(8,'高等数学',4.50464812896),(8,'学习',2.310847926764),(8,'快乐',1.485048987054),(9,'太空',8.53470163695),(10,'高等数学',5.6308101612),(10,'努力',3.01145065935),(11,'太空',8.53470163695),(12,'河海大学',3.128595822725),(12,'高等数学',2.8154050806),(12,'奇迹',1.9385870985775),(12,'创造',1.45885311077);
+/*!40000 ALTER TABLE `striverboard_mission_keywords` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -157,7 +182,7 @@ DROP TABLE IF EXISTS `striverboard_mission_words`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `striverboard_mission_words` (
-  `word` varchar(24) NOT NULL,
+  `word` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `times` int(10) unsigned NOT NULL,
   `idf` double unsigned NOT NULL,
   PRIMARY KEY (`word`)
@@ -170,7 +195,7 @@ CREATE TABLE `striverboard_mission_words` (
 
 LOCK TABLES `striverboard_mission_words` WRITE;
 /*!40000 ALTER TABLE `striverboard_mission_words` DISABLE KEYS */;
-INSERT INTO `striverboard_mission_words` VALUES ('作出贡献',1,9.38981814546),('使命',2,7.96578345636),('公司',1,3.50346994358),('内容',2,5.13428337493),('初心',2,13.2075304714),('吉里',1,11.8212361103),('地方',1,4.41589243433),('填写',1,8.91707103027),('奋斗',1,8.23771717184),('我要',1,11.9547675029),('格式',1,8.44535653662),('测试',4,7.14723973338),('祖国',1,7.45020722983),('科技',1,5.83227469341),('空间',1,5.2778639787),('辣椒',1,8.1641053545),('这个',1,3.56732510451),('鲁昆',1,11.9547675029);
+INSERT INTO `striverboard_mission_words` VALUES ('作出贡献',3,9.38981814546),('创造',1,5.83541244308),('努力',2,6.0229013187),('努力学习',1,11.0103058941),('太空',2,8.53470163695),('奇迹',1,7.75434839431),('好好学',2,12.1089181827),('学习',4,5.77711981691),('很强',2,7.5411037833),('快乐',1,7.42524493527),('技术',1,4.71945717857),('数学',4,6.6083404758),('数学考试',1,13.900677652),('河海大学',1,12.5143832909),('满分',1,10.2371160058),('知识',1,6.44885541545),('考好',1,11.9547675029),('考试',2,7.43453292774),('能力',2,4.93534307817),('计算机',1,6.80478443088),('计算机相关',1,11.9547675029),('计算机科学',1,9.75754292558),('计算机领域',2,12.8020653633),('贡献',1,6.04203699635),('高分',1,10.4994802703),('高等数学',4,11.2616203224);
 /*!40000 ALTER TABLE `striverboard_mission_words` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -183,7 +208,7 @@ DROP TABLE IF EXISTS `striverboard_mission_words_index`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `striverboard_mission_words_index` (
   `uid` int(10) unsigned NOT NULL,
-  `word` varchar(24) NOT NULL,
+  `word` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tf_idf` double NOT NULL,
   KEY `uid_index` (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -195,7 +220,7 @@ CREATE TABLE `striverboard_mission_words_index` (
 
 LOCK TABLES `striverboard_mission_words_index` WRITE;
 /*!40000 ALTER TABLE `striverboard_mission_words_index` DISABLE KEYS */;
-INSERT INTO `striverboard_mission_words_index` VALUES (1,'初心',1.8867900673429),(1,'填写',1.2738672900386),(1,'使命',1.1379690651943),(1,'测试',1.0210342476257),(1,'内容',0.73346905356143),(1,'地方',0.63084177633286),(1,'这个',0.50961787207286),(2,'测试',7.14723973338),(3,'测试',7.14723973338),(4,'初心',1.8867900673429),(4,'我要',1.7078239289857),(4,'作出贡献',1.3414025922086),(4,'使命',1.1379690651943),(4,'祖国',1.0643153185471),(4,'测试',1.0210342476257),(4,'内容',0.73346905356143),(6,'奋斗',2.471315151552),(6,'鲁昆',1.19547675029),(6,'吉里',1.18212361103),(6,'格式',0.844535653662),(6,'辣椒',0.81641053545),(6,'科技',0.583227469341),(6,'空间',0.52778639787),(6,'公司',0.350346994358);
+INSERT INTO `striverboard_mission_words_index` VALUES (1,'数学',1.8022746752182),(1,'数学考试',1.2636979683636),(1,'好好学',1.1008107438818),(1,'满分',0.93064690961818),(1,'作出贡献',0.85361983140545),(1,'好学',0.84061066380182),(1,'考试',0.67586662979455),(1,'好好',0.59108103423273),(1,'贡献',0.54927609057727),(2,'作出贡献',3.12993938182),(2,'数学',2.2027801586),(2,'贡献',2.0140123321167),(3,'数学',1.32166809516),(3,'好好学',1.21089181827),(3,'高分',1.04994802703),(3,'好学',0.924671730182),(3,'很强',0.75411037833),(3,'考试',0.743453292774),(3,'好好',0.650189137656),(3,'学习',0.577711981691),(3,'能力',0.493534307817),(4,'很强',1.885275945825),(4,'数学',1.65208511895),(4,'学习',1.4442799542275),(4,'能力',1.2338357695425),(5,'算机',1.72541735688),(5,'计算机',1.020717664632),(5,'计算',0.839761778565),(5,'计算机领域',0.640103268165),(5,'计算机相关',0.597738375145),(5,'考好',0.597738375145),(5,'努力学习',0.550515294705),(5,'力学',0.3780159174125),(5,'考试',0.371726646387),(5,'知识',0.3224427707725),(5,'贡献',0.3021018498175),(5,'努力',0.301145065935),(5,'学习',0.2888559908455),(5,'相关',0.241785496651),(6,'算机',1.7696588275692),(6,'计算机',1.0468899124431),(6,'计算机领域',0.98477425871538),(6,'计算',0.86129413186154),(6,'计算机科学',0.75058022504462),(6,'作出贡献',0.72229370349692),(6,'贡献',0.46477207664231),(6,'学习',0.44439383207),(6,'科学',0.42904267418385),(6,'技术',0.36303516758231),(7,'高等数学',2.8154050806),(7,'高等',1.93486758257),(7,'数学',1.65208511895),(7,'努力',1.505725329675),(8,'高等数学',2.5025822938667),(8,'高等',1.7198822956178),(8,'数学',1.4685201057333),(8,'学习',1.2838044037578),(8,'快乐',0.82502721503),(9,'太空',8.53470163695),(10,'高等数学',2.8154050806),(10,'高等',1.93486758257),(10,'数学',1.65208511895),(10,'努力',1.505725329675),(11,'太空',8.53470163695),(12,'河海大学',1.3904870323222),(12,'高等数学',1.2512911469333),(12,'海大',1.2364543255222),(12,'河海',1.1825090126667),(12,'奇迹',0.86159426603444),(12,'高等',0.85994114780889),(12,'数学',0.73426005286667),(12,'创造',0.64837916034222),(12,'大学',0.63491258028333);
 /*!40000 ALTER TABLE `striverboard_mission_words_index` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -208,18 +233,18 @@ DROP TABLE IF EXISTS `striverboard_moments`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `striverboard_moments` (
   `mid` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `description` text NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `location_lng` double NOT NULL,
   `location_lat` double NOT NULL,
   `time` int(10) unsigned NOT NULL,
   `uid` int(10) unsigned NOT NULL,
-  `visibility` enum('private','public') NOT NULL,
+  `visibility` enum('private','public') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `achieved` tinyint(4) unsigned NOT NULL,
   `significant` tinyint(3) unsigned NOT NULL,
   `fid` int(10) unsigned NOT NULL,
   PRIMARY KEY (`mid`),
   KEY `index_uid` (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -228,7 +253,7 @@ CREATE TABLE `striverboard_moments` (
 
 LOCK TABLES `striverboard_moments` WRITE;
 /*!40000 ALTER TABLE `striverboard_moments` DISABLE KEYS */;
-INSERT INTO `striverboard_moments` VALUES (1,'内容内容内容内容ABC',118.78422291083,31.919147594682,1574602023,1,'public',1,0,3),(2,'我参加了一次志愿活动。为国家做出了自己的一点贡献。。。。。。。。。',116.2,39.56,1574603659,1,'public',1,0,16),(3,'这次志愿活动中我的收获非常大，让我对国家有了更深刻的认识和体会，我坚信自己会继续成长，为祖国做出自己的贡献。',118.78422226517,31.919147396143,1574603702,1,'public',1,0,3),(4,'dgffg',118.78286830292,31.916205177202,1574751289,1,'public',1,0,3),(5,'dsfdsfdfsd',118.78275602088,31.917174476881,1574751328,1,'public',1,0,3),(6,'dfdfgdfg',118.78275602088,31.917174476881,1574751370,1,'public',1,0,3),(7,'gggg',118.78190646518,31.916443951724,1574751409,1,'public',1,0,3),(8,'safafsaf',118.78218301936,31.916689496017,1574751430,1,'public',1,0,3),(9,'bbb',118.78218301936,31.916689496017,1574751528,1,'public',1,0,3),(10,'thrtrh',118.78222762376,31.917742269664,1574751567,1,'public',1,0,3),(11,'bbbb',118.78220212674,31.916682859511,1574751708,1,'public',1,0,3),(12,'ddd',118.7820379393,31.917319084352,1574751777,1,'public',1,0,3),(13,'testtest',118.78195021764,31.918021425475,1574751837,1,'public',1,0,3),(14,'test',118.78300421256,31.916167599866,1574751874,1,'public',1,0,3),(15,'fsdfsd',118.78195274252,31.918043653087,1574752040,1,'public',1,0,3),(16,'sdgdssdg',118.781976814,31.916948271863,1574752063,1,'public',1,0,3),(17,'fassafsafsafsasasafasf',118.78326041474,31.91663284897,1574752181,1,'public',1,0,3),(18,'dsfdsfdsfdfs',118.78339377502,31.916594312251,1574752237,1,'public',1,0,3),(19,'dsfdfsdsfd',118.782027737,31.917405689325,1574752270,1,'public',1,0,3),(20,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊嗷嗷锕锕风飒的',360,360,1574801225,1,'public',1,0,3),(21,' 啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊嗷嗷锕锕风飒的 啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊嗷嗷锕锕风飒的 啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊嗷嗷锕锕风飒的 啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊嗷嗷锕锕风飒的 啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊嗷嗷锕锕风飒的 啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊嗷嗷锕锕风飒的',360,360,1574801315,1,'public',1,0,3),(22,'dsaggadsdgsadgsa',360,360,1574839194,1,'public',1,0,3),(23,'rwar',360,360,1574839202,1,'public',1,0,3),(24,'asfasdfsasdsdfa',360,360,1574839223,1,'public',1,0,3),(25,'sadsadsadsad',360,360,1574839229,1,'public',1,0,3),(26,'asfdfsadsad',360,360,1574839242,1,'public',1,0,3),(27,'asdfsadfadfsadfadfsa',360,360,1574839252,1,'public',1,0,3),(28,'dfgdsdfgdfgdfgsdfg对方 v 个电饭锅电饭锅烧豆腐歌功颂德奋斗奉公守法上的歌功颂德奋斗发广告的防风固沙的',118.78429627815,31.919147341679,1574858382,1,'public',0,0,3),(29,'测试测试',118.78426558345,31.919145265674,1574936727,5,'private',0,0,3),(30,'公开内容',118.78426558345,31.919145265674,1574936870,5,'public',1,0,3),(31,'gsdgdsgdsgdsgds',118.78426531329,31.919145110521,1574937222,5,'public',1,0,3),(32,'test',118.78425415334,31.919153485521,1574937294,5,'private',1,0,3),(33,'asffasfsasfa',118.78425415334,31.919153485521,1574937303,5,'public',1,0,3),(34,'aaa',118.78425414207,31.919153485381,1574942789,1,'public',1,0,3),(35,'asdggasdsg',360,360,1574953051,1,'public',1,0,3),(36,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊',118.7842951,31.919142987762,1574999128,1,'public',1,0,3),(37,' 啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊  啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊 ',118.7842951,31.919142987762,1574999159,1,'public',1,0,3);
+INSERT INTO `striverboard_moments` VALUES (1,'随便坐',115.46097892536,25.921965757224,1576138580,11,'public',1,0,3),(2,'u度点解点解',115.46097892536,25.921965757224,1576138587,11,'public',1,0,3),(3,'福多户杜甫',115.46097892536,25.921965757224,1576138593,11,'public',1,0,3),(4,'海底啥差点',115.46097892536,25.921965757224,1576138600,11,'public',1,0,3),(5,'杜甫草堂镇',115.46097892536,25.921965757224,1576138610,11,'public',1,0,3),(6,'杜甫田螺坑的人。嗯',115.46097892536,25.921965757224,1576138623,11,'public',1,0,3),(7,'中国科学',115.46097892536,25.921965757224,1576138633,11,'public',1,0,3),(8,'中国科学院',115.46097892536,25.921965757224,1576138642,11,'public',1,0,3),(9,'河海大学',115.46097892536,25.921965757224,1576138652,11,'public',1,0,3),(10,'河海大学',115.46097892536,25.921965757224,1576138662,11,'public',1,0,3),(11,'河海大学',115.46097892536,25.921965757224,1576138668,11,'public',1,0,3),(12,'哈哈哈哈哈哈哈',111.77681510387,29.343226364779,1576138726,11,'public',1,0,13),(13,'哦滚哦贵',111.77681510387,29.343226364779,1576138733,11,'public',1,0,13),(14,'次不次',111.77681510387,29.343226364779,1576138741,11,'public',1,0,4),(15,'几佛哦哦哦哦',111.77681510387,29.343226364779,1576138746,11,'public',1,0,4),(16,'一点一点有点贵',106.77381593488,38.211403262864,1576138762,11,'public',1,0,14);
 /*!40000 ALTER TABLE `striverboard_moments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -242,9 +267,9 @@ DROP TABLE IF EXISTS `striverboard_moments_photos`;
 CREATE TABLE `striverboard_moments_photos` (
   `pid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `mid` int(10) unsigned NOT NULL,
-  `url` text NOT NULL,
+  `url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -253,7 +278,6 @@ CREATE TABLE `striverboard_moments_photos` (
 
 LOCK TABLES `striverboard_moments_photos` WRITE;
 /*!40000 ALTER TABLE `striverboard_moments_photos` DISABLE KEYS */;
-INSERT INTO `striverboard_moments_photos` VALUES (1,1,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-10-31%20%E4%B8%8B%E5%8D%888_02_47.png'),(2,1,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-10-31%20%E4%B8%8B%E5%8D%888_13_26.png'),(3,1,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-11-14%20%E4%B8%8B%E5%8D%881_51_34%201.png'),(4,4,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-10-31%20%E4%B8%8B%E5%8D%888_13_26.png'),(5,4,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-11-14%20%E4%B8%8B%E5%8D%881_51_34%201.png'),(6,5,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-10-31%20%E4%B8%8B%E5%8D%888_13_26.png'),(7,5,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-11-14%20%E4%B8%8B%E5%8D%881_51_34%201.png'),(8,6,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-11-07%20%E4%B8%8B%E5%8D%888_22_21.png'),(9,7,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-11-07%20%E4%B8%8B%E5%8D%888_22_21.png'),(10,8,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-11-07%20%E4%B8%8B%E5%8D%888_22_21.png'),(11,9,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-11-10%20%E4%B8%8A%E5%8D%8811_40_04.png'),(12,11,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-11-19%20%E4%B8%8B%E5%8D%881_20_55.png'),(13,12,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/8b13632762d0f7031ae03f570bfa513d2797c5ef.jpg'),(14,13,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/8b13632762d0f7031ae03f570bfa513d2797c5ef.jpg'),(15,14,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/timg-1.jpg'),(16,19,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-11-19%20%E4%B8%8B%E5%8D%882_59_37(1).png'),(17,34,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/8b13632762d0f7031ae03f570bfa513d2797c5ef.jpg'),(18,34,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-10-25%20%E4%B8%8B%E5%8D%884_35_24.png'),(19,34,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-11-18%20%E4%B8%8B%E5%8D%886_22_15.png'),(20,34,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-11-19%20%E4%B8%8B%E5%8D%881_20_55.png'),(21,34,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-11-19%20%E4%B8%8B%E5%8D%882_59_37.png'),(22,34,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-11-19%20%E4%B8%8B%E5%8D%882_59_37(1).png'),(23,34,'http://127.0.0.1/data/uploads/356a192b7913b04c54574d18c28d46e6395428ab/images/timg-1.jpg');
 /*!40000 ALTER TABLE `striverboard_moments_photos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -265,7 +289,7 @@ DROP TABLE IF EXISTS `striverboard_moments_words`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `striverboard_moments_words` (
-  `word` varchar(24) NOT NULL,
+  `word` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `times` int(10) unsigned NOT NULL,
   `idf` double unsigned NOT NULL,
   PRIMARY KEY (`word`)
@@ -278,7 +302,7 @@ CREATE TABLE `striverboard_moments_words` (
 
 LOCK TABLES `striverboard_moments_words` WRITE;
 /*!40000 ALTER TABLE `striverboard_moments_words` DISABLE KEYS */;
-INSERT INTO `striverboard_moments_words` VALUES ('。。。。。。。。。',1,11.9547675029),('aaa',1,11.9547675029),('ABC',1,11.9547675029),('asdggasdsg',1,11.9547675029),('asfdfsadsad',1,11.9547675029),('bbb',1,11.9547675029),('bbbb',1,11.9547675029),('ddd',1,11.9547675029),('dfdfgdfg',1,11.9547675029),('dgffg',1,11.9547675029),('dsfdfsdsfd',1,11.9547675029),('dsfdsfdfsd',1,11.9547675029),('fsdfsd',1,11.9547675029),('gggg',1,11.9547675029),('rwar',1,11.9547675029),('safafsaf',1,11.9547675029),('sdgdssdg',1,11.9547675029),('test',2,11.9547675029),('testtest',1,11.9547675029),('thrtrh',1,11.9547675029),('一次',1,4.66466953325),('一点',1,4.86350089901),('体会',1,7.8093677699),('做出',2,6.15740795115),('公开',1,5.61440819919),('内容',2,5.13428337493),('参加',1,5.0710122193),('啊啊啊',4,12.8020653633),('嗷嗷',2,10.0720362555),('国家',2,4.00044539216),('坚信',1,8.61241062128),('奉公守法',1,12.1089181827),('奋斗',1,8.23771717184),('对方',1,6.10379730919),('广告',1,7.37271973435),('志愿',2,9.04864738806),('成长',1,6.10092433369),('收获',1,7.35102690974),('歌功颂德',1,10.1394775363),('活动',2,4.71207177215),('测试',1,7.14723973338),('深刻',1,6.75864107727),('电饭锅',1,11.9547675029),('祖国',1,7.45020722983),('继续',1,4.26742525829),('自己',2,3.52303883354),('认识',1,5.67946755805),('豆腐',1,7.86280673205),('贡献',2,6.04203699635),('这次',1,5.48043598664),('防风固沙',1,11.0103058941),('非常',1,4.90328300634),('风飒',2,11.9547675029);
+INSERT INTO `striverboard_moments_words` VALUES ('一点一点',1,9.23723855786),('中国',1,3.02732068666),('中国科学院',1,7.68807155622),('几佛',1,11.9547675029),('哈哈哈',1,9.85762638414),('哈哈哈哈',1,9.69598503258),('哦哦哦',1,12.8020653633),('多户',1,9.69598503258),('差点',1,7.77599426108),('杜甫',3,8.99540287354),('次不次',1,11.9547675029),('河海大学',3,12.5143832909),('海底',1,7.17564400981),('点解',1,12.5143832909),('田螺',1,10.5684731418),('科学',1,5.57755476439),('草堂',1,9.16447920358),('随便',1,6.76578680041);
 /*!40000 ALTER TABLE `striverboard_moments_words` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -291,13 +315,13 @@ DROP TABLE IF EXISTS `striverboard_msgverification_codes`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `striverboard_msgverification_codes` (
   `cid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `phone` char(11) DEFAULT NULL,
-  `code` char(32) DEFAULT NULL,
-  `action` varchar(45) DEFAULT NULL,
+  `phone` char(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `code` char(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `action` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `time` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`cid`),
   UNIQUE KEY `phone_action_index` (`phone`,`action`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -306,7 +330,6 @@ CREATE TABLE `striverboard_msgverification_codes` (
 
 LOCK TABLES `striverboard_msgverification_codes` WRITE;
 /*!40000 ALTER TABLE `striverboard_msgverification_codes` DISABLE KEYS */;
-INSERT INTO `striverboard_msgverification_codes` VALUES (6,'13809073869','519555cd6d6b52fd000469a371b30acc','userLogin',1574839961);
 /*!40000 ALTER TABLE `striverboard_msgverification_codes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -318,8 +341,8 @@ DROP TABLE IF EXISTS `striverboard_options`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `striverboard_options` (
-  `name` varchar(28) NOT NULL,
-  `value` text NOT NULL,
+  `name` varchar(28) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -330,8 +353,33 @@ CREATE TABLE `striverboard_options` (
 
 LOCK TABLES `striverboard_options` WRITE;
 /*!40000 ALTER TABLE `striverboard_options` DISABLE KEYS */;
-INSERT INTO `striverboard_options` VALUES ('site.name','奋斗墙'),('site.slogan','不忘初心，牢记使命'),('site.uri','http://127.0.0.1'),('striverboard.photoLimit','20');
+INSERT INTO `striverboard_options` VALUES ('site.name','奋斗墙'),('site.slogan','不忘初心，牢记使命'),('site.uri','http://192.168.1.101'),('striverboard.photoLimit','20');
 /*!40000 ALTER TABLE `striverboard_options` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `striverboard_user_similarity_cache`
+--
+
+DROP TABLE IF EXISTS `striverboard_user_similarity_cache`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `striverboard_user_similarity_cache` (
+  `uid1` int(10) unsigned NOT NULL,
+  `uid2` int(10) unsigned NOT NULL,
+  `similarity` double unsigned NOT NULL,
+  UNIQUE KEY `uid1_uid2` (`uid1`,`uid2`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `striverboard_user_similarity_cache`
+--
+
+LOCK TABLES `striverboard_user_similarity_cache` WRITE;
+/*!40000 ALTER TABLE `striverboard_user_similarity_cache` DISABLE KEYS */;
+INSERT INTO `striverboard_user_similarity_cache` VALUES (1,2,0.5822715308199),(1,3,0.6474350519593),(1,4,0.30769826964506),(1,5,0.051767327855114),(1,6,0.10176541213516),(1,7,0.2370498299075),(1,8,0.23235577372663),(1,9,0),(1,10,0.2370498299075),(1,11,0),(1,12,0.14126165681274),(2,1,0.5822715308199),(2,3,0.24928302684789),(2,4,0.26753695217468),(2,5,0.053710793916139),(2,6,0.26544843652369),(2,7,0.2061096706203),(2,8,0.20202829087964),(2,9,0),(2,10,0.2061096706203),(2,11,0),(2,12,0.12282393777002),(3,1,0.6474350519593),(3,2,0.24928302684789),(3,4,0.59443225497093),(3,5,0.062667020843535),(3,6,0.034143039116618),(3,7,0.19806449604513),(3,8,0.2683295253051),(3,9,0),(3,10,0.19806449604513),(3,11,0),(3,12,0.11802969391724),(4,1,0.30769826964506),(4,2,0.26753695217468),(4,3,0.59443225497093),(4,5,0.050642704568918),(4,6,0.073286374437476),(4,7,0.21256790835687),(4,8,0.36759764509289),(4,9,0),(4,10,0.21256790835687),(4,11,0),(4,12,0.12667250143747),(5,1,0.051767327855114),(5,2,0.053710793916139),(5,3,0.062667020843535),(5,4,0.050642704568918),(5,6,0.7876146781718),(5,7,0.042405308846424),(5,8,0.038242414613818),(5,9,0),(5,10,0.042405308846424),(5,11,0),(5,12,0),(6,1,0.10176541213516),(6,2,0.26544843652369),(6,3,0.034143039116618),(6,4,0.073286374437476),(6,5,0.7876146781718),(6,7,0),(6,8,0.055341592449262),(6,9,0),(6,10,0),(6,11,0),(6,12,0),(7,1,0.2370498299075),(7,2,0.2061096706203),(7,3,0.19806449604513),(7,4,0.21256790835687),(7,5,0.042405308846424),(7,6,0),(7,8,0.84686037197661),(7,9,0),(7,10,1),(7,11,0),(7,12,0.51485227724622),(8,1,0.23235577372663),(8,2,0.20202829087964),(8,3,0.2683295253051),(8,4,0.36759764509289),(8,5,0.038242414613818),(8,6,0.055341592449262),(8,7,0.84686037197661),(8,9,0),(8,10,0.84686037197661),(8,11,0),(8,12,0.5046571823365),(9,1,0),(9,2,0),(9,3,0),(9,4,0),(9,5,0),(9,6,0),(9,7,0),(9,8,0),(9,10,0),(9,11,1),(9,12,0),(10,1,0.2370498299075),(10,2,0.2061096706203),(10,3,0.19806449604513),(10,4,0.21256790835687),(10,5,0.042405308846424),(10,6,0),(10,7,1),(10,8,0.84686037197661),(10,9,0),(10,11,0),(10,12,0.51485227724622),(11,1,0),(11,2,0),(11,3,0),(11,4,0),(11,5,0),(11,6,0),(11,7,0),(11,8,0),(11,9,1),(11,10,0),(11,12,0),(12,1,0.14126165681274),(12,2,0.12282393777002),(12,3,0.11802969391724),(12,4,0.12667250143747),(12,5,0),(12,6,0),(12,7,0.51485227724622),(12,8,0.5046571823365),(12,9,0),(12,10,0.51485227724622),(12,11,0);
+/*!40000 ALTER TABLE `striverboard_user_similarity_cache` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -343,20 +391,20 @@ DROP TABLE IF EXISTS `striverboard_users`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `striverboard_users` (
   `uid` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `real_name` varchar(15) NOT NULL,
-  `password` char(32) NOT NULL,
+  `real_name` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` char(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `last_login` int(11) unsigned NOT NULL DEFAULT '0',
-  `moments_visibility` enum('private','public') NOT NULL DEFAULT 'public',
-  `phone` char(11) NOT NULL,
-  `mission` varchar(202) NOT NULL,
+  `moments_visibility` enum('private','public') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'public',
+  `phone` char(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mission` varchar(202) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `fid` int(11) unsigned NOT NULL,
-  `institution` varchar(25) NOT NULL,
-  `description` text NOT NULL,
+  `institution` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `admin` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`uid`),
   UNIQUE KEY `phone_UNIQUE` (`phone`),
   KEY `idx_striverboard_users_realname` (`real_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -365,7 +413,7 @@ CREATE TABLE `striverboard_users` (
 
 LOCK TABLES `striverboard_users` WRITE;
 /*!40000 ALTER TABLE `striverboard_users` DISABLE KEYS */;
-INSERT INTO `striverboard_users` VALUES (1,'沈俊儒','516bfc5e2597ac0ac3860dd36ae63974',0,'public','13809073869','测试内容，这是我的初心与使命，填写在这个地方！',3,'河海大学','',0),(2,'测试用户','4d55298ee8c2729930732063c557a9e2',0,'public','13770613967','测试测试测试',3,'河海大学','',0),(3,'eeee','ef58972e07acadcdc7f1e8666b1d9d17',0,'public','13222345654','测试测试测试测试测试测试',3,'河海大学','',0),(4,'撒风','d97268c470243e4aac06e65b85e78e2d',0,'public','13433333333','测试内容，这是我的初心与使命，我要为祖国作出贡献！',3,'test','',0),(5,'test1','ae57b7b101b2d8c2df563fe0c21514f1',0,'public','13373737373','gsadsadggsadgsad',3,'dgsagads','',0),(6,'lala','aec46e8995bf0a1066ec292bb3dd0146',0,'public','13818181818','格式的空间里奋斗过；辣椒奋斗过；鲁昆吉里；奋斗科技公司；1格式的空间里奋斗过；辣椒奋斗过；鲁昆吉里；奋斗科技公司；1格式的空间里奋斗过；辣椒奋斗过；鲁昆吉里；奋斗科技公司；1格式的空间里奋斗过；辣椒奋斗过；鲁昆吉里；奋斗科技公司；1格式的空间里奋斗过；辣椒奋斗过；鲁昆吉里；奋斗科技公司；1',3,'aaa','',0);
+INSERT INTO `striverboard_users` VALUES (1,'发发发','adb358b461386a126d5cd0bb9d4df1af',0,'public','13944441111','我要好好学数学，数学考试考满分，并对数学领域作出贡献',3,'河海大学','',0),(2,'发发','159ab7c46e88deba135a6cb23cb64307',0,'public','13944441112','为数学领域作出贡献',3,'河海大学','',0),(3,'iPhone8','0fb47c9ca59503eab511136307f5af56',0,'public','13944441113','我学习数学的能力很强，好好学数学，考试拿高分',3,'河海大学','',0),(4,'iPhone','46b6aa51eb7f9d68c7d51b7a6c432576',0,'public','13944441114','我学习数学的能力很强',3,'河海大学','',0),(5,'iPhon','dd9d2887ca6fe4cdf7543906a2c365dd',0,'public','13944441115','努力学习计算机相关知识 争取为计算机领域做出贡献 计算机考试考好',3,'河海大学','',0),(6,'付费通','9ccb25f3dc413ff98b7ea313d4aa2cc4',0,'public','13944442555','坚持学习计算机科学与技术，为计算机领域作出贡献',3,'河海大学','',0),(7,'付费','a59bd43b69f1a01c076ec58d4fc9225d',0,'public','13944442558','高等数学努力学',3,'河海大学','',0),(8,'日耶耶耶','fe975c4178bc32132c36a5a14bcdb207',0,'public','13944442556','坚持学习高等数学，高等数学让我学习快乐',3,'河海大学','',0),(9,'日耶耶','f0c190a22732a2c0b4549ee398a0d3f1',0,'public','13944442552','我要当太空人',3,'河海大学','',0),(10,'日耶','e99387ae92b4195e7200faeb77c615a6',0,'public','13944442550','我要努力学高等数学',3,'河海大学','',0),(11,'重复','e471bd56abf94c2412e97e4018e1b983',0,'public','13944442596','做太空人',3,'河海大学','',0),(12,'测试','1dc570787fb4ead7e645d47aba00ac85',0,'public','13809073869','高等数学创造河海大学的奇迹。',3,'河海大学','',0);
 /*!40000 ALTER TABLE `striverboard_users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -378,4 +426,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-11-29 13:03:12
+-- Dump completed on 2019-12-12 18:38:53
