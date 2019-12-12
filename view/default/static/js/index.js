@@ -87,13 +87,15 @@ function loadMap() {
 function loadChart() {
     var ctxR = document.getElementById('words-chart').getContext('2d');
     var values = [];
-    indexParams.hotWordsValues.forEach(function(value) {
+    var hotWordsValues = indexParams.hotWordsValues.slice(0, 12);
+    var hotWordsLabels = indexParams.hotWordsLabels.slice(0, 12);
+    hotWordsValues.forEach(function(value) {
         values.push(value.toFixed(5));
     });
     var myRadarChart = new Chart(ctxR, {
         type: 'radar',
         data: {
-            labels: indexParams.hotWordsLabels,
+            labels: hotWordsLabels,
             datasets: [{
                 label: '奋斗热词热度',
                 data: values,

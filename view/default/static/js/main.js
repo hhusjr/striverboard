@@ -148,7 +148,7 @@ $s(document).ready(function() {
                 if (response.success) {
                     // to avoid someone sending message too frequently
                     // TODO: More strict, add Api token verification, picture verify code...
-                    var time = loginParams.verifyCodeDelayTime;
+                    var time = parseInt(loginParams.verifyCodeDelayTime);
                     var counter = window.setInterval(function() {
                         if (!time) {
                             window.clearInterval(counter);

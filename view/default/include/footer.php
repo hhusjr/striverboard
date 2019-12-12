@@ -8,8 +8,8 @@ if (!defined('BASE_PATH')) {
 </footer>
 </div>
 <div class="fixed-bottom bottom-widgets clearfix">
-    <div class="bottom-widget">
-        <span class="oi oi-arrow-thick-top" id="go-top"></span>
+    <div class="bottom-widget" id="go-top">
+        <span class="oi oi-arrow-thick-top"></span>
     </div>
 </div>
 <div class="modal fade animated" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" data-url="">
@@ -101,7 +101,7 @@ if (!defined('BASE_PATH')) {
 </div>
 <script>
     var loginParams = {
-        verifyCodeDelayTime: <?php echo $a->verifyCodeDelay; ?> ,
+        verifyCodeDelayTime: '<?php echo $a->verifyCodeDelay; ?>',
         urls: {
             ajaxSendVerifyCode: '<?php ($a->U)('User', 'AjaxSendVerifyCode'); ?>',
             ajaxLogin: '<?php echo($a->U)('User', 'AjaxLogin'); ?>'
@@ -110,10 +110,10 @@ if (!defined('BASE_PATH')) {
 
     var messageParams = {
         urls: {
-            ajaxMessages: '<?php echo ($a->U)('Message', 'AjaxMessages'); ?>',
-            ajaxSetMessageRead: '<?php echo ($a->U)('Message', 'AjaxSetMessageRead'); ?>',
-            thumbsUpImg: '<?php echo ($a->S)('imgs/thumbs_up.jpg'); ?>',
-            momentDetail: '<?php echo ($a->U)('Striverboard', 'MomentDetail'); ?>?mid='
+            ajaxMessages: '<?php echo($a->U)('Message', 'AjaxMessages'); ?>',
+            ajaxSetMessageRead: '<?php echo($a->U)('Message', 'AjaxSetMessageRead'); ?>',
+            thumbsUpImg: '<?php echo($a->S)('imgs/thumbs_up.jpg'); ?>',
+            momentDetail: '<?php echo($a->U)('Striverboard', 'MomentDetail'); ?>?mid='
         }
     };
 </script>
@@ -124,7 +124,7 @@ if (!defined('BASE_PATH')) {
         'libs/mdb/js/mdb.min.js',
         'libs/toastr/toastr.min.js',
         'libs/bootbox/bootbox.all.min.js',
-        'js/formatter.js',
+        'js/common.js',
         'js/main.js'
     ];
     $loadJs = isset($a->js) ? array_merge($loadJs, $a->js) : $loadJs;

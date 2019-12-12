@@ -87,6 +87,10 @@ if (!defined('BASE_PATH')) {
                             <a class="nav-link"
                                 href="<?php echo($a->U)('Greats', 'Index'); ?>">伟大的奋斗点滴</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="<?php echo($a->U)('Statistics', 'RealtimeStatistics'); ?>">实时数据</a>
+                        </li>
                     </ul>
 
                     <ul class="navbar-nav ml-auto nav-flex-icons">

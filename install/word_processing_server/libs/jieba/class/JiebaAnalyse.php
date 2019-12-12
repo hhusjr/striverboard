@@ -128,7 +128,7 @@ class JiebaAnalyse
                 }
             }
         } else {
-            $words = Jieba::cut($content);
+            $words = (!isset($options['kw']) || !$options['kw']) ? Jieba::cutForSearch($content) : Jieba::cut($content);
         }
 
         $freq = array();
@@ -166,7 +166,9 @@ class JiebaAnalyse
             $tf_idf_list[$k] = [$v, $idf_freq];
         }
 
-        arsort($tf_idf_list);
+        uasort($tf_idf_list, function($a, $b) {
+            return -($a[0] * $a[1] <=> $b[0] * $b[1]);
+        });
 
         $tags = array_slice($tf_idf_list, 0, $top_k, true);
 

@@ -25,9 +25,9 @@ date_default_timezone_set('Asia/Shanghai');
 
 //------------
 set_time_limit(14400); //4 hours
-ini_set('memory_limit', '1024M'); //1GB
-ini_set('session.gc_maxlifetime', '14400'); //4 hours
-ini_set('session.cookie_lifetime', '14400'); //4 hours
+//ini_set('memory_limit', '1024M'); //1GB
+//ini_set('session.gc_maxlifetime', '14400'); //4 hours
+//ini_set('session.cookie_lifetime', '14400'); //4 hours
 //------------
 
 //!!!!!!!!!!!!!!!

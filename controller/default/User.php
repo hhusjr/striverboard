@@ -49,6 +49,7 @@ class UserController extends CommonController
         $userModel = R::M('User');
         $validation = $userModel->isValid($msgVerifyCode, $userInfo);
         if ($validation === true && $userModel->register($userInfo)) {
+            HookAdapter::hook('newUser');
             $this->json(['success' => true]);
         }
         $map = [
@@ -102,6 +103,15 @@ class UserController extends CommonController
             $this->json(['success' => true]);
         }
         $this->json(['success' => false]);
+    }
+
+    // get hot mission words
+    public function onAjaxHotMissionWords()
+    {
+        $this->needAjax();
+        $this->needPost();
+        $hotMissionWords = R::M('User')->hotMissionWords();
+        $this->json($hotMissionWords);
     }
 
     // logout

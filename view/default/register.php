@@ -86,7 +86,7 @@ $params->css = ['css/main.css', 'css/register.css'];
 </div>
 <script>
     var registerParams = {
-        verifyCodeDelayTime: <?php echo $a->verifyCodeDelay; ?> ,
+        verifyCodeDelayTime: '<?php echo $a->verifyCodeDelay; ?>',
         urls: {
             ajaxSendVerifyCode: '<?php ($a->U)('User', 'AjaxSendVerifyCode'); ?>',
             ajaxRegister: '<?php ($a->U)('User', 'AjaxRegister'); ?>',
