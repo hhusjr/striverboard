@@ -14,36 +14,27 @@
  * * limitations under the License.                                          * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
- * The Hook Model
+ * The Hook Adapter
  * @author JunRu Shen
  */
 if (!defined('BASE_PATH')) {
     die('Access Denied.');
 }
 
-class HookModel
+import('adapter/default/config/HookApi');
+
+import('adapter/interface/IHook');
+class HookAdapter implements IHookAdapter
 {
-    // valid hooks
-    private $_validHooks = [
-        'newUser' => ['User', 'New'],
-        'newMoment' => ['Moment', 'New']
-    ];
-    
     // add new hook
-    public function hook($hook)
+    public static function hook($hook)
     {
-        $config = R::config('hook');
-        if (!$config->realTimeStatistics) {
+        if (!HookApiConfig::$enabled) {
             return false;
         }
-        if (!isset($this->_validHooks[$hook])) {
-            return false;
-        }
-        [$controller, $action] = $this->_validHooks[$hook];
-        SocketAdapter::ws($config->host, $config->port, [
-            'accessSecret' => $config->accessSecret,
-            'c' => $controller,
-            'a' => $action
+        return SocketAdapter::ws(HookApiConfig::$host, HookApiConfig::$port, [
+            'accessSecret' => HookApiConfig::$accessSecret,
+            'hook' => $hook
         ]);
     }
 }

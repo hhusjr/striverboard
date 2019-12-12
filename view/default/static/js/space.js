@@ -76,23 +76,21 @@ $s(document).ready(function() {
     });
 
     // get nearby moments
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(pos) {
-            $s.ajax({
-                url: spaceParams.urls.ajaxNearestMoments,
-                method: 'POST',
-                dataType: 'json',
-                data: {
-                    lng: pos.coords.longitude,
-                    lat: pos.coords.latitude
-                },
-                success: function(moments) {
-                    $s('#loading-moments').fadeOut();
-                    moments.forEach(function(attrs) {
-                        $s('#moments').append(createMoment(attrs));
-                    });
-                }
-            });
+    locationTrigger(function(pos) {
+        $s.ajax({
+            url: spaceParams.urls.ajaxNearestMoments,
+            method: 'POST',
+            dataType: 'json',
+            data: {
+                lng: pos.coords.longitude,
+                lat: pos.coords.latitude
+            },
+            success: function(moments) {
+                $s('#loading-moments').fadeOut();
+                moments.forEach(function(attrs) {
+                    $s('#moments').append(createMoment(attrs));
+                });
+            }
         });
-    }
+    });
 });

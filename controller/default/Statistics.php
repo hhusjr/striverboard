@@ -43,24 +43,6 @@ class StatisticsController extends CommonController
     {
         $this->needAjax();
         $this->needPost();
-        /*
-        $newUsersData = $userModel->getNewUsers();
-        $newUsers = [];
-        foreach ($newUsersData as $user) {
-            $newUser = new stdClass;    
-            $newUser['uid'] = $user->uid;
-            $newUser['realName'] = $user->realName;
-            $newUser['mission'] = $user->mission;
-            $newUser['institution'] = $user->institution;
-            $newUser['fid'] = $user->fid;
-            $newUser['field'] = $user->field;
-            $newUser['description'] = $user->description;
-            $newUser['admin'] = $user->admin;
-            $newUser['momentsVisibility'] = $user->momentsVisibility;
-            $newUsers[] = $newUser;
-        }
-        $hotMissionWords = $userModel->hotMissionWords();
-        */
 
         [$vertexes, $edges] = R::M('User')->buildUserGraph();
 

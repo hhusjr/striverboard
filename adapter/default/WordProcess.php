@@ -26,12 +26,14 @@ import('adapter/default/config/WordProcessingApi');
 import('adapter/interface/IWordProcess');
 class WordProcessAdapter implements IWordProcessAdapter
 {
-    // get top 20 keywords in a document
-    public static function getKeywords($document)
+    // get keywords in a document
+    public static function getKeywords($document, $cnt = 48, $kw = false)
     {
         $data = SocketAdapter::http(WordProcessingApiConfig::$host, WordProcessingApiConfig::$port, array(
             'access_secret' => WordProcessingApiConfig::$accessSecret,
-            'document' => $document
+            'document' => $document,
+            'kw' => $kw,
+            'cnt' => $cnt
         ), WordProcessingApiConfig::$timeout);
         if (!isset($data['success']) || !$data['success']) {
             return false;

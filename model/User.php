@@ -171,8 +171,23 @@ class UserModel extends BaseModel
             return 'ERROR_UPDATING_PASSWORD';
         }
 
-        $words = WordProcessAdapter::getKeywords($userInfo->mission);
+        $words = WordProcessAdapter::getKeywords($userInfo->mission, 48, false);
         foreach ($words as $word => [$tf, $idf]) {
+            if (!$word || V::countCharNum($word) >= 12) {
+                continue;
+            }
+            $insertWords = $this->insert([
+                'uid' => $uid,
+                'word' => $word,
+                'tf_idf' => $tf * $idf
+            ], 'mission_words_index')->execute();
+            if (!$insertWords) {
+                return 'ERROR_INSERT_WORDS';
+            }
+        }
+
+        $keywords = WordProcessAdapter::getKeywords($userInfo->mission, 20, true);
+        foreach ($keywords as $word => [$tf, $idf]) {
             if (!$word || V::countCharNum($word) >= 12) {
                 continue;
             }
@@ -189,7 +204,7 @@ class UserModel extends BaseModel
                 'uid' => $uid,
                 'word' => $word,
                 'tf_idf' => $tf * $idf
-            ], 'mission_words_index')->execute();
+            ], 'mission_keywords')->execute();
             if (!$insertWords) {
                 return 'ERROR_INSERT_WORDS';
             }
@@ -232,7 +247,7 @@ class UserModel extends BaseModel
     // get the mission words of a user
     public function getMissionWords($uid)
     {
-        $statement = $this->select('word', 'mission_words_index')->condition(['uid' => $uid])->result();
+        $statement = $this->select('word', 'mission_keywords')->condition(['uid' => $uid])->limit(20)->result();
         $words = [];
         while ($word = $statement->fetchColumn()) {
             $words[] = $word;
@@ -369,7 +384,7 @@ class UserModel extends BaseModel
     }
 
     // build user graph G=(V,E)
-    // If the similiarity between two users > 0.4, we can say they're connected
+    // If the similiarity between two users > 0.4, we can say they're connected (formed an graph)
     public function buildUserGraph($lowerbound = 0.4)
     {
         $result = $this->select('uid')->order('uid DESC')->result();
@@ -388,8 +403,8 @@ class UserModel extends BaseModel
                 $similarity = $this->getMissionSimilarity($uid1, $uid2);
                 if ($similarity > $lowerbound) {
                     $edge = new stdClass;
-                    $edge->from = $uid1;
-                    $edge->to = $uid2;
+                    $edge->from = 'N' . ((string) $uid1);
+                    $edge->to = 'N' . ((string) $uid2);
                     $edge->weight = $similarity;
                     $edges[] = $edge;
                 }
@@ -399,7 +414,7 @@ class UserModel extends BaseModel
         $vertexes = [];
         foreach ($uids as $uid) {
             $vertex = new stdClass;
-            $vertex->node = $uid;
+            $vertex->node = 'N' . ((string) $uid);
             $vertex->attributes = $this->getUserInfo($uid);
             $vertexes[] = $vertex;
         }

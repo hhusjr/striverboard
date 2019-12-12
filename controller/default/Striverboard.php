@@ -96,6 +96,7 @@ class StriverboardController extends CommonController
 
         $newMid = R::M('Moments')->postMoment($data, $imgs);
         if (is_int($newMid)) {
+            HookAdapter::hook('newMoment');
             $this->json(['success' => true, 'mid' => $newMid]);
         } else {
             $this->json(['success' => false, 'message' => $newMid]);
@@ -234,6 +235,55 @@ class StriverboardController extends CommonController
             $this->json(['success' => false]);
         }
         $this->json(['success' => (bool) $likesModel->like($mid, $uid)]);
+    }
+
+    // on ajax get new moments
+    public function onAjaxNewMoments()
+    {
+        $this->needAjax();
+        $this->needPost();
+    
+        $moments = R::M('Moments')->getNewMoments(4);
+
+        $results = [];
+        foreach ($moments as $moment) {
+            $result['mid'] = $moment->mid;
+            $result['description'] = $moment->description;
+            $result['uid'] = $moment->uid;
+            $result['time'] = $moment->time;
+            $result['achieved'] = $moment->achieved;
+            $result['significant'] = $moment->significant;
+            $result['realName'] = $moment->realName;
+            $result['imgs'] = $moment->imgs;
+            $results[] = $result;
+        }
+
+        $this->json($results);
+    }
+
+    // get hot moments words
+    public function onAjaxHotMomentsWords()
+    {
+        $this->needAjax();
+        $this->needPost();
+        $hotMomentsWords = R::M('Moments')->hotMomentsWords();
+        $this->json($hotMomentsWords);
+    }
+
+    // count moments group by field
+    public function onAjaxMomentsCount()
+    {
+        $this->needAjax();
+        $this->needPost();
+        $result = R::M('Moments')->getMomentCountGroupByField();
+        $data = [];
+        foreach ($result as $item) {
+            $new = [];
+            $new['name'] = $item->name;
+            $new['cnt'] = $item->cnt;
+            $data[] = $new;
+        }
+        $this->json($data);
     }
 
     // show moment detail

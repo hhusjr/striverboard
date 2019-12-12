@@ -56,6 +56,7 @@ use Fukuball\Jieba\JiebaAnalyse;
 Jieba::init();
 Finalseg::init();
 JiebaAnalyse::init();
+JiebaAnalyse::setStopWords(BASE_PATH . 'libs/jieba/dict/stop_words.txt');
 
 addLog('Initialized Jieba Components.');
 echo 'Initialized Jieba Components. TIME: ' . date('Y-m-d H:i:s') . PHP_EOL;
@@ -66,7 +67,7 @@ $server = new Swoole\Http\Server(SERVER_HOST, SERVER_PORT);
 $server->on('request', function ($request, $response) {
     $response->header('Content-Type', 'application/json');
     $data = $request->post;
-    if (!isset($data['access_secret']) || !isset($data['document']) || !$data['document']) {
+    if (!isset($data['access_secret']) || !isset($data['kw']) || !isset($data['document']) || !$data['document']) {
         $result = ['success' => false, 'message' => 'Invalid params.'];
         $response->status(400);
         $response->end(json_encode($result));
@@ -79,11 +80,13 @@ $server->on('request', function ($request, $response) {
         return;
     }
     $document = $data['document'];
+    $kw = (bool) $data['kw'];
+    $cnt = isset($data['cnt']) ? abs(intval($data['cnt'])) : 48;
     addLog('Processing document ' . $document);
-    $keywords = JiebaAnalyse::extractTags($document);
+    $keywords = JiebaAnalyse::extractTags($document, $cnt, ['kw' => $kw]);
     $results = [];
     foreach ($keywords as $word => [$tf, $idf]) {
-        $results[] = "[WORD:{$word}, TF:{$tf}, IDF:{$idf}]";
+        $results[] = "[WORD:{$word}, TF:{$tf}, IDF:{$idf}, KW:{$kw}]";
     }
     addLog('Result: ' . implode(', ', $results));
     $result = ['success' => true, 'keywords' => $keywords];

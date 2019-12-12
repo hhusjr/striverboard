@@ -258,7 +258,7 @@ if ($a->timelineView) {
         significant: '<?php echo $a->significant; ?>',
         achieved: '<?php echo $a->achieved === false ? -1 : $a->achieved; ?>',
         field: '<?php echo $a->field; ?>',
-        loggedIn: <?php echo $a->user ? 'true' : 'false'; ?>
+        loggedIn: '<?php echo $a->user ? '1' : '0'; ?>'
     };
 </script>
 <?php

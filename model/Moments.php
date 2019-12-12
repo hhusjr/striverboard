@@ -85,7 +85,7 @@ class MomentsModel extends BaseModel
             }
         }
 
-        $words = WordProcessAdapter::getKeywords($momentInfo->description);
+        $words = WordProcessAdapter::getKeywords($momentInfo->description, 20, true);
         foreach ($words as $word => [, $idf]) {
             if (!$word || V::countCharNum($word) >= 12) {
                 continue;
@@ -344,7 +344,7 @@ class MomentsModel extends BaseModel
             $tfIdf[$word['word']] = intval($word['times']) / $sum * $word['idf'];
         }
         arsort($tfIdf);
-        return array_slice($tfIdf, 0, 8, true);
+        return array_slice($tfIdf, 0, 15, true);
     }
 
     // get all moments

@@ -26,13 +26,16 @@ function card(attrs) {
 
     if (imgs.length) card.append(slide);
 
+    var loggedIn = parseInt(striverboardParams.loggedIn);
+    loggedIn = (loggedIn == 1) ? true : false;
+
     var body = $s('<div class="card-body"></div>');
-    if (striverboardParams.loggedIn) {
+    if (loggedIn) {
         var likeElement = '<a role="button" class="add-like" data-like="' + (attrs.liked ? 1 : 0) + '" data-mid="' + attrs.mid + '"><i class="thumb-up-like oi oi-thumb-up pr-1' + (attrs.liked ? ' red-text' : '') + '"></i> <span class="like-count">' + attrs.likes + '</span></a>';
     } else {
         var likeElement = '';
     }
-    body.append('<p class="card-text black-text"><span class="badge badge-pill badge-' + (attrs.achieved ? 'success">已完成' : 'danger">未完成') + '</span> ' + htmlspecialchars(attrs.description) + (striverboardParams.loggedIn ? ' <a href="' + striverboardParams.urls.momentDetail + attrs.mid + '" target="_blank" class="view-detail"><i class="oi oi-eye"></i></a>' : '') + '</p>');
+    body.append('<p class="card-text black-text"><span class="badge badge-pill badge-' + (attrs.achieved ? 'success">已完成' : 'danger">未完成') + '</span> ' + htmlspecialchars(attrs.description) + (loggedIn ? ' <a href="' + striverboardParams.urls.momentDetail + attrs.mid + '" target="_blank" class="view-detail"><i class="oi oi-eye"></i></a>' : '') + '</p>');
     body.append('<ul class="list-unstyled list-inline font-small m-0"><li class="list-inline-item pr-2 grey-text"><i class="oi oi-calendar pr-1"></i> ' + formatDay(attrs.time) + '</li><li class="list-inline-item pr-2 grey-text"><i class="oi oi-person pr-1"></i> ' + attrs.realName + '</li><li class="list-inline-item pr-2 grey-text">' + likeElement + '</li></ul>');
     card.append(body);
 
@@ -241,14 +244,12 @@ $s(document).ready(function() {
     // get current location
     var lng = null;
     var lat = null;
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(pos) {
-            $s('#locating-position').hide();
-            $s('#location-got').show();
-            lng = pos.coords.longitude;
-            lat = pos.coords.latitude;
-        });
-    }
+    locationTrigger(function(pos) {
+        $s('#locating-position').hide();
+        $s('#location-got').show();
+        lng = pos.coords.longitude;
+        lat = pos.coords.latitude;
+    });
 
     // show my mission
     $s('#my-mission').click(function() {

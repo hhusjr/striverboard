@@ -14,18 +14,15 @@
  * * limitations under the License.                                          * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
- * The Word Processing API Config
+ * The Hook Adapter Interface
  * @author JunRu Shen
  */
 if (!defined('BASE_PATH')) {
     die('Access Denied.');
 }
 
-class WordProcessingApiConfig
+interface IHookAdapter
 {
-    // global config
-    public static $accessSecret = 'Qks9@#kd.x.a0f9939kdfmmaa..al@##L';
-    public static $host = 'http://192.168.1.101';
-    public static $port = 9503;
-    public static $timeout = 10;
+    // add new hook
+    public static function hook($hook);
 }

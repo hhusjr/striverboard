@@ -2,6 +2,23 @@
     display: none;
 }
 
+.moment-important {
+    box-shadow: 0 0 8px #c20606;
+}
+
+#new-data-container {
+    background-image: url('../imgs/striverboard_jumbotron_bg.jpg');
+    background-size: 100px 100px;
+    background-repeat: repeat;
+}
+
+#realtime-statistics {
+    background-image: url(../imgs/space_bg_1.jpg) !important;
+    background-position: right !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
+
 #heat-map-container {
     width: 100%;
     height: 600px;
@@ -11,7 +28,69 @@
     padding: 10px;
 }
 
+#user-graph-container {
+    background: #ce0909;
+    background: linear-gradient(left, #ce0909 10%, #ff00003a);
+    background: -ms-linear-gradient(left, #ce0909 10%, #ff00003a);
+    background: -webkit-linear-gradient(left, #ce0909 10%, #ff00003a);
+    background: -moz-linear-gradient(left, #ce0909 10%, #ff00003a);
+}
+
+@media(max-width: 767px) {
+    #user-graph-container {
+        background: linear-gradient(top, #ce0909 10%, #ff00003a);
+        background: -ms-linear-gradient(top, #ce0909 10%, #ff00003a);
+        background: -webkit-linear-gradient(top, #ce0909 10%, #ff00003a);
+        background: -moz-linear-gradient(top, #ce0909 10%, #ff00003a);
+    }
+}
+
 #user-graph {
     width: 100%;
     height: 580px;
+}
+
+#new-moments .card-body {
+    background: #ffffffd2;
+}
+
+#new-moments .card {
+    background-image: url(../imgs/bg.jpg) !important;
+    background-size: cover;
+}
+
+.detail-charts {
+    width: 100%;
+    height: 300px;
+}
+
+.detail-title {
+    height: 300px;
+    text-align: center;
+    color: #fff;
+    font-size: 36px;
+    line-height: 150px;
+    margin: 0;
+    padding: 0;
+}
+
+.detail-title .oi {
+    font-size: 72px;
+}
+
+#detail-statistics-container {
+    background-image: url(../imgs/bg.jpg) !important;
+    background-position: right !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
+
+#detail-statistics {
+    background: #c20606c5;
+}
+
+.connector {
+    padding: 1px 0;
+    width: 100%;
+    background: #ffdcdc;
 }
