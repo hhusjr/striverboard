@@ -295,7 +295,7 @@ class StriverboardController extends CommonController
         $momentsModel = R::M('Moments');
         $likesModel = R::M('Likes');
 
-        if (!$momentsModel->visible($mid, $uid)) {
+        if (!$momentsModel->visible($uid, $mid)) {
             $this->showError();
         }
         $moment = $momentsModel->getMoment($mid);
