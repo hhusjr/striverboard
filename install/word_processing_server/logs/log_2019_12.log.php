@@ -1889,3 +1889,53 @@
  ****************************** 
 [Log @2019/12/12 09:07:28] Result: [WORD:河海大学, TF:0.25, IDF:12.5143832909, KW:1], [WORD:高等数学, TF:0.25, IDF:11.2616203224, KW:1], [WORD:奇迹, TF:0.25, IDF:7.75434839431, KW:1], [WORD:创造, TF:0.25, IDF:5.83541244308, KW:1] 
  ****************************** 
+[Log @2019/12/13 11:15:27] Initialized Jieba Components. 
+ ****************************** 
+[Log @2019/12/13 11:15:32] Processing document fsasafafs 
+ ****************************** 
+[Log @2019/12/13 11:15:32] Result: [WORD:fsasafafs, TF:1, IDF:11.9547675029, KW:] 
+ ****************************** 
+[Log @2019/12/13 11:15:32] Processing document fsasafafs 
+ ****************************** 
+[Log @2019/12/13 11:15:32] Result: [WORD:fsasafafs, TF:1, IDF:11.9547675029, KW:1] 
+ ****************************** 
+[Log @2019/12/13 11:16:08] Processing document fsasafafs 
+ ****************************** 
+[Log @2019/12/13 11:16:08] Result: [WORD:fsasafafs, TF:1, IDF:11.9547675029, KW:] 
+ ****************************** 
+[Log @2019/12/13 11:16:08] Processing document fsasafafs 
+ ****************************** 
+[Log @2019/12/13 11:16:08] Result: [WORD:fsasafafs, TF:1, IDF:11.9547675029, KW:1] 
+ ****************************** 
+[Log @2019/12/13 11:17:33] Processing document saffsasafsafas 
+ ****************************** 
+[Log @2019/12/13 11:17:33] Result: [WORD:saffsasafsafas, TF:1, IDF:11.9547675029, KW:1] 
+ ****************************** 
+[Log @2019/12/13 11:17:38] Processing document asdgdgsaadgsgdsagsdasdgag 
+ ****************************** 
+[Log @2019/12/13 11:17:38] Result: [WORD:asdgdgsaadgsgdsagsdasdgag, TF:1, IDF:11.9547675029, KW:1] 
+ ****************************** 
+[Log @2019/12/13 11:18:25] Processing document saffasaasfsaf 
+ ****************************** 
+[Log @2019/12/13 11:18:25] Result: [WORD:saffasaasfsaf, TF:1, IDF:11.9547675029, KW:1] 
+ ****************************** 
+[Log @2019/12/13 11:18:36] Processing document sadsdasdadsa 
+ ****************************** 
+[Log @2019/12/13 11:18:36] Result: [WORD:sadsdasdadsa, TF:1, IDF:11.9547675029, KW:1] 
+ ****************************** 
+[Log @2019/12/13 11:18:49] Processing document sadfasfasdf 
+ ****************************** 
+[Log @2019/12/13 11:18:49] Result: [WORD:sadfasfasdf, TF:1, IDF:11.9547675029, KW:1] 
+ ****************************** 
+[Log @2019/12/13 11:19:17] Processing document sdffdssdfsdf 
+ ****************************** 
+[Log @2019/12/13 11:19:17] Result: [WORD:sdffdssdfsdf, TF:1, IDF:11.9547675029, KW:1] 
+ ****************************** 
+[Log @2019/12/13 11:19:32] Processing document sadfsad 
+ ****************************** 
+[Log @2019/12/13 11:19:32] Result: [WORD:sadfsad, TF:1, IDF:11.9547675029, KW:1] 
+ ****************************** 
+[Log @2019/12/13 11:19:53] Processing document sadfadfsdf 
+ ****************************** 
+[Log @2019/12/13 11:19:53] Result: [WORD:sadfadfsdf, TF:1, IDF:11.9547675029, KW:1] 
+ ****************************** 

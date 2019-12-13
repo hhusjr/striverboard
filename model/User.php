@@ -59,7 +59,7 @@ class UserModel extends BaseModel
             'mission' => V::all($userInfo->mission, 2, 200),
             'fid' => R::M('Field')->exists($userInfo->fid),
             'institution' => V::chinese($userInfo->institution, 2, 22),
-            'msgVerifyCode' => IN_DEBUG ? true : R::M('MessageVerify')->check($userInfo->phone, $inputMsgVerifyCode, 'userRegister')
+            'msgVerifyCode' => R::config('site')->demoMode ? true : R::M('MessageVerify')->check($userInfo->phone, $inputMsgVerifyCode, 'userRegister')
         ];
 
         foreach ($rules as $field => $valid) {

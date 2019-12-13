@@ -38,6 +38,7 @@ $router = new StdClass;
 $session = new StdClass;
 $uploader = new StdClass;
 $sms = new StdClass;
+$site = new StdClass;
 
 // START EDIT NOW!
 // Database connection configuration
@@ -67,6 +68,9 @@ $uploader->prefix = BASE_PATH;
 $sms->maxMessageCountPerMinute = 1;
 $sms->verifyCodeExpireMinute = 60;
 
+// Demo mode configuration
+$site->demoMode = true;
+
 // Now, please save file and close it.
 
 // DON'T EDIT
@@ -78,3 +82,4 @@ R::config('router', $router);
 R::config('session', $session);
 R::config('uploader', $uploader);
 R::config('sms', $sms);
+R::config('site', $site);

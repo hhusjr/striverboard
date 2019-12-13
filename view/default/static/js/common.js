@@ -15,7 +15,7 @@ function htmlspecialchars(value) {
 
 function locationTrigger(callback) {
     // if the system is in demo mode
-    var demoMode = true;
+    var demoMode = (parseInt(siteParams.demoMode) == 1);
 
     // using H5 GPS API to get the location of user
     if (!demoMode) {
