@@ -46,12 +46,12 @@ $params->css = ['css/main.css', 'css/realtime.css'];
     var realtimeServer = 'http://192.168.1.101';
     var realtimeParams = {
         urls: {
-            ajaxMomentsLocations: realtimeServer + '/Statistics/AjaxMomentsLocations',
-            ajaxNewMoments: realtimeServer + '/Striverboard/AjaxNewMoments',
-            ajaxUserGraph: realtimeServer + '/Statistics/AjaxUserGraph',
-            ajaxHotMomentsWords: realtimeServer + '/Striverboard/AjaxHotMomentsWords',
-            ajaxHotMissionWords: realtimeServer + '/User/AjaxHotMissionWords',
-            ajaxMomentsCount: realtimeServer + '/Striverboard/AjaxMomentsCount'
+            ajaxMomentsLocations: realtimeServer + '/statistics/ajax_moments_locations',
+            ajaxNewMoments: realtimeServer + '/striverboard/ajax_new_moments',
+            ajaxUserGraph: realtimeServer + '/statistics/ajax_user_graph',
+            ajaxHotMomentsWords: realtimeServer + '/striverboard/ajax_hot_moments_words',
+            ajaxHotMissionWords: realtimeServer + '/user/ajax_hot_mission_words',
+            ajaxMomentsCount: realtimeServer + '/striverboard/ajax_moments_count'
         }
     };
 </script>
