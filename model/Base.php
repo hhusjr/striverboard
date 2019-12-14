@@ -145,7 +145,19 @@ abstract class BaseModel extends ModelComponent
         $this->_statement = parent::getDb()->insert($table ? $table : $this->_table, $factors);
         return $this;
     }
-    
+    //on duplicate
+    public function onDuplicateKey($actions)
+    {
+        $this->_statement->onDuplicateKey($actions);
+        return $this;
+    }
+    //insert ignore into
+    public function insertIgnore($factors, $table = null)
+    {
+        $this->_statement = parent::getDb()->insert($table ? $table : $this->_table, $factors, true);
+        return $this;
+    }
+
     //delete
     public function delete($table = null)
     {

@@ -176,7 +176,7 @@ class UserModel extends BaseModel
             if (!$word || V::countCharNum($word) >= 12) {
                 continue;
             }
-            $insertWords = $this->insert([
+            $insertWords = $this->insertIgnore([
                 'uid' => $uid,
                 'word' => $word,
                 'tf_idf' => $tf * $idf
@@ -191,16 +191,14 @@ class UserModel extends BaseModel
             if (!$word || V::countCharNum($word) >= 12) {
                 continue;
             }
-            $times = $this->select('times', 'mission_words')->condition(['word' => $word])->limit(1)->fetchColumn();
-            $updateWords = $times
-                ? $this->modify(['times' => intval($times) + 1], 'mission_words')
-                        ->condition(['word' => $word])
-                        ->limit(1)->execute()
-                : $this->insert(['times' => 1, 'word' => $word, 'idf' => $idf], 'mission_words')->execute();
+            $updateWords = $this
+                            ->insert(['times' => 1, 'word' => $word, 'idf' => $idf], 'mission_words')
+                            ->onDuplicateKey('times = times + 1')
+                            ->execute();
             if (!$updateWords) {
                 return 'ERROR_UPDATE_WORDS';
             }
-            $insertWords = $this->insert([
+            $insertWords = $this->insertIgnore([
                 'uid' => $uid,
                 'word' => $word,
                 'tf_idf' => $tf * $idf
@@ -308,12 +306,12 @@ class UserModel extends BaseModel
         $similarity = ($d1 && $d2) ? ($dot / sqrt($d1) / sqrt($d2)) : 0;
 
         // write back the cache
-        $this->insert([
+        $this->insertIgnore([
             'uid1' => $uid1,
             'uid2' => $uid2,
             'similarity' => $similarity
         ], 'user_similarity_cache')->execute();
-        $this->insert([
+        $this->insertIgnore([
             'uid1' => $uid2,
             'uid2' => $uid1,
             'similarity' => $similarity

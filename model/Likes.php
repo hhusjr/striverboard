@@ -55,7 +55,7 @@ class LikesModel extends BaseModel
         $mid = intval($mid);
         $uid = intval($uid);
 
-        $addLike = $this->insert([
+        $addLike = $this->insertIgnore([
             'mid' => $mid,
             'uid' => $uid
         ])->execute();
