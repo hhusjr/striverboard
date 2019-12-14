@@ -392,12 +392,19 @@ class UserModel extends BaseModel
             $uids[] = intval($uid);
         }
 
+        $unionSet = new UnionSetComponent($uids);
+
         $edges = [];
         $total = count($uids);
         for ($i = 0; $i < $total; $i++) {
             for ($j = $i + 1; $j < $total; $j++) {
                 $uid1 = $uids[$i];
                 $uid2 = $uids[$j];
+
+                if ($unionSet->query($uid1, $uid2)) {
+                    continue;
+                }
+
                 $similarity = $this->getMissionSimilarity($uid1, $uid2);
                 if ($similarity > $lowerbound) {
                     $edge = new stdClass;
@@ -405,6 +412,8 @@ class UserModel extends BaseModel
                     $edge->to = 'N' . ((string) $uid2);
                     $edge->weight = $similarity;
                     $edges[] = $edge;
+                    
+                    $unionSet->merge($uid1, $uid2);
                 }
             }
         }

@@ -14,34 +14,62 @@
  * * limitations under the License.                                          * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
- * The Option Model
+ * The UnionSet algorithm component
  * @author JunRu Shen
  */
 if (!defined('BASE_PATH')) {
     die('Access Denied.');
 }
 
-class OptionModel extends BaseModel
+class UnionSetComponent
 {
-    // set table
-    public function __construct()
+    // parent node
+    private $_parent = [];
+
+    // initialization
+    public function __construct($vertexes)
     {
-        parent::__construct('options');
+        $this->_parent[-1] = -1;
+        foreach ($vertexes as $vertex) {
+            $this->_parent[$vertex] = $vertex;
+        }
     }
 
-    // get the option value
-    public function get($name)
+    // find the parent
+    private function _find($vertex)
     {
-        return $this->translate($name, 'name', 'value');
+        if (!isset($this->_parent[$vertex])) {
+            return -1;
+        }
+        return ($this->_parent[$vertex] == $vertex)
+                ? $vertex
+                : ($this->_parent[$vertex] = $this->_find($this->_parent[$vertex]));
     }
 
-    // set the option value
-    public function set($name, $value)
+    // query
+    public function query($v1, $v2)
     {
-        if (!$value || !$this->get($name)) {
+        $x = $this->_find($v1);
+        $y = $this->_find($v2);
+
+        if ($x == -1 || $y == -1) {
             return false;
         }
-        $result = $this->modify(array('value' => $value))->condition(['name' => $name])->limit(1)->execute();
-        return $result !== false;
+
+        return $this->_find($v1) == $this->_find($v2);
+    }
+
+    // merge
+    public function merge($v1, $v2)
+    {
+        $x = $this->_find($v1);
+        $y = $this->_find($v2);
+
+        if ($x == -1 || $y == -1 || $x == $y) {
+            return false;
+        }
+
+        $this->_parent[$x] = $y;
+        return true;
     }
 }
