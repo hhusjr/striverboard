@@ -259,10 +259,6 @@ class UserModel extends BaseModel
         $uid1 = intval($uid1);
         $uid2 = intval($uid2);
 
-        if (!$this->uidExists($uid1) || !$this->uidExists($uid2)) {
-            return false;
-        }
-
         // get from redis
         $rkey = 'mission_similarity_' . $uid1 . '_' . $uid2;
         if (RedisComponent::exists($rkey)) {
@@ -278,6 +274,11 @@ class UserModel extends BaseModel
         }
 
         // if cache not exists, do calculate
+
+        if (!$this->uidExists($uid1) || !$this->uidExists($uid2)) {
+            return false;
+        }
+        
         $wordsUnion = [];
 
         $words = $this
