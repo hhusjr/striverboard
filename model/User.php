@@ -385,7 +385,7 @@ class UserModel extends BaseModel
     // If the similiarity between two users > 0.4, we can say they're connected (formed an graph)
     public function buildUserGraph($lowerbound = 0.4)
     {
-        $result = $this->select('uid')->order('uid DESC')->result();
+        $result = $this->select('uid')->order('uid DESC')->limit(300)->result();
 
         $uids = [];
         while ($uid = $result->fetchColumn()) {
