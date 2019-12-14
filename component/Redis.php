@@ -14,62 +14,46 @@
  * * limitations under the License.                                          * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
- * The UnionSet algorithm component
+ * RedisComponent
  * @author JunRu Shen
  */
 if (!defined('BASE_PATH')) {
     die('Access Denied.');
 }
 
-class UnionSetComponent
+class RedisComponent
 {
-    // parent node
-    private $_parent = [];
+    private static $_connection = null;
+    private static $_password = 'qwertyuiop';
 
-    // initialization
-    public function __construct($vertexes)
+    public static function getConnection()
     {
-        $this->_parent[-1] = -1;
-        foreach ($vertexes as $vertex) {
-            $this->_parent[$vertex] = $vertex;
+        if (self::$_connection === null || !self::$_connection->ping()) {
+            self::$_connection = new Redis();
+            self::$_connection->pconnect('127.0.0.1', 6379);
+            self::$_connection->auth(self::$_password);
         }
+        return self::$_connection;
     }
 
-    // find the parent
-    private function _find($vertex)
+    public static function exists($k)
     {
-        if (!isset($this->_parent[$vertex])) {
-            return -1;
-        }
-        return ($this->_parent[$vertex] == $vertex)
-                ? $vertex
-                : ($this->_parent[$vertex] = $this->_find($this->_parent[$vertex]));
+        return self::getConnection()->exists($k);
     }
 
-    // query
-    public function query($v1, $v2)
+    public static function set($k, $v)
     {
-        $x = $this->_find($v1);
-        $y = $this->_find($v2);
-
-        if ($x == -1 || $y == -1) {
-            return false;
-        }
-
-        return $this->_find($v1) == $this->_find($v2);
+        self::getConnection()->set($k, $v);
     }
 
-    // merge
-    public function merge($v1, $v2)
+    public static function get($k)
     {
-        $x = $this->_find($v1);
-        $y = $this->_find($v2);
+        return self::getConnection()->get($k);
+    }
 
-        if ($x == -1 || $y == -1 || $x == $y) {
-            return false;
-        }
-
-        $this->_parent[$x] = $y;
-        return true;
+    public static function del($k)
+    {
+        self::getConnection()->del($k);
     }
 }
+

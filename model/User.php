@@ -263,10 +263,18 @@ class UserModel extends BaseModel
             return false;
         }
 
-        // get from cache
+        // get from redis
+        $rkey = 'mission_similarity_' . $uid1 . '_' . $uid2;
+        if (RedisComponent::exists($rkey)) {
+            return floatval(RedisComponent::get($rkey));
+        }
+
+        // get from database cache
         $similarity = $this->select('similarity', 'user_similarity_cache')->condition(['uid1' => $uid1, 'uid2' => $uid2])->fetchColumn();
         if ($similarity !== false) {
-            return floatval($similarity);
+            $res = floatval($similarity);
+            RedisComponent::set($rkey, $res);
+            return $res;
         }
 
         // if cache not exists, do calculate
@@ -306,6 +314,7 @@ class UserModel extends BaseModel
         $similarity = ($d1 && $d2) ? ($dot / sqrt($d1) / sqrt($d2)) : 0;
 
         // write back the cache
+        RedisComponent::set($rkey, $similarity);
         $this->insertIgnore([
             'uid1' => $uid1,
             'uid2' => $uid2,
@@ -385,7 +394,7 @@ class UserModel extends BaseModel
     // If the similiarity between two users > 0.4, we can say they're connected (formed an graph)
     public function buildUserGraph($lowerbound = 0.4)
     {
-        $result = $this->select('uid')->order('uid DESC')->limit(50)->result();
+        $result = $this->select('uid')->order('uid DESC')->limit(300)->result();
 
         $uids = [];
         while ($uid = $result->fetchColumn()) {
