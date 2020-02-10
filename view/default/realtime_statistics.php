@@ -43,7 +43,7 @@ $params->css = ['css/main.css', 'css/realtime.css'];
     </div>
 </div>
 <script>
-    var realtimeServer = 'http://192.168.1.101';
+    var realtimeServer = 'http://127.0.0.1';
     var realtimeParams = {
         urls: {
             ajaxMomentsLocations: realtimeServer + '/statistics/ajax_moments_locations',

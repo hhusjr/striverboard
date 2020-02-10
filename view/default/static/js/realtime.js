@@ -3,7 +3,7 @@ var userChart = null;
 var hotMomentsWordsChart = null;
 var hotMissionWordsChart = null;
 var fieldChart = null;
-var hookServerUrl = 'ws://192.168.43.148:9502';
+var hookServerUrl = 'ws://127.0.0.1:9502';
 var momentsCount = 0;
 var loadedMids = [];
 

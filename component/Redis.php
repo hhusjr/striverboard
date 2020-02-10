@@ -31,7 +31,7 @@ class RedisComponent
         if (self::$_connection === null || !self::$_connection->ping()) {
             self::$_connection = new Redis();
             self::$_connection->pconnect('127.0.0.1', 6379);
-            self::$_connection->auth(self::$_password);
+            //self::$_connection->auth(self::$_password);
         }
         return self::$_connection;
     }
