@@ -3,7 +3,7 @@ var userChart = null;
 var hotMomentsWordsChart = null;
 var hotMissionWordsChart = null;
 var fieldChart = null;
-var hookServerUrl = 'ws://192.168.43.148:9502';
+var hookServerUrl = 'ws://127.0.0.1:9502';
 var momentsCount = 0;
 var loadedMids = [];
 
@@ -33,6 +33,9 @@ function loadNewMoments() {
         method: 'POST',
         dataType: 'json',
         success: function(moments) {
+            if (!Array.isArray(moments)) {
+                return;
+            }
             moments.reverse();
             var mids = [];
             moments.forEach(function(attrs) {
@@ -261,6 +264,9 @@ function loadMap() {
         method: 'POST',
         dataType: 'json',
         success: function(points) {
+            if (!Array.isArray(points)) {
+                return;
+            }
             var max = 0;
             points.forEach(function(point) {
                 if (point.count > max) max = point.count;
@@ -276,6 +282,9 @@ function loadMap() {
 function loadUserGraph() {
     $s.post(realtimeParams.urls.ajaxUserGraph, function(data) {
         userChart.hideLoading();
+        if (!data.data) {
+            return;
+        }
         data.data.forEach(function(node) {
             node.symbolSize = 25;
             node.value = node.symbolSize;
@@ -352,6 +361,9 @@ function loadFieldChart() {
         method: 'POST',
         dataType: 'json',
         success: function(response) {
+            if (!Array.isArray(response)) {
+                return;
+            }
             var data = [];
             response.forEach(function(item) {
                 var cnt = parseInt(item.cnt);

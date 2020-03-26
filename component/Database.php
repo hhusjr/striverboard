@@ -71,12 +71,21 @@ class DatabaseComponent
         return $this;
     }
     //insert handler
-    public function insert($into, $datas)
+    public function insert($into, $datas, $ignore = false)
     {
         $columns = array_keys($datas);
         // add quote automatically
         $values = array_map(array($this, 'quote'), array_values($datas));
-        $this->_sql = 'INSERT INTO ' . R::config('database')->tablePrefix . $into . ' (' . implode(', ', $columns) . ') VALUES (' . implode(', ', $values) . ')';
+        $this->_sql = 'INSERT ' . ($ignore ? 'IGNORE ' : '') . 'INTO ' . R::config('database')->tablePrefix . $into . ' (' . implode(', ', $columns) . ') VALUES (' . implode(', ', $values) . ')';
+        return $this;
+    }
+    // on duplicate key
+    public function onDuplicateKey($actions)
+    {
+        if (!is_array($actions)) {
+            $actions = [$actions];
+        }
+        $this->_sql .= $this->_connect('ON DUPLICATE KEY UPDATE', implode(', ', $actions));
         return $this;
     }
     //update handler
@@ -127,7 +136,7 @@ class DatabaseComponent
                 if ($opt != 'f') {
                     if ($quote == 'quote') {
                         $value = $this->quote($value);
-                    } else if ($quote == 'tbl' && strpos($value, '.')) {
+                    } elseif ($quote == 'tbl' && strpos($value, '.')) {
                         $value = $prefix . $value;
                     }
                     $code .= ' ' . $opt . ' ' . $value;

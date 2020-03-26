@@ -59,7 +59,7 @@ class UserModel extends BaseModel
             'mission' => V::all($userInfo->mission, 2, 200),
             'fid' => R::M('Field')->exists($userInfo->fid),
             'institution' => V::chinese($userInfo->institution, 2, 22),
-            'msgVerifyCode' => IN_DEBUG ? true : R::M('MessageVerify')->check($userInfo->phone, $inputMsgVerifyCode, 'userRegister')
+            'msgVerifyCode' => R::config('site')->demoMode ? true : R::M('MessageVerify')->check($userInfo->phone, $inputMsgVerifyCode, 'userRegister')
         ];
 
         foreach ($rules as $field => $valid) {
@@ -176,7 +176,7 @@ class UserModel extends BaseModel
             if (!$word || V::countCharNum($word) >= 12) {
                 continue;
             }
-            $insertWords = $this->insert([
+            $insertWords = $this->insertIgnore([
                 'uid' => $uid,
                 'word' => $word,
                 'tf_idf' => $tf * $idf
@@ -191,16 +191,14 @@ class UserModel extends BaseModel
             if (!$word || V::countCharNum($word) >= 12) {
                 continue;
             }
-            $times = $this->select('times', 'mission_words')->condition(['word' => $word])->limit(1)->fetchColumn();
-            $updateWords = $times
-                ? $this->modify(['times' => intval($times) + 1], 'mission_words')
-                        ->condition(['word' => $word])
-                        ->limit(1)->execute()
-                : $this->insert(['times' => 1, 'word' => $word, 'idf' => $idf], 'mission_words')->execute();
+            $updateWords = $this
+                            ->insert(['times' => 1, 'word' => $word, 'idf' => $idf], 'mission_words')
+                            ->onDuplicateKey('times = times + 1')
+                            ->execute();
             if (!$updateWords) {
                 return 'ERROR_UPDATE_WORDS';
             }
-            $insertWords = $this->insert([
+            $insertWords = $this->insertIgnore([
                 'uid' => $uid,
                 'word' => $word,
                 'tf_idf' => $tf * $idf
@@ -261,17 +259,26 @@ class UserModel extends BaseModel
         $uid1 = intval($uid1);
         $uid2 = intval($uid2);
 
-        if (!$this->uidExists($uid1) || !$this->uidExists($uid2)) {
-            return false;
+        // get from redis
+        $rkey = 'mission_similarity_' . $uid1 . '_' . $uid2;
+        if (RedisComponent::exists($rkey)) {
+            return floatval(RedisComponent::get($rkey));
         }
 
-        // get from cache
+        // get from database cache
         $similarity = $this->select('similarity', 'user_similarity_cache')->condition(['uid1' => $uid1, 'uid2' => $uid2])->fetchColumn();
         if ($similarity !== false) {
-            return floatval($similarity);
+            $res = floatval($similarity);
+            RedisComponent::set($rkey, $res);
+            return $res;
         }
 
         // if cache not exists, do calculate
+
+        if (!$this->uidExists($uid1) || !$this->uidExists($uid2)) {
+            return false;
+        }
+        
         $wordsUnion = [];
 
         $words = $this
@@ -308,12 +315,13 @@ class UserModel extends BaseModel
         $similarity = ($d1 && $d2) ? ($dot / sqrt($d1) / sqrt($d2)) : 0;
 
         // write back the cache
-        $this->insert([
+        RedisComponent::set($rkey, $similarity);
+        $this->insertIgnore([
             'uid1' => $uid1,
             'uid2' => $uid2,
             'similarity' => $similarity
         ], 'user_similarity_cache')->execute();
-        $this->insert([
+        $this->insertIgnore([
             'uid1' => $uid2,
             'uid2' => $uid1,
             'similarity' => $similarity
@@ -387,12 +395,14 @@ class UserModel extends BaseModel
     // If the similiarity between two users > 0.4, we can say they're connected (formed an graph)
     public function buildUserGraph($lowerbound = 0.4)
     {
-        $result = $this->select('uid')->order('uid DESC')->result();
+        $result = $this->select('uid')->order('uid DESC')->limit(300)->result();
 
         $uids = [];
         while ($uid = $result->fetchColumn()) {
             $uids[] = intval($uid);
         }
+
+        $unionSet = new UnionSetComponent($uids);
 
         $edges = [];
         $total = count($uids);
@@ -400,6 +410,11 @@ class UserModel extends BaseModel
             for ($j = $i + 1; $j < $total; $j++) {
                 $uid1 = $uids[$i];
                 $uid2 = $uids[$j];
+
+                if ($unionSet->query($uid1, $uid2)) {
+                    continue;
+                }
+
                 $similarity = $this->getMissionSimilarity($uid1, $uid2);
                 if ($similarity > $lowerbound) {
                     $edge = new stdClass;
@@ -407,6 +422,8 @@ class UserModel extends BaseModel
                     $edge->to = 'N' . ((string) $uid2);
                     $edge->weight = $similarity;
                     $edges[] = $edge;
+                    
+                    $unionSet->merge($uid1, $uid2);
                 }
             }
         }

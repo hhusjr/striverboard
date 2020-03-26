@@ -25,7 +25,7 @@ class WordProcessingApiConfig
 {
     // global config
     public static $accessSecret = 'Qks9@#kd.x.a0f9939kdfmmaa..al@##L';
-    public static $host = 'http://192.168.1.101';
+    public static $host = 'http://127.0.0.1';
     public static $port = 9503;
     public static $timeout = 10;
 }

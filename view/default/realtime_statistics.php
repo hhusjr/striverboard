@@ -43,14 +43,15 @@ $params->css = ['css/main.css', 'css/realtime.css'];
     </div>
 </div>
 <script>
+    var realtimeServer = 'http://127.0.0.1';
     var realtimeParams = {
         urls: {
-            ajaxMomentsLocations: '<?php ($a->U)('Statistics', 'AjaxMomentsLocations'); ?>',
-            ajaxNewMoments: '<?php ($a->U)('Striverboard', 'AjaxNewMoments'); ?>',
-            ajaxUserGraph: '<?php ($a->U)('Statistics', 'AjaxUserGraph'); ?>',
-            ajaxHotMomentsWords: '<?php ($a->U)('Striverboard', 'AjaxHotMomentsWords'); ?>',
-            ajaxHotMissionWords: '<?php ($a->U)('User', 'AjaxHotMissionWords'); ?>',
-            ajaxMomentsCount: '<?php ($a->U)('Striverboard', 'AjaxMomentsCount'); ?>'
+            ajaxMomentsLocations: realtimeServer + '/statistics/ajax_moments_locations',
+            ajaxNewMoments: realtimeServer + '/striverboard/ajax_new_moments',
+            ajaxUserGraph: realtimeServer + '/statistics/ajax_user_graph',
+            ajaxHotMomentsWords: realtimeServer + '/striverboard/ajax_hot_moments_words',
+            ajaxHotMissionWords: realtimeServer + '/user/ajax_hot_mission_words',
+            ajaxMomentsCount: realtimeServer + '/striverboard/ajax_moments_count'
         }
     };
 </script>

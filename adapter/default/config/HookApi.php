@@ -26,7 +26,7 @@ class HookApiConfig
     // global config
     public static $enabled = true;
     public static $accessSecret = 'Qks9@#kd.x.a0f9939kdfmmaa..al@##L';
-    public static $host = 'ws://192.168.1.101';
+    public static $host = 'ws://127.0.0.1';
     public static $port = 9502;
     public static $timeout = 10;
 }

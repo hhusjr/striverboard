@@ -90,12 +90,10 @@ class MomentsModel extends BaseModel
             if (!$word || V::countCharNum($word) >= 12) {
                 continue;
             }
-            $times = $this->select('times', 'moments_words')->condition(['word' => $word])->limit(1)->fetchColumn();
-            $updateWords = $times
-                ? $this->modify(['times' => intval($times) + 1], 'moments_words')
-                        ->condition(['word' => $word])
-                        ->limit(1)->execute()
-                : $this->insert(['times' => 1, 'word' => $word, 'idf' => $idf], 'moments_words')->execute();
+            $updateWords = $this
+                            ->insert(['times' => 1, 'word' => $word, 'idf' => $idf], 'moments_words')
+                            ->onDuplicateKey('times = times + 1')
+                            ->execute();
             if (!$updateWords) {
                 return 'ERROR_UPDATE_WORDS';
             }

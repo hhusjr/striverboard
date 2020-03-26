@@ -100,7 +100,7 @@ class MessageVerifyModel extends BaseModel
             'time <' => $time
         ], 'OR')->execute();
 
-        $insert = $this->insert([
+        $insert = $this->insertIgnore([
             'phone' => $phone,
             'action' => $action,
             'code' => $this->_encrypt($code),

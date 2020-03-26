@@ -100,6 +100,10 @@ if (!defined('BASE_PATH')) {
     </div>
 </div>
 <script>
+    var siteParams = {
+        demoMode: '<?php echo $a->demoMode ? '1' : '0'; ?>'
+    };
+
     var loginParams = {
         verifyCodeDelayTime: '<?php echo $a->verifyCodeDelay; ?>',
         urls: {
